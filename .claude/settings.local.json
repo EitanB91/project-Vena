@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm test:*)",
+      "Bash(npx next build:*)",
+      "Bash(playwright-cli:*)",
+      "Bash(gh repo:*)",
+      "Bash(gh auth:*)",
+      "Bash(git:*)",
+      "Bash(npm install:*)",
+      "Read(//c/Users/user/Desktop/Ai/Claude/**)",
+      "Read(//c/Users/user/.claude/**)",
+      "Skill(playwright-cli:*)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\user\\Desktop\\Ai\\Claude"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "bash .claude/hooks/session-logger.sh"
+      }
+    ],
+    "SessionEnd": [
+      {
+        "type": "command",
+        "command": "bash .claude/hooks/session-logger.sh"
+      }
+    ]
+  }
+}

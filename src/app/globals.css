@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+/* ============================================================
+   VENA DESIGN TOKENS — Nova's Design System
+   Dark-themed mission control aesthetic.
+   All colors, spacing, and typography defined here.
+   ============================================================ */
+
+:root {
+  /* Background layers (darkest to lightest) */
+  --vena-bg: #08080d;
+  --vena-surface: #0f0f17;
+  --vena-surface-raised: #161622;
+  --vena-surface-overlay: #1c1c2e;
+
+  /* Border & divider */
+  --vena-border: #1e1e32;
+  --vena-border-subtle: #14142a;
+
+  /* Text hierarchy */
+  --vena-text: #e4e4ef;
+  --vena-text-secondary: #8888a4;
+  --vena-text-muted: #55556e;
+
+  /* Accent — indigo core */
+  --vena-accent: #6366f1;
+  --vena-accent-hover: #818cf8;
+  --vena-accent-muted: #4f46e5;
+
+  /* Status colors */
+  --vena-success: #22c55e;
+  --vena-warning: #f59e0b;
+  --vena-error: #ef4444;
+  --vena-info: #38bdf8;
+
+  /* Agent colors (used for avatar badges and charts) */
+  --vena-agent-orchestrator: #6366f1;
+  --vena-agent-nova: #f472b6;
+  --vena-agent-viktor: #a78bfa;
+  --vena-agent-silas: #fbbf24;
+
+  /* Fonts */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Tailwind v4 theme integration */
+@theme inline {
+  --color-vena-bg: var(--vena-bg);
+  --color-vena-surface: var(--vena-surface);
+  --color-vena-surface-raised: var(--vena-surface-raised);
+  --color-vena-surface-overlay: var(--vena-surface-overlay);
+  --color-vena-border: var(--vena-border);
+  --color-vena-border-subtle: var(--vena-border-subtle);
+  --color-vena-text: var(--vena-text);
+  --color-vena-text-secondary: var(--vena-text-secondary);
+  --color-vena-text-muted: var(--vena-text-muted);
+  --color-vena-accent: var(--vena-accent);
+  --color-vena-accent-hover: var(--vena-accent-hover);
+  --color-vena-accent-muted: var(--vena-accent-muted);
+  --color-vena-success: var(--vena-success);
+  --color-vena-warning: var(--vena-warning);
+  --color-vena-error: var(--vena-error);
+  --color-vena-info: var(--vena-info);
+  --color-vena-agent-orchestrator: var(--vena-agent-orchestrator);
+  --color-vena-agent-nova: var(--vena-agent-nova);
+  --color-vena-agent-viktor: var(--vena-agent-viktor);
+  --color-vena-agent-silas: var(--vena-agent-silas);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+/* Base styles */
+body {
+  background: var(--vena-bg);
+  color: var(--vena-text);
+}
+
+/* Scrollbar styling for the dark theme */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--vena-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--vena-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--vena-text-muted);
+}
