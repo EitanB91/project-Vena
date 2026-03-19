@@ -38,24 +38,25 @@ Vena is a local web dashboard for monitoring Claude Code projects. It reads `.cl
 - [x] Director Checkpoint #2
 <!-- /vena:phase -->
 
-<!-- vena:phase id="2" status="next" -->
+<!-- vena:phase id="2" status="complete" -->
 ### Phase 2 — File Readers & Data Layer
-**Status:** Next
+**Status:** Complete (2026-03-19)
 **Goal:** Server-side utilities that read `.claude/` directories and parse markdown/JSON.
 
-- [ ] Project scanner — discover `.claude/` directories
-- [ ] Agent reader — parse identity and memory markdown files
-- [ ] Budget reader — parse budget-ledger.json and usage-log.jsonl
-- [ ] Roadmap parser — parse markdown with `<!-- vena:* -->` markers
-- [ ] Session reader — parse usage-log.jsonl for session timeline
-- [ ] TypeScript types for all data models
-- [ ] Viktor QA review
-- [ ] Director Checkpoint #3
+- [x] Project scanner — discover `.claude/` directories
+- [x] Agent reader — parse identity and memory markdown files
+- [x] Budget reader — parse budget-ledger.json and usage-log.jsonl
+- [x] Roadmap parser — parse markdown with `<!-- vena:* -->` markers
+- [x] Session reader — parse usage-log.jsonl for session timeline
+- [x] TypeScript types for all data models
+- [x] Vitest test runner + 39 unit tests
+- [x] Viktor QA review — verdict: PASS (2 rounds)
+- [x] Director Checkpoint #3
 <!-- /vena:phase -->
 
-<!-- vena:phase id="3" status="planned" -->
+<!-- vena:phase id="3" status="next" -->
 ### Phase 3 — Agent Dashboard
-**Status:** Planned
+**Status:** Next
 **Goal:** Display agent cards with identity, status, and memory summaries.
 
 - [ ] Agent list page with card grid
@@ -112,7 +113,7 @@ Vena is a local web dashboard for monitoring Claude Code projects. It reads `.cl
 | Design tokens | 0 | Critical | Complete |
 | Sidebar navigation | 1 | Critical | Complete |
 | Dark theme | 1 | Critical | Complete |
-| File readers / parsers | 2 | Critical | Planned |
+| File readers / parsers | 2 | Critical | Complete |
 | Agent dashboard | 3 | High | Planned |
 | Budget views | 4 | High | Planned |
 | Roadmap viewer | 4 | High | Planned |

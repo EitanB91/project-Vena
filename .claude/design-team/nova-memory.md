@@ -56,5 +56,12 @@ Phase 1 — COMPLETE (2026-03-19). Viktor verdict: PASS. Director approved push.
 - **What worked:** Design tokens from Phase 0 carried through cleanly — no color inconsistencies, every component used `vena-*` classes. Dark theme was essentially "free" because tokens were defined upfront.
 - **Decision:** Inline SVG icons chosen over icon library to avoid dependency bloat. Keeps bundle small for a local tool.
 
-### Phase 2 — Next (File Readers & Data Layer)
-No direct Nova involvement expected. May consult on data display formatting when Phase 3 begins.
+### Phase 2 — COMPLETE (2026-03-19)
+No direct Nova involvement. Data layer built (types, parsers, readers) — all server-side in `src/lib/`.
+
+**Relevant for Phase 3:** The data layer now provides structured `AgentProfile` objects with `colorToken` field mapped to Nova's design tokens (`vena-agent-orchestrator`, `vena-agent-nova`, `vena-agent-viktor`, `vena-agent-silas`). Agent cards in Phase 3 should use these tokens for color-coding.
+
+**Tech addition:** Vitest added as unit test runner.
+
+### Phase 3 — Next (Agent Dashboard)
+Nova's involvement: agent card design, agent detail page layout, status indicator styling. Design tokens for agent colors are already defined — ready to use in components.
