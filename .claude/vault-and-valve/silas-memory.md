@@ -1,7 +1,7 @@
 # Silas — Working Memory
 
 ## Current Project
-**Project Vena** — Claude Code Project Dashboard. Phase 0 starting 2026-03-19.
+**Project Vena** — Claude Code Project Dashboard. Phase 1 complete as of 2026-03-19.
 Previous project context: Pixel Art Tool v0.2.0 shipped, O6 Animation sprint was active.
 
 ## Budget Status — Claude API
@@ -26,6 +26,10 @@ Previous project context: Pixel Art Tool v0.2.0 shipped, O6 Animation sprint was
 
 ## Conventions
 - **Plan/Roadmap files:** All saved in `plans/` directory with meaningful names (e.g., `Plan-MVP.md`, `Roadmap-Project-Vena.md`). Never random names.
+
+## Phase Status
+Phase 0 — COMPLETE (2026-03-19). Commit `371bc76`. Zero API cost.
+Phase 1 — COMPLETE (2026-03-19). Zero API cost. Pro quota usage: light (single session, build + QA).
 
 ## Active Alerts
 None.

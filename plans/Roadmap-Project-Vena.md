@@ -8,39 +8,39 @@ Vena is a local web dashboard for monitoring Claude Code projects. It reads `.cl
 
 ## Phases
 
-<!-- vena:phase id="0" status="in-progress" -->
+<!-- vena:phase id="0" status="complete" -->
 ### Phase 0 — Kickoff & Scaffold
-**Status:** In Progress (started 2026-03-19)
+**Status:** Complete (2026-03-19)
 **Goal:** Project setup, team alignment, foundational scaffold.
 
 - [x] Initialize git repo + create GitHub repo
 - [x] Scaffold Next.js project with TypeScript + Tailwind
-- [ ] Set up project structure and CLAUDE.md
-- [ ] Create plans/ directory with Plan-MVP.md and Roadmap
-- [ ] Adapt agent identity files (Nova, Viktor, Silas)
-- [ ] Copy Playwright CLI skill + adapt hooks
-- [ ] Create TECH-GUIDE.md education document
-- [ ] Nova: define design tokens in tailwind.config.ts / globals.css
-- [ ] Viktor: spot-check scaffold conventions
-- [ ] Director Checkpoint #1
+- [x] Set up project structure and CLAUDE.md
+- [x] Create plans/ directory with Plan-MVP.md and Roadmap
+- [x] Adapt agent identity files (Nova, Viktor, Silas)
+- [x] Copy Playwright CLI skill + adapt hooks
+- [x] Create TECH-GUIDE.md education document
+- [x] Nova: define design tokens in tailwind.config.ts / globals.css
+- [x] Viktor: spot-check scaffold conventions
+- [x] Director Checkpoint #1
 <!-- /vena:phase -->
 
-<!-- vena:phase id="1" status="planned" -->
+<!-- vena:phase id="1" status="complete" -->
 ### Phase 1 — Dashboard Shell & Navigation
-**Status:** Planned
+**Status:** Complete (2026-03-19)
 **Goal:** App shell with sidebar navigation, dark theme, layout system.
 
-- [ ] Sidebar component with route links
-- [ ] Dark theme implementation (design tokens from Nova)
-- [ ] Root layout with sidebar + main content area
-- [ ] Placeholder pages for each route (agents, budget, roadmap, sessions, chat)
-- [ ] Viktor QA review
-- [ ] Director Checkpoint #2
+- [x] Sidebar component with route links
+- [x] Dark theme implementation (design tokens from Nova)
+- [x] Root layout with sidebar + main content area
+- [x] Placeholder pages for each route (agents, budget, roadmap, sessions, chat)
+- [x] Viktor QA review — verdict: PASS
+- [x] Director Checkpoint #2
 <!-- /vena:phase -->
 
-<!-- vena:phase id="2" status="planned" -->
+<!-- vena:phase id="2" status="next" -->
 ### Phase 2 — File Readers & Data Layer
-**Status:** Planned
+**Status:** Next
 **Goal:** Server-side utilities that read `.claude/` directories and parse markdown/JSON.
 
 - [ ] Project scanner — discover `.claude/` directories
@@ -108,10 +108,10 @@ Vena is a local web dashboard for monitoring Claude Code projects. It reads `.cl
 
 | Feature | Phase | Priority | Status |
 |---------|-------|----------|--------|
-| Project scaffold | 0 | Critical | In Progress |
-| Design tokens | 0 | Critical | Pending |
-| Sidebar navigation | 1 | Critical | Planned |
-| Dark theme | 1 | Critical | Planned |
+| Project scaffold | 0 | Critical | Complete |
+| Design tokens | 0 | Critical | Complete |
+| Sidebar navigation | 1 | Critical | Complete |
+| Dark theme | 1 | Critical | Complete |
 | File readers / parsers | 2 | Critical | Planned |
 | Agent dashboard | 3 | High | Planned |
 | Budget views | 4 | High | Planned |

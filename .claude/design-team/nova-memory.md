@@ -38,9 +38,23 @@ All tokens defined in `src/app/globals.css` as CSS custom properties + `@theme i
 - **Tailwind usage:** Always use `vena-*` token classes, not raw Tailwind colors.
 
 ## Build Status
-Phase 0 — Kickoff & Scaffold (2026-03-19)
-- [x] Design tokens defined in globals.css
-- [x] Layout updated with Vena branding
-- [x] Placeholder home page with Vena identity
-- [ ] Sidebar component (Phase 1)
-- [ ] Component library (Phase 1+)
+Phase 0 — COMPLETE (2026-03-19). Committed `371bc76`, pushed to GitHub.
+Phase 1 — COMPLETE (2026-03-19). Viktor verdict: PASS. Director approved push.
+
+### Phase 1 Delivery
+- [x] Sidebar component with route links — inline SVG icons, active state highlighting
+- [x] Dark theme applied across shell — all `vena-*` tokens used consistently
+- [x] Placeholder pages for each route (agents, budget, roadmap, sessions, chat)
+- [x] Dashboard home with status cards
+- [x] Root layout with fixed sidebar + main content area
+
+### Phase 1 Design Debt (deferred to Phase 6)
+- `text-[10px]` and `text-[11px]` in Sidebar use arbitrary Tailwind values — formalize micro-typography tokens during Phase 6 polish pass
+- SVG icons duplicated between Sidebar and placeholder pages — will resolve when placeholders are replaced with real content
+
+### Phase 1 Lessons
+- **What worked:** Design tokens from Phase 0 carried through cleanly — no color inconsistencies, every component used `vena-*` classes. Dark theme was essentially "free" because tokens were defined upfront.
+- **Decision:** Inline SVG icons chosen over icon library to avoid dependency bloat. Keeps bundle small for a local tool.
+
+### Phase 2 — Next (File Readers & Data Layer)
+No direct Nova involvement expected. May consult on data display formatting when Phase 3 begins.

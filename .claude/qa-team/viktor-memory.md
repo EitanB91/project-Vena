@@ -23,4 +23,14 @@ Project Vena — local web dashboard for Claude Code projects. Next.js + TypeScr
 8. Git push gate
 
 ## Build Status
-Phase 0 — Kickoff & Scaffold (starting 2026-03-19)
+Phase 0 — COMPLETE (2026-03-19). Commit `371bc76`. Viktor verdict: PASS.
+Phase 1 — COMPLETE (2026-03-19). Viktor verdict: PASS. Director approved push.
+
+### Phase 1 QA Notes
+- SVG icons duplicated between Sidebar and placeholder pages — will resolve when placeholders are replaced
+- `text-[10px]`/`text-[11px]` arbitrary values in Sidebar — cosmetic, Nova may formalize later
+- No unit test runner yet (carried from Phase 0, not blocking)
+- Independent Playwright verification: all 6 routes, click navigation, round-trip confirmed
+
+### Phase 2 — Next (File Readers & Data Layer)
+Upcoming QA focus: server-side file readers, TypeScript types, no fs in client code, parser correctness.
