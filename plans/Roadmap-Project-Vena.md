@@ -54,19 +54,19 @@ Vena is a local web dashboard for monitoring Claude Code projects. It reads `.cl
 - [x] Director Checkpoint #3
 <!-- /vena:phase -->
 
-<!-- vena:phase id="3" status="next" -->
+<!-- vena:phase id="3" status="complete" -->
 ### Phase 3 — Agent Dashboard
-**Status:** Next
+**Status:** Complete (2026-03-20)
 **Goal:** Display agent cards with identity, status, and memory summaries.
 
-- [ ] Agent list page with card grid
-- [ ] Agent detail page with full identity + memory
-- [ ] Status indicators (active/idle based on session data)
-- [ ] Viktor QA review
-- [ ] Director Checkpoint #4
+- [x] Agent list page with card grid
+- [x] Agent detail page with full identity + memory
+- [x] Status indicators (active/idle based on session data)
+- [x] Viktor QA review — verdict: PASS (2 rounds)
+- [x] Director Checkpoint #4
 <!-- /vena:phase -->
 
-<!-- vena:phase id="4" status="planned" -->
+<!-- vena:phase id="4" status="next" -->
 ### Phase 4 — Budget & Roadmap Views
 **Status:** Planned
 **Goal:** Visual budget dashboard and interactive roadmap viewer.
@@ -114,7 +114,7 @@ Vena is a local web dashboard for monitoring Claude Code projects. It reads `.cl
 | Sidebar navigation | 1 | Critical | Complete |
 | Dark theme | 1 | Critical | Complete |
 | File readers / parsers | 2 | Critical | Complete |
-| Agent dashboard | 3 | High | Planned |
+| Agent dashboard | 3 | High | Complete |
 | Budget views | 4 | High | Planned |
 | Roadmap viewer | 4 | High | Planned |
 | Charts (Recharts) | 4 | Medium | Planned |

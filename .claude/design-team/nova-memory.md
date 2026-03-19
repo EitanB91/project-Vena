@@ -63,5 +63,19 @@ No direct Nova involvement. Data layer built (types, parsers, readers) — all s
 
 **Tech addition:** Vitest added as unit test runner.
 
-### Phase 3 — Next (Agent Dashboard)
-Nova's involvement: agent card design, agent detail page layout, status indicator styling. Design tokens for agent colors are already defined — ready to use in components.
+### Phase 3 — COMPLETE (2026-03-20)
+Agent Dashboard delivered. Nova's design tokens used throughout:
+
+- **Agent card grid:** Responsive 3-column layout. Each card shows color-coded avatar (CSS variable `var(--vena-agent-*)` for dynamic coloring), name, role, key phrases (italic, muted), project badges (rounded pills), and status indicator with relative time.
+- **Agent detail pages:** Large avatar, identity + memory panels side-by-side in `lg:grid-cols-2`, back navigation arrow, section headers in uppercase tracking-wider muted style.
+- **Status indicators:** Green dot = Active (<30min), Yellow dot = Recent (<24h), Gray dot = Idle. Uses `vena-success`, `vena-warning`, `vena-text-muted` tokens.
+- **Card interaction:** Hover raises surface (`bg-vena-surface-raised`), border brightens (`border-vena-text-muted`), name goes white. Transition-colors for smooth feel.
+- **Design tokens validated:** All `vena-agent-*` colors render correctly. No raw Tailwind colors used. Dark theme consistent.
+
+**Phase 3 Design Decisions:**
+- Agent avatars are solid-color circles using CSS variables — simple, scales to any agent count, no image assets needed.
+- Key phrases truncated with `truncate` on cards, fully displayed on detail page — progressive disclosure.
+- Identity/memory panels use `font-mono text-xs` for raw content — respects the "mission control" data-dense aesthetic.
+
+### Phase 4 — Next (Budget & Roadmap Views)
+Nova's involvement: chart styling (Recharts theming with vena-* tokens), budget dashboard layout, roadmap phase visualization, session timeline design.
