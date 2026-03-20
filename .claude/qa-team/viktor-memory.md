@@ -12,15 +12,26 @@ Project Vena — local web dashboard for Claude Code projects. Next.js + TypeScr
 - **Plan/Roadmap files:** Must be in `plans/` directory with meaningful names (`Plan-<name>.md`, `Roadmap-<name>.md`). Never random/generated names.
 - **ROADMAP.md:** Must use Vena convention markers (`<!-- vena:roadmap -->`, `<!-- vena:phase -->`, `<!-- vena:sprint -->`)
 
-## QA Pipeline (8 steps)
+## QA Pipeline (9 steps — updated Phase 5, 2026-03-20)
 1. Code structure review
 2. Bug analysis
-3. Readability check
-4. Convention compliance (see above)
-5. Test coverage verification
-6. Issue resolution
-7. Director summary
-8. Git push gate
+3. **Security review** (all findings block — Director mandate)
+4. Readability check
+5. Convention compliance (see above)
+6. Test coverage verification
+7. Issue resolution
+8. Director summary
+9. Git push gate
+
+### Security Review Checklist
+- Network exposure (localhost binding, no `0.0.0.0`)
+- Authentication & authorization
+- Input validation (all external inputs bounded)
+- Resource limits (connections, sessions, message sizes, rate limits)
+- Origin/CORS policy (WebSocket, API endpoints)
+- Environment variable validation
+- No secrets in client code
+- Dependency surface audit
 
 ## Build Status
 Phase 0 — COMPLETE (2026-03-19). Commit `371bc76`. Viktor verdict: PASS.
@@ -95,5 +106,32 @@ Phase 4 — COMPLETE (2026-03-20). Viktor verdict: PASS (two rounds). Awaiting D
 - **Design token debt compounds** — `text-[11px]` started as 1 occurrence in Phase 1, grew to 11 by Phase 4. Formalizing `text-micro` token early would have prevented spread. Lesson: formalize arbitrary values after 2-3 uses, not after 11.
 - **Phase 1 carry-forward resolved:** SVG icon duplication fully resolved — all placeholder pages replaced with real content. `text-[11px]` resolved via `text-micro` token. Only `text-[10px]` (1 occurrence, Sidebar version badge) remains — acceptable.
 
-### Phase 5 — Next (CLI Passthrough Chat)
-Upcoming QA focus: xterm.js integration, client-side terminal component, theme matching with design tokens, session management.
+### Phase 5 QA Notes
+**Round 1 — BLOCKED (8 security findings, 1 note):**
+
+Security findings (all blocking — Director mandate):
+- S1 (CRITICAL): WebSocket server bound to `0.0.0.0` — exposed on entire network. Fix: `host: "127.0.0.1"`.
+- S2 (CRITICAL): No session limit — unlimited PTY processes. Fix: `MAX_SESSIONS = 5` cap.
+- S3 (HIGH): No resize validation — cols/rows unvalidated. Fix: `isValidResize()` with bounds 1–500.
+- S4 (HIGH): No origin checking — cross-site WebSocket hijacking possible. Fix: `verifyClient` + `ALLOWED_ORIGINS`.
+- S5 (MEDIUM): No rate limiting — connection floods possible. Fix: 10/min/IP rate limiter.
+- S6 (MEDIUM): `PTY_CWD` env var unvalidated. Fix: `resolveWorkingDirectory()` with existence + directory checks.
+- S7 (MEDIUM): No max message size. Fix: `maxPayload: 1MB` on WebSocketServer.
+- S8 (LOW→MEDIUM): No authentication. Fix: cryptographic token auth — server writes `.pty-auth-token`, client fetches via `/api/pty-token` API route, sends as first WebSocket message.
+
+Convention note:
+- N1 (non-blocking): `event.data as string` in Terminal.tsx — `as` cast on external data. Fix: `typeof` runtime check.
+
+**Round 2 — PASS:**
+- All 8 security findings fixed and independently verified
+- N1 fixed — no `as` casts on external data in Phase 5 code
+- Build clean, 54/54 tests pass
+- Visual verification: terminal connects, authenticates, renders prompt
+- QA pipeline upgraded to 9 steps (Step 3: Security Review added)
+
+### Phase 5 Lessons
+- **Security is first and foremost** — Director mandate (2026-03-20). All security findings block by default. Design for public distribution, never assume local-only as mitigation.
+- **QA pipeline now 9 steps** — Security Review added as Step 3, with full checklist (network, auth, input, resources, origin, env, secrets, deps).
+- **PTY servers need defense in depth** — Spawning shell processes is inherently high-risk. Even a "local" tool needs localhost binding, auth, session caps, rate limiting, input validation, and message size limits.
+- **Token sharing pattern** — Server writes file, client reads via API route. Avoids `NEXT_PUBLIC_*` exposure while enabling seamless `dev:full` startup.
+- **First security-focused QA** — Proved the value of the security checklist immediately. 8 real findings in Round 1, all fixed in Round 2.

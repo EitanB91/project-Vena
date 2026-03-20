@@ -124,12 +124,13 @@ Triggered: after every significant code change, and mandatory before every `git 
 |------|--------|-----------|
 | 1 | Code structure & organization analysis | No |
 | 2 | Bug & edge case check | Yes (bugs block) |
-| 3 | Readability & maintainability review | No (advise only) |
-| 4 | Convention compliance (CLAUDE.md rules) | Yes |
-| 5 | Tests / unit tests | Yes (failures block) |
-| 6 | Return issues to responsible team lead; wait for fix | Yes (bugs/conventions) |
-| 7 | Send Director a summary report | — |
-| 8 | Await Director approval → then push | Yes |
+| 3 | **Security review** | **Yes (all findings block)** |
+| 4 | Readability & maintainability review | No (advise only) |
+| 5 | Convention compliance (CLAUDE.md rules) | Yes |
+| 6 | Tests / unit tests | Yes (failures block) |
+| 7 | Return issues to responsible team lead; wait for fix | Yes (bugs/conventions/security) |
+| 8 | Send Director a summary report | — |
+| 9 | Await Director approval → then push | Yes |
 
 Verdicts: `PASS` · `PASS WITH NOTES` · `BLOCKED`
 

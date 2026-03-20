@@ -66,33 +66,34 @@ Vena is a local web dashboard for monitoring Claude Code projects. It reads `.cl
 - [x] Director Checkpoint #4
 <!-- /vena:phase -->
 
-<!-- vena:phase id="4" status="next" -->
+<!-- vena:phase id="4" status="complete" -->
 ### Phase 4 — Budget & Roadmap Views
-**Status:** Planned
+**Status:** Complete (2026-03-20)
 **Goal:** Visual budget dashboard and interactive roadmap viewer.
 
-- [ ] Budget overview — remaining balance, alert level, usage chart
-- [ ] Session timeline — visual log of sessions with categories
-- [ ] Roadmap viewer — render phases and tasks from parsed markdown
-- [ ] Plan viewer — list and display plan documents
-- [ ] Charts integration (Recharts)
-- [ ] Viktor QA review
-- [ ] Director Checkpoint #5
+- [x] Budget overview — remaining balance, alert level, usage chart
+- [x] Session timeline — visual log of sessions with categories
+- [x] Roadmap viewer — render phases and tasks from parsed markdown
+- [x] Plan viewer — list and display plan documents
+- [x] Charts integration (Recharts)
+- [x] Viktor QA review — verdict: PASS
+- [x] Director Checkpoint #5
 <!-- /vena:phase -->
 
-<!-- vena:phase id="5" status="planned" -->
+<!-- vena:phase id="5" status="complete" -->
 ### Phase 5 — CLI Passthrough Chat
-**Status:** Planned
+**Status:** Complete (2026-03-20)
 **Goal:** Embedded terminal for Claude CLI interaction.
 
-- [ ] xterm.js integration
-- [ ] CLI session management
-- [ ] Theme matching with dashboard
-- [ ] Viktor QA review
-- [ ] Director Checkpoint #6
+- [x] xterm.js integration
+- [x] CLI session management
+- [x] Theme matching with dashboard
+- [x] Security hardening (S1–S8: localhost binding, auth, rate limiting, input validation, resource caps)
+- [x] Viktor QA review — verdict: PASS (2 rounds)
+- [x] Director Checkpoint #6
 <!-- /vena:phase -->
 
-<!-- vena:phase id="6" status="planned" -->
+<!-- vena:phase id="6" status="next" -->
 ### Phase 6 — Polish & v1.0
 **Status:** Planned
 **Goal:** Responsive layout, animations, error states, documentation.
@@ -115,8 +116,8 @@ Vena is a local web dashboard for monitoring Claude Code projects. It reads `.cl
 | Dark theme | 1 | Critical | Complete |
 | File readers / parsers | 2 | Critical | Complete |
 | Agent dashboard | 3 | High | Complete |
-| Budget views | 4 | High | Planned |
-| Roadmap viewer | 4 | High | Planned |
-| Charts (Recharts) | 4 | Medium | Planned |
-| CLI chat (xterm.js) | 5 | Medium | Planned |
+| Budget views | 4 | High | Complete |
+| Roadmap viewer | 4 | High | Complete |
+| Charts (Recharts) | 4 | Medium | Complete |
+| CLI chat (xterm.js) | 5 | Medium | Complete |
 | Responsive design | 6 | Medium | Planned |

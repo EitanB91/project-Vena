@@ -40,6 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# PTY server auth token (generated at runtime)
+.pty-auth-token
+
 # vault & valve usage log (session data, not committed)
 .claude/vault-and-valve/usage-log.jsonl
 .claude/vault-and-valve/reports/

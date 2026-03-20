@@ -94,5 +94,18 @@ Budget & Roadmap Views delivered. Recharts integrated for charts. Key design out
 - Phase cards use border accent highlight for current phase — draws eye to active work.
 - Plan documents shown as cards (not expandable) — minimal viable plan viewer, can enhance later.
 
-### Phase 5 — Next (CLI Passthrough Chat)
-Nova's involvement: xterm.js terminal styling, theme matching with vena-* dark tokens, terminal container layout within dashboard shell.
+### Phase 5 — COMPLETE (2026-03-20)
+CLI Passthrough Chat delivered. Nova's design involvement:
+
+- **Terminal theme:** `src/lib/terminal-theme.ts` maps all Vena design tokens to xterm.js `ITheme`. Background uses `vena-surface`, foreground `vena-text`, cursor `vena-accent`. ANSI color palette mapped to Vena status + agent colors (green=success, red=error, blue=accent, magenta=viktor, pink=nova, amber=silas).
+- **Terminal container:** Rounded border (`border-vena-border`), overflow hidden, fills available space with `flex-1 min-h-0`.
+- **Connection status pill:** Rounded-full badge with colored dot — green (connected), amber pulse (connecting), red (disconnected). Uses `vena-success`, `vena-warning`, `vena-error` tokens.
+- **Session ID:** Monospace `text-micro` in muted color, shown when connected.
+- **New Session button:** Surface-raised background, border hover transitions to accent.
+- **Footer hints:** `<kbd>` styled inline code for `claude` command, muted text, pipe separator.
+- **Recharts-style limitation applies:** xterm.js theme requires hardcoded hex values — cannot use CSS custom properties. Same sync-warning pattern as charts.
+
+**Phase 5 Design Decisions:**
+- Terminal background matches `vena-surface` (not `vena-bg`) — creates visual separation from the page background, making the terminal area distinct within the layout.
+- Geist Mono as primary terminal font with Cascadia Code and Fira Code fallbacks — maintains consistency with the mono font used elsewhere in the dashboard.
+- Block cursor with blink — standard terminal UX, indigo accent color makes it visible against dark background.
