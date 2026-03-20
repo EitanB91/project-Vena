@@ -109,3 +109,25 @@ CLI Passthrough Chat delivered. Nova's design involvement:
 - Terminal background matches `vena-surface` (not `vena-bg`) — creates visual separation from the page background, making the terminal area distinct within the layout.
 - Geist Mono as primary terminal font with Cascadia Code and Fira Code fallbacks — maintains consistency with the mono font used elsewhere in the dashboard.
 - Block cursor with blink — standard terminal UX, indigo accent color makes it visible against dark background.
+
+### Phase 6 — COMPLETE (2026-03-20)
+Polish & v1.0 delivered. Heavy Nova involvement — responsive design, empty states, loading states, error states.
+
+- **Collapsible mobile sidebar:** Hamburger menu icon in a fixed mobile top bar (`md:hidden`). Sidebar slides in from left with `translate-x` transition (200ms ease-in-out). Black/60 backdrop overlay. Close on route change via `useEffect([pathname])`. Body scroll lock when open. Close button (X) inside sidebar header on mobile.
+- **Mobile top bar:** Fixed top, z-40, `h-14`, replicates sidebar logo area (pulse dot + "Vena" + version badge). Hamburger button with `hover:bg-vena-surface-raised` transition.
+- **Responsive padding:** All page wrappers changed from `p-8` to `p-4 md:p-8`. Header margins `mb-6 md:mb-8`. Stats rows `flex-wrap gap-4 md:gap-6`. Chat header stacks vertically on mobile (`flex-col gap-3 sm:flex-row`).
+- **EmptyState component:** `src/components/EmptyState.tsx` — centered card with dashed border, icon circle (`h-10 w-10 rounded-full bg-vena-surface-raised`), message, optional hint in `text-vena-text-muted/70`. Used on agents, budget, sessions, roadmap pages.
+- **Compact empty states:** Dashboard Quick Glance panels use inline icon + message (no card wrapper) to avoid card-within-card nesting.
+- **Skeleton loading:** `src/components/Skeleton.tsx` — composable primitives: `Skeleton` (base pulse bar), `SkeletonCard`, `SkeletonHeader`, `SkeletonRow`. Used in 5 route `loading.tsx` files matching actual page layouts.
+- **ErrorDisplay component:** `src/components/ErrorDisplay.tsx` — error circle icon (`bg-vena-error/10`), title, message, retry button with accent hover. Used in 6 route `error.tsx` files.
+
+**Phase 6 Design Decisions:**
+- Mobile sidebar as overlay (not inline collapse) — preserves full sidebar width when open, doesn't compress page content. Standard mobile nav pattern.
+- Skeleton shapes match actual page content — donut placeholder for budget chart, rows for roadmap phases, cards for agent grid. Reduces layout shift on load.
+- EmptyState uses dashed border to visually distinguish "no data" from "loading" (solid border). Consistent across all pages.
+- Compact inline empty states in dashboard panels avoid nested-card pattern that would feel heavy in small Quick Glance containers.
+
+### All Design Debt — RESOLVED
+- ~~`text-[11px]` arbitrary values~~ — resolved Phase 4 (`text-micro` token)
+- ~~SVG icon duplication~~ — resolved Phase 4 (real content replaced all placeholders)
+- `text-[10px]` in Sidebar version badge — 1 occurrence, accepted as-is. Too niche for a token.

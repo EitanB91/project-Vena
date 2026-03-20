@@ -1,5 +1,6 @@
 import { readProjectRoadmap, readPlanFiles } from "@/lib";
 import type { PlanFile } from "@/lib";
+import { EmptyState } from "@/components/EmptyState";
 import type { FeatureEntry, PhaseStatus, RoadmapPhase } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -11,13 +12,13 @@ export default function RoadmapPage() {
 
   if (!roadmap) {
     return (
-      <div className="flex flex-1 flex-col p-8">
+      <div className="flex flex-1 flex-col p-4 md:p-8">
         <PageHeader />
-        <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed border-vena-border bg-vena-surface">
-          <p className="text-sm text-vena-text-muted">
-            No roadmap found. Place a Roadmap-*.md file in plans/.
-          </p>
-        </div>
+        <EmptyState
+          icon={<MapEmptyIcon />}
+          message="No roadmap found."
+          hint="Place a Roadmap-*.md file in plans/."
+        />
       </div>
     );
   }
@@ -27,11 +28,11 @@ export default function RoadmapPage() {
   ).length;
 
   return (
-    <div className="flex flex-1 flex-col p-8">
+    <div className="flex flex-1 flex-col p-4 md:p-8">
       <PageHeader />
 
       {/* Stats */}
-      <div className="mb-6 flex gap-6">
+      <div className="mb-6 flex flex-wrap gap-4 md:gap-6">
         <div className="flex items-center gap-2">
           <span className="text-2xl font-bold text-vena-text">
             {completedPhases}/{roadmap.phases.length}
@@ -326,5 +327,15 @@ function PlanCard({ file }: { file: PlanFile }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function MapEmptyIcon() {
+  return (
+    <svg className="h-5 w-5 text-vena-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" />
+      <line x1="8" y1="2" x2="8" y2="18" />
+      <line x1="16" y1="6" x2="16" y2="22" />
+    </svg>
   );
 }

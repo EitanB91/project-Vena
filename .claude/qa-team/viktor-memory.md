@@ -135,3 +135,28 @@ Convention note:
 - **PTY servers need defense in depth** — Spawning shell processes is inherently high-risk. Even a "local" tool needs localhost binding, auth, session caps, rate limiting, input validation, and message size limits.
 - **Token sharing pattern** — Server writes file, client reads via API route. Avoids `NEXT_PUBLIC_*` exposure while enabling seamless `dev:full` startup.
 - **First security-focused QA** — Proved the value of the security checklist immediately. 8 real findings in Round 1, all fixed in Round 2.
+
+### Phase 6 QA Notes
+**Round 1 — 2 required fixes, 1 note:**
+- F1 (REQUIRED): `budget/page.tsx` main content branch had `p-8` instead of `p-4 md:p-8`. The `replace_all` edit only caught the empty-state return, not the main return. Fix: changed to `p-4 md:p-8`.
+- F2 (REQUIRED): `roadmap/page.tsx` — same issue as F1. Same root cause. Fix: changed to `p-4 md:p-8`.
+- N1 (non-blocking → fixed by Director request): Dashboard Quick Glance panels used plain text for empty states instead of icon + message pattern. Fix: added inline icon circles matching EmptyState visual language.
+
+**Round 2 — PASS:**
+- All 3 findings fixed and verified
+- Grep verification: every `p-8` in page wrappers now has `p-4 md:p-8` — 9 occurrences, 7 pages, all consistent
+- No security findings (pure UI phase — no new endpoints, servers, env vars, or deps)
+- Build clean, 54/54 tests pass
+- Visual verification: desktop + mobile screenshots confirmed by Orchestrator
+
+### Phase 6 Lessons
+- **`replace_all` doesn't mean "all instances across the file"** — it means all occurrences of the exact match string. When a file has multiple branches returning different wrapper divs (e.g., empty-state return vs. main-content return), each is a unique string and must be matched separately. Viktor caught two pages where only one branch was updated.
+- **Verify responsive changes with grep, not eyeball** — A single `grep` for the old pattern across all page files would have caught F1/F2 instantly. The Orchestrator should grep for the old value after a responsive pass to confirm zero remaining occurrences.
+- **Pure UI phases have fewer but subtler bugs** — No logic errors, no security issues, but CSS inconsistencies across multiple files. The risk shifts from "does it work?" to "is it consistent?"
+- **Phase 1 carry-forward fully resolved** — All design debt from Phase 1 is closed. `text-[11px]` → `text-micro` (Phase 4). SVG duplication → real content (Phase 4). Responsive sidebar → Phase 6. Only `text-[10px]` (1 occurrence, Sidebar version badge) remains — accepted.
+
+### Cumulative QA Stats (Phases 0–6)
+- Total QA rounds: 12 (6 phases × ~2 rounds average)
+- Total findings: F1-F2 + 8 security + 4 required + ~12 notes = ~26 findings caught
+- Zero bugs shipped to git. QA pipeline is battle-tested across 6 phases.
+- All phases passed with either PASS or PASS WITH NOTES → fixes → PASS.

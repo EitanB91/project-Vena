@@ -1,6 +1,7 @@
 import path from "node:path";
 import { readSessionTimeline } from "@/lib";
 import { SessionChart, type SessionChartData } from "@/components/SessionChart";
+import { EmptyState } from "@/components/EmptyState";
 import type { Session } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -24,7 +25,7 @@ export default function SessionsPage() {
   const dates = Object.keys(timeline.byDate).sort().reverse();
 
   return (
-    <div className="flex flex-1 flex-col p-8">
+    <div className="flex flex-1 flex-col p-4 md:p-8">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-semibold tracking-tight text-vena-text">
@@ -36,7 +37,7 @@ export default function SessionsPage() {
       </div>
 
       {/* Stats */}
-      <div className="mb-6 flex gap-6">
+      <div className="mb-6 flex flex-wrap gap-4 md:gap-6">
         <div className="flex items-center gap-2">
           <span className="text-2xl font-bold text-vena-text">
             {timeline.totalSessions}
@@ -81,12 +82,11 @@ export default function SessionsPage() {
 
       {/* Session List by Date */}
       {timeline.totalSessions === 0 ? (
-        <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed border-vena-border bg-vena-surface">
-          <p className="text-sm text-vena-text-muted">
-            No sessions found. Sessions are logged in
-            .claude/vault-and-valve/usage-log.jsonl.
-          </p>
-        </div>
+        <EmptyState
+          icon={<ClockEmptyIcon />}
+          message="No sessions found."
+          hint="Sessions are logged in .claude/vault-and-valve/usage-log.jsonl."
+        />
       ) : (
         <div className="space-y-6">
           {dates.map((date) => (
@@ -229,4 +229,13 @@ function formatTime(iso: string): string {
   } catch {
     return iso;
   }
+}
+
+function ClockEmptyIcon() {
+  return (
+    <svg className="h-5 w-5 text-vena-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>
+  );
 }

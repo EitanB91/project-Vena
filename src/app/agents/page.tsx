@@ -1,6 +1,7 @@
 import path from 'node:path';
 import { readAllAgents, ACTIVE_THRESHOLD_MINUTES } from '@/lib';
 import { AgentCard } from '@/components/AgentCard';
+import { EmptyState } from '@/components/EmptyState';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,9 +15,9 @@ export default function AgentsPage() {
   }).length;
 
   return (
-    <div className="flex flex-1 flex-col p-8">
+    <div className="flex flex-1 flex-col p-4 md:p-8">
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-6 md:mb-8">
         <h1 className="text-2xl font-semibold tracking-tight text-vena-text">
           Agents
         </h1>
@@ -26,7 +27,7 @@ export default function AgentsPage() {
       </div>
 
       {/* Stats */}
-      <div className="mb-6 flex gap-6">
+      <div className="mb-6 flex flex-wrap gap-4 md:gap-6">
         <div className="flex items-center gap-2">
           <span className="text-2xl font-bold text-vena-text">
             {profiles.length}
@@ -46,29 +47,11 @@ export default function AgentsPage() {
 
       {/* Agent Grid */}
       {profiles.length === 0 ? (
-        <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed border-vena-border bg-vena-surface">
-          <div className="text-center space-y-2">
-            <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-vena-surface-raised">
-              <svg
-                className="h-5 w-5 text-vena-text-muted"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-              </svg>
-            </div>
-            <p className="text-sm text-vena-text-muted">
-              No agents found. Place identity files in .claude/ subdirectories.
-            </p>
-          </div>
-        </div>
+        <EmptyState
+          icon={<UsersEmptyIcon />}
+          message="No agents found."
+          hint="Place identity files in .claude/ subdirectories."
+        />
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {profiles.map((profile) => (
@@ -77,5 +60,16 @@ export default function AgentsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+function UsersEmptyIcon() {
+  return (
+    <svg className="h-5 w-5 text-vena-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
   );
 }

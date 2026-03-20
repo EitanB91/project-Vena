@@ -1,6 +1,7 @@
 import path from "node:path";
 import { readBudgetLedger, computeBudgetSummary } from "@/lib";
 import { BudgetChart } from "@/components/BudgetChart";
+import { EmptyState } from "@/components/EmptyState";
 import type { AlertLevel } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -11,14 +12,13 @@ export default function BudgetPage() {
 
   if (!ledger) {
     return (
-      <div className="flex flex-1 flex-col p-8">
+      <div className="flex flex-1 flex-col p-4 md:p-8">
         <PageHeader />
-        <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed border-vena-border bg-vena-surface">
-          <p className="text-sm text-vena-text-muted">
-            No budget ledger found. Place budget-ledger.json in
-            .claude/vault-and-valve/.
-          </p>
-        </div>
+        <EmptyState
+          icon={<WalletEmptyIcon />}
+          message="No budget ledger found."
+          hint="Place budget-ledger.json in .claude/vault-and-valve/."
+        />
       </div>
     );
   }
@@ -29,7 +29,7 @@ export default function BudgetPage() {
   const spent = Math.max(0, monthlyBudget - summary.usableBudget);
 
   return (
-    <div className="flex flex-1 flex-col p-8">
+    <div className="flex flex-1 flex-col p-4 md:p-8">
       <PageHeader />
 
       {/* Status Cards */}
@@ -265,4 +265,13 @@ function formatDate(iso: string): string {
   } catch {
     return iso;
   }
+}
+
+function WalletEmptyIcon() {
+  return (
+    <svg className="h-5 w-5 text-vena-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <rect x="1" y="5" width="22" height="16" rx="2" ry="2" />
+      <path d="M1 10h22" />
+    </svg>
+  );
 }

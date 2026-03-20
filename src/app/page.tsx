@@ -48,8 +48,8 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-1 flex-col p-8">
-      <div className="mb-8">
+    <div className="flex flex-1 flex-col p-4 md:p-8">
+      <div className="mb-6 md:mb-8">
         <h1 className="text-2xl font-semibold tracking-tight text-vena-text">
           Dashboard
         </h1>
@@ -139,7 +139,16 @@ export default function Home() {
               })}
             </div>
           ) : (
-            <p className="text-xs text-vena-text-muted">No roadmap found.</p>
+            <div className="flex flex-col items-center justify-center gap-2 py-4">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-vena-surface-raised">
+                <svg className="h-4 w-4 text-vena-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" />
+                  <line x1="8" y1="2" x2="8" y2="18" />
+                  <line x1="16" y1="6" x2="16" y2="22" />
+                </svg>
+              </div>
+              <p className="text-xs text-vena-text-muted">No roadmap found.</p>
+            </div>
           )}
         </div>
 
@@ -185,7 +194,17 @@ export default function Home() {
               })}
             </div>
           ) : (
-            <p className="text-xs text-vena-text-muted">No agents found.</p>
+            <div className="flex flex-col items-center justify-center gap-2 py-4">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-vena-surface-raised">
+                <svg className="h-4 w-4 text-vena-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </div>
+              <p className="text-xs text-vena-text-muted">No agents found.</p>
+            </div>
           )}
         </div>
       </div>

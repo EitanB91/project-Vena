@@ -32,6 +32,9 @@ Phase 0 — COMPLETE (2026-03-19). Commit `371bc76`. Zero API cost.
 Phase 1 — COMPLETE (2026-03-19). Zero API cost. Pro quota usage: light (single session, build + QA).
 Phase 2 — COMPLETE (2026-03-19). Zero API cost. Pro quota usage: moderate (data layer build + 2-round QA + test setup).
 Phase 3 — COMPLETE (2026-03-20). Zero API cost. Pro quota usage: moderate (UI build + 2-round QA + memory updates).
+Phase 4 — COMPLETE (2026-03-20). Zero API cost. Pro quota usage: moderate (charts + 4 pages + 2-round QA).
+Phase 5 — COMPLETE (2026-03-20). Zero API cost. Pro quota usage: heavy (xterm.js + PTY server + 8 security fixes + 2-round QA).
+Phase 6 — COMPLETE (2026-03-20). Zero API cost. Pro quota usage: moderate (responsive + polish + 2-round QA). **v1.0 milestone.**
 
 ## Active Alerts
 None.

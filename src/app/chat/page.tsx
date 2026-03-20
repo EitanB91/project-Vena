@@ -39,9 +39,9 @@ export default function ChatPage() {
   const { label, dotClass } = statusConfig[status];
 
   return (
-    <div className="flex flex-1 flex-col p-8 gap-4 h-screen">
+    <div className="flex flex-1 flex-col p-4 md:p-8 gap-4 h-screen">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-vena-text">
             Chat
@@ -51,10 +51,10 @@ export default function ChatPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           {/* Session ID */}
           {sessionId && (
-            <span className="font-mono text-micro text-vena-text-muted">
+            <span className="hidden sm:inline font-mono text-micro text-vena-text-muted">
               {sessionId}
             </span>
           )}

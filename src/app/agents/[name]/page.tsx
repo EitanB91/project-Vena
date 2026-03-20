@@ -34,7 +34,7 @@ export default async function AgentDetailPage({ params }: AgentDetailProps) {
   const memorySections = memory ? Object.entries(memory.sections) : [];
 
   return (
-    <div className="flex flex-1 flex-col p-8">
+    <div className="flex flex-1 flex-col p-4 md:p-8">
       {/* Back link */}
       <Link
         href="/agents"
