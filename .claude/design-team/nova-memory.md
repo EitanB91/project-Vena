@@ -5,7 +5,7 @@ Project Vena — a local web dashboard for monitoring Claude Code projects. Mode
 
 ## Tech Stack Decisions
 - **Framework:** Next.js 16 (App Router) + TypeScript + Tailwind CSS v4
-- **Charts:** Recharts or Chart.js (TBD)
+- **Charts:** Recharts (confirmed Phase 4)
 - **Terminal embed:** xterm.js for CLI passthrough chat
 - **No database** — reads `.claude/` directory files directly
 
@@ -48,9 +48,10 @@ Phase 1 — COMPLETE (2026-03-19). Viktor verdict: PASS. Director approved push.
 - [x] Dashboard home with status cards
 - [x] Root layout with fixed sidebar + main content area
 
-### Phase 1 Design Debt (deferred to Phase 6)
-- `text-[10px]` and `text-[11px]` in Sidebar use arbitrary Tailwind values — formalize micro-typography tokens during Phase 6 polish pass
-- SVG icons duplicated between Sidebar and placeholder pages — will resolve when placeholders are replaced with real content
+### Phase 1 Design Debt (status)
+- ~~`text-[11px]` arbitrary values~~ — **RESOLVED Phase 4.** `text-micro` design token added. All occurrences replaced.
+- `text-[10px]` in Sidebar version badge — 1 occurrence, acceptable as-is. Too niche for its own token.
+- ~~SVG icons duplicated between Sidebar and placeholder pages~~ — **RESOLVED Phase 4.** All placeholders replaced with real content.
 
 ### Phase 1 Lessons
 - **What worked:** Design tokens from Phase 0 carried through cleanly — no color inconsistencies, every component used `vena-*` classes. Dark theme was essentially "free" because tokens were defined upfront.
@@ -77,5 +78,21 @@ Agent Dashboard delivered. Nova's design tokens used throughout:
 - Key phrases truncated with `truncate` on cards, fully displayed on detail page — progressive disclosure.
 - Identity/memory panels use `font-mono text-xs` for raw content — respects the "mission control" data-dense aesthetic.
 
-### Phase 4 — Next (Budget & Roadmap Views)
-Nova's involvement: chart styling (Recharts theming with vena-* tokens), budget dashboard layout, roadmap phase visualization, session timeline design.
+### Phase 4 — COMPLETE (2026-03-20)
+Budget & Roadmap Views delivered. Recharts integrated for charts. Key design outcomes:
+
+- **Budget page:** 4 metric cards (balance, usable, floor, alert level). Recharts donut chart showing budget breakdown (green=available, amber=floor, red=spent). Claude Code usage bars with color thresholds (accent < 50%, warning 50-80%, error > 80%). Alert thresholds panel.
+- **Sessions page:** Recharts bar chart for daily activity (indigo bars). Date-grouped session list with phase/category badges (accent pills), duration display, active session pulse indicators.
+- **Roadmap page:** Phase cards with progress bars (green=complete, accent=current with pulse, muted=planned). Current phase shows task checklist with checkmarks. Feature registry table with color-coded priority (red=Critical, amber=High) and status (green=Complete, muted=Planned). Plan document cards with file icons.
+- **Dashboard home:** Live status cards, roadmap progress mini-bars, team avatars with agent color tokens.
+- **`text-micro` design token:** Added `--font-size-micro: 11px` to globals.css. All 11 `text-[11px]` arbitrary values replaced with `text-micro`. Phase 1 design debt resolved.
+- **Recharts limitation:** SVG fills cannot use CSS custom properties. Hardcoded hex colors in BudgetChart.tsx and SessionChart.tsx mirror design tokens — documented with sync-warning comments.
+
+**Phase 4 Design Decisions:**
+- Donut chart (PieChart with innerRadius) for budget breakdown — center label shows total balance. More visually striking than bar chart for a single budget.
+- Grouped bar chart for session activity — sessions + minutes side by side per day. Lighter shade for minutes to distinguish.
+- Phase cards use border accent highlight for current phase — draws eye to active work.
+- Plan documents shown as cards (not expandable) — minimal viable plan viewer, can enhance later.
+
+### Phase 5 — Next (CLI Passthrough Chat)
+Nova's involvement: xterm.js terminal styling, theme matching with vena-* dark tokens, terminal container layout within dashboard shell.

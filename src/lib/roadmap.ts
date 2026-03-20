@@ -236,3 +236,35 @@ export function readProjectRoadmap(projectPath: string): Roadmap | null {
     return null;
   }
 }
+
+// ---------------------------------------------------------------------------
+// Plan Document Reader
+// ---------------------------------------------------------------------------
+
+/** Metadata for a plan document found in plans/ */
+export interface PlanFile {
+  name: string;
+  title: string;
+  lines: number;
+}
+
+/**
+ * Read all markdown plan files from the plans/ directory.
+ * Returns metadata for each file: filename, title (first # heading), and line count.
+ */
+export function readPlanFiles(projectPath: string): PlanFile[] {
+  const plansDir = path.join(projectPath, 'plans');
+
+  try {
+    const files = fs.readdirSync(plansDir).filter((f) => f.endsWith('.md'));
+    return files.map((name) => {
+      const content = fs.readFileSync(path.join(plansDir, name), 'utf-8');
+      const lines = content.split('\n');
+      const titleLine = lines.find((l) => l.startsWith('# '));
+      const title = titleLine ? titleLine.replace(/^#\s+/, '').trim() : name;
+      return { name, title, lines: lines.length };
+    });
+  } catch {
+    return [];
+  }
+}

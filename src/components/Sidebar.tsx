@@ -53,7 +53,7 @@ export default function Sidebar() {
 
       {/* Footer */}
       <div className="border-t border-vena-border px-5 py-3">
-        <p className="text-[11px] font-mono text-vena-text-muted">
+        <p className="text-micro font-mono text-vena-text-muted">
           Project Vena
         </p>
       </div>

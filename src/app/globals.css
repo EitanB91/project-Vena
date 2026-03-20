@@ -68,6 +68,8 @@
   --color-vena-agent-silas: var(--vena-agent-silas);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
+  --font-size-micro: 11px;
+  --line-height-micro: 1.45;
 }
 
 /* Base styles */

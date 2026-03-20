@@ -10,7 +10,8 @@ export {
   readUsageLog,
   parseUsageLog,
 } from './budget';
-export { readRoadmap, parseRoadmap, readProjectRoadmap } from './roadmap';
+export { readRoadmap, parseRoadmap, readProjectRoadmap, readPlanFiles } from './roadmap';
+export type { PlanFile } from './roadmap';
 export { buildSessionTimeline, readSessionTimeline } from './sessions';
 export { slugify } from './slugify';
 export {

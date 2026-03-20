@@ -27,6 +27,7 @@ Phase 0 — COMPLETE (2026-03-19). Commit `371bc76`. Viktor verdict: PASS.
 Phase 1 — COMPLETE (2026-03-19). Viktor verdict: PASS. Director approved push.
 Phase 2 — COMPLETE (2026-03-19). Viktor verdict: PASS (two rounds). Director approved push.
 Phase 3 — COMPLETE (2026-03-20). Viktor verdict: PASS (two rounds). Director approved push.
+Phase 4 — COMPLETE (2026-03-20). Viktor verdict: PASS (two rounds). Awaiting Director push approval.
 
 ### Phase 1 QA Notes (carry-forward)
 - SVG icons duplicated between Sidebar and placeholder pages — will resolve when placeholders are replaced
@@ -72,5 +73,27 @@ Phase 3 — COMPLETE (2026-03-20). Viktor verdict: PASS (two rounds). Director a
 - **Playwright visual verification is essential** — caught that the slug bug was fixed correctly by clicking through all agent cards and verifying navigation.
 - **Phase 1 carry-forward update:** SVG icon duplication between Sidebar and placeholder pages is now partially resolved — agents placeholder replaced with real content. Budget, roadmap, sessions, chat placeholders still have duplicated icons.
 
-### Phase 4 — Next (Budget & Roadmap Views)
-Upcoming QA focus: Recharts integration, budget display accuracy, roadmap rendering from parsed data, visual charts matching design tokens.
+### Phase 4 QA Notes
+**Round 1 — 1 required fix, 3 notes:**
+- F1 (REQUIRED): `readPlanFiles` function embedded in `roadmap/page.tsx` with `fs` imports — breaks data layer pattern. Every other reader lives in `src/lib/` with tests. Fix: moved to `src/lib/roadmap.ts`, exported from barrel, 7 tests added.
+- N1 (non-blocking): Hardcoded hex colors in `BudgetChart.tsx` and `SessionChart.tsx` duplicate design tokens. Recharts SVG limitation — cannot use CSS variables. Fix: sync-warning comments added.
+- N2 (non-blocking): `AlertCard` in `budget/page.tsx` — inner span derived `bg-*` class from comparing text color strings. Fix: simplified config to use `dotColor` field directly.
+- N3 (non-blocking): `text-[11px]` arbitrary value spread to 11 occurrences across 5 files. Phase 1 carry-forward. Fix: `text-micro` design token added to `globals.css`, all occurrences replaced.
+
+**Round 2 — PASS:**
+- All 4 findings fixed and verified
+- No `fs` imports in any page file
+- Zero `text-[11px]` in codebase
+- AlertCard simplified with no string comparison
+- 6 test files, 54 tests, all passing
+- Build clean, zero errors
+- Visual verification: Dashboard, Budget, Sessions, Roadmap — all independently verified with Playwright
+
+### Phase 4 Lessons
+- **Data readers always go in `src/lib/`** — even if the page is a Server Component and technically allowed to use `fs`, the project pattern is clear: readers in `src/lib/`, with tests. Viktor caught this same pattern violation in Phase 3 (slugify) and Phase 4 (readPlanFiles).
+- **Recharts requires hardcoded hex** — SVG fills/strokes don't support CSS custom properties. Document this with comments so future devs know to keep them in sync with `globals.css`.
+- **Design token debt compounds** — `text-[11px]` started as 1 occurrence in Phase 1, grew to 11 by Phase 4. Formalizing `text-micro` token early would have prevented spread. Lesson: formalize arbitrary values after 2-3 uses, not after 11.
+- **Phase 1 carry-forward resolved:** SVG icon duplication fully resolved — all placeholder pages replaced with real content. `text-[11px]` resolved via `text-micro` token. Only `text-[10px]` (1 occurrence, Sidebar version badge) remains — acceptable.
+
+### Phase 5 — Next (CLI Passthrough Chat)
+Upcoming QA focus: xterm.js integration, client-side terminal component, theme matching with design tokens, session management.

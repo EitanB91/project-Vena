@@ -1,5 +1,8 @@
-import { describe, it, expect } from 'vitest';
-import { parseRoadmap } from '@/lib/roadmap';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
+import { parseRoadmap, readPlanFiles } from '@/lib/roadmap';
 
 const SAMPLE_ROADMAP = `# Roadmap — Test Project
 
@@ -113,5 +116,78 @@ describe('parseRoadmap', () => {
     expect(empty.vision).toBe('');
     expect(empty.phases).toHaveLength(0);
     expect(empty.featureRegistry).toHaveLength(0);
+  });
+});
+
+describe('readPlanFiles', () => {
+  let tmpDir: string;
+
+  beforeAll(() => {
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'vena-plans-'));
+    const plansDir = path.join(tmpDir, 'plans');
+    fs.mkdirSync(plansDir);
+
+    fs.writeFileSync(
+      path.join(plansDir, 'Roadmap-Test.md'),
+      '# Roadmap — Test Project\n\nSome content here.\nLine 3.\n',
+    );
+    fs.writeFileSync(
+      path.join(plansDir, 'Plan-MVP.md'),
+      '# Plan — MVP (v0.1.0)\n\nMVP details.\n',
+    );
+    fs.writeFileSync(
+      path.join(plansDir, 'notes.txt'),
+      'Not a markdown file',
+    );
+  });
+
+  afterAll(() => {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  });
+
+  it('reads all .md files from plans/ directory', () => {
+    const files = readPlanFiles(tmpDir);
+    expect(files).toHaveLength(2);
+  });
+
+  it('extracts title from first # heading', () => {
+    const files = readPlanFiles(tmpDir);
+    const mvp = files.find((f) => f.name === 'Plan-MVP.md');
+    expect(mvp?.title).toBe('Plan — MVP (v0.1.0)');
+  });
+
+  it('extracts roadmap title correctly', () => {
+    const files = readPlanFiles(tmpDir);
+    const roadmap = files.find((f) => f.name === 'Roadmap-Test.md');
+    expect(roadmap?.title).toBe('Roadmap — Test Project');
+  });
+
+  it('counts lines correctly', () => {
+    const files = readPlanFiles(tmpDir);
+    const roadmap = files.find((f) => f.name === 'Roadmap-Test.md');
+    expect(roadmap?.lines).toBe(5);
+  });
+
+  it('filters out non-.md files', () => {
+    const files = readPlanFiles(tmpDir);
+    const names = files.map((f) => f.name);
+    expect(names).not.toContain('notes.txt');
+  });
+
+  it('returns empty array for missing plans/ directory', () => {
+    const files = readPlanFiles('/nonexistent/path');
+    expect(files).toEqual([]);
+  });
+
+  it('falls back to filename when no # heading exists', () => {
+    const noHeadingDir = fs.mkdtempSync(path.join(os.tmpdir(), 'vena-noh-'));
+    const plansDir = path.join(noHeadingDir, 'plans');
+    fs.mkdirSync(plansDir);
+    fs.writeFileSync(path.join(plansDir, 'raw-notes.md'), 'No heading here\n');
+
+    const files = readPlanFiles(noHeadingDir);
+    expect(files[0].title).toBe('raw-notes.md');
+
+    fs.rmSync(noHeadingDir, { recursive: true, force: true });
   });
 });
