@@ -131,3 +131,18 @@ Polish & v1.0 delivered. Heavy Nova involvement — responsive design, empty sta
 - ~~`text-[11px]` arbitrary values~~ — resolved Phase 4 (`text-micro` token)
 - ~~SVG icon duplication~~ — resolved Phase 4 (real content replaced all placeholders)
 - `text-[10px]` in Sidebar version badge — 1 occurrence, accepted as-is. Too niche for a token.
+
+---
+
+## Sprint 1 Retrospective (2026-03-21)
+See full retro: `memory/project_sprint1_retro.md`
+
+- **Best:** Design token system — defined in Phase 0, carried flawlessly through all 6 phases.
+- **Worst:** Should have designed mobile-first from Phase 1 instead of cramming responsive into Phase 6.
+
+## Sprint 2 — MVP Direction
+v1.0 not releasing publicly. Sprint 2 is MVP sprint. Nova's key roles:
+- **Phase 7:** Research data refresh patterns (polling, SSE, revalidation) with Orchestrator
+- **Phase 8:** Visual heartbeat cues — "updated Xs ago" timestamps, pulse animations, fade transitions
+- **Phase 9:** Chatbox UI alongside terminal (split view), "VenaOS" branding, version text polish
+- Director UX feedback pending: brighter version text (+2 size), techy logo name

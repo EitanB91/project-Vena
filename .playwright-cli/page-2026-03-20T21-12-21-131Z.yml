@@ -1,0 +1,110 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - button "Open navigation" [ref=e3]:
+      - img [ref=e4]
+    - generic [ref=e6]: Vena
+    - generic [ref=e7]: v0.1
+  - complementary [ref=e8]:
+    - generic [ref=e9]:
+      - generic [ref=e11]: Vena
+      - generic [ref=e12]: v0.1
+      - button "Close navigation" [ref=e13]:
+        - img [ref=e14]
+    - navigation [ref=e17]:
+      - link "Dashboard" [ref=e18] [cursor=pointer]:
+        - /url: /
+        - img [ref=e19]
+        - text: Dashboard
+      - link "Agents" [ref=e24] [cursor=pointer]:
+        - /url: /agents
+        - img [ref=e25]
+        - text: Agents
+      - link "Budget" [ref=e30] [cursor=pointer]:
+        - /url: /budget
+        - img [ref=e31]
+        - text: Budget
+      - link "Roadmap" [ref=e33] [cursor=pointer]:
+        - /url: /roadmap
+        - img [ref=e34]
+        - text: Roadmap
+      - link "Sessions" [ref=e36] [cursor=pointer]:
+        - /url: /sessions
+        - img [ref=e37]
+        - text: Sessions
+      - link "Chat" [ref=e40] [cursor=pointer]:
+        - /url: /chat
+        - img [ref=e41]
+        - text: Chat
+    - paragraph [ref=e44]: Project Vena
+  - main [ref=e45]:
+    - generic [ref=e46]:
+      - generic [ref=e47]:
+        - heading "Dashboard" [level=1] [ref=e48]
+        - paragraph [ref=e49]: Project overview and status at a glance.
+      - generic [ref=e50]:
+        - generic [ref=e51]:
+          - paragraph [ref=e52]: Phase
+          - paragraph [ref=e53]: "6"
+          - paragraph [ref=e54]: Polish & v1.0
+        - generic [ref=e55]:
+          - paragraph [ref=e56]: Agents
+          - paragraph [ref=e57]: "4"
+          - paragraph [ref=e58]: 0 active
+        - generic [ref=e59]:
+          - paragraph [ref=e60]: API Budget
+          - paragraph [ref=e61]: $4.87
+          - paragraph [ref=e62]: Normal
+        - generic [ref=e63]:
+          - paragraph [ref=e64]: Sessions
+          - paragraph [ref=e65]: "10"
+          - paragraph [ref=e66]: 1616 min total
+      - generic [ref=e67]:
+        - generic [ref=e68]:
+          - heading "Roadmap Progress" [level=2] [ref=e69]
+          - generic [ref=e70]:
+            - generic [ref=e71]:
+              - generic [ref=e73]: P0
+              - generic [ref=e76]: 100%
+            - generic [ref=e77]:
+              - generic [ref=e79]: P1
+              - generic [ref=e82]: 100%
+            - generic [ref=e83]:
+              - generic [ref=e85]: P2
+              - generic [ref=e88]: 100%
+            - generic [ref=e89]:
+              - generic [ref=e91]: P3
+              - generic [ref=e94]: 100%
+            - generic [ref=e95]:
+              - generic [ref=e97]: P4
+              - generic [ref=e100]: 100%
+            - generic [ref=e101]:
+              - generic [ref=e103]: P5
+              - generic [ref=e106]: 100%
+            - generic [ref=e107]:
+              - generic [ref=e109]: P6
+              - generic [ref=e111]: 0%
+        - generic [ref=e112]:
+          - heading "Team" [level=2] [ref=e113]
+          - generic [ref=e114]:
+            - generic [ref=e115]:
+              - generic [ref=e116]: I
+              - generic [ref=e117]:
+                - paragraph [ref=e118]: Identity
+                - paragraph [ref=e119]: The Master Web Architect
+            - generic [ref=e121]:
+              - generic [ref=e122]: "N"
+              - generic [ref=e123]:
+                - paragraph [ref=e124]: Nova
+                - paragraph [ref=e125]: Visual Design Lead
+            - generic [ref=e127]:
+              - generic [ref=e128]: V
+              - generic [ref=e129]:
+                - paragraph [ref=e130]: Viktor
+                - paragraph [ref=e131]: QA Team Lead
+            - generic [ref=e133]:
+              - generic [ref=e134]: S
+              - generic [ref=e135]:
+                - paragraph [ref=e136]: Silas "Penny-Pincher" Sterling
+                - paragraph [ref=e137]: Budget & Resource Lead
+  - button "Open Next.js Dev Tools" [ref=e144] [cursor=pointer]:
+    - img [ref=e145]

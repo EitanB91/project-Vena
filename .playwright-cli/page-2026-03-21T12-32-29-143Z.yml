@@ -1,0 +1,143 @@
+- application [ref=e2]:
+  - generic:
+    - text: ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸
+    - generic:
+      - heading [level=2]: "Tailwind CSS v4: Utility-First Styling"
+      - generic:
+        - generic:
+          - heading [level=3]: Traditional CSS
+          - generic:
+            - code: "/* Separate CSS file */ .card { background: #0f0f17; border-radius: 8px; padding: 16px; border: 1px solid #1e1e32; }"
+          - generic:
+            - code:
+              - generic: <div class="card">
+              - text: ...
+              - generic: </div>
+        - generic:
+          - heading [level=3]: Tailwind CSS
+          - generic:
+            - code:
+              - generic: <div className=" rounded-lg bg-vena-surface p-4 border border-vena-border ">
+              - text: ...
+              - generic: </div>
+          - paragraph: No separate CSS file needed. Classes describe exactly what they do.
+      - generic:
+        - heading [level=3]: v4 Changes from v3
+        - list:
+          - listitem: ▸ No tailwind.config.js — everything configured in CSS with @theme blocks
+          - listitem: ▸ Design tokens defined in globals.css, not in JavaScript
+    - generic:
+      - heading [level=2]: The Design Token System
+      - paragraph: Nova's layered color architecture in globals.css
+      - generic:
+        - generic:
+          - heading [level=3]: Background Layers
+          - generic:
+            - generic: "bg #08080d"
+            - generic: "surface #0f0f17"
+            - generic: "raised #161622"
+            - generic: "overlay #1c1c2e"
+        - generic:
+          - heading [level=3]: Text Hierarchy
+          - generic:
+            - generic: "■ text #e4e4ef — Primary"
+            - generic: "■ secondary #8888a4"
+            - generic: "■ muted #55556e"
+          - heading [level=3]: Status Colors
+          - generic:
+            - generic: "■ accent #6366f1"
+            - generic: "■ success #22c55e"
+            - generic: "■ warning #f59e0b"
+            - generic: "■ error #ef4444"
+        - generic:
+          - heading [level=3]: Agent Colors
+          - generic:
+            - generic: ■ Orchestrator — indigo
+            - generic: ■ Nova — pink
+            - generic: ■ Viktor — purple
+            - generic: ■ Silas — gold
+          - paragraph: Change a color in one place → it updates everywhere.
+    - generic [ref=e3]:
+      - 'heading "The Data Layer: Files as a Database" [level=2] [ref=e4]'
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - heading "File Structure" [level=3] [ref=e7]
+          - code [ref=e9]: .claude/ ├── design-team/ │ ├── nova-identity.md → AgentIdentity │ └── nova-memory.md → AgentMemory ├── qa-team/ │ └── viktor-identity.md ├── vault-and-valve/ │ ├── budget-ledger.json → BudgetLedger │ └── usage-log.jsonl → UsageEvent[] plans/ ├── Roadmap-*.md → Roadmap └── Plan-*.md → PlanFile
+        - generic [ref=e10]:
+          - heading "The Parsing Pipeline" [level=3] [ref=e11]
+          - generic [ref=e12]:
+            - text: 📄 Raw file on disk
+            - text: ↓ fs.readFileSync
+            - text: 📝 Raw string (JSON / JSONL / MD)
+            - text: ↓ Parser in src/lib/
+            - text: 🔒 Typed TypeScript object
+            - text: ↓ Passed as props
+            - text: 🖥️ React component renders it
+      - table [ref=e13]:
+        - rowgroup [ref=e14]:
+          - row "Module Reads Produces" [ref=e15]:
+            - columnheader "Module" [ref=e16]
+            - columnheader "Reads" [ref=e17]
+            - columnheader "Produces" [ref=e18]
+        - rowgroup [ref=e19]:
+          - row "scanner.ts .claude/ directory structure VenaProject" [ref=e20]:
+            - cell "scanner.ts" [ref=e21]
+            - cell ".claude/ directory structure" [ref=e22]
+            - cell "VenaProject" [ref=e23]
+          - row "agents.ts *-identity.md, *-memory.md AgentProfile[]" [ref=e24]:
+            - cell "agents.ts" [ref=e25]
+            - cell "*-identity.md, *-memory.md" [ref=e26]
+            - cell "AgentProfile[]" [ref=e27]
+          - row "budget.ts budget-ledger.json, usage-log.jsonl BudgetLedger, UsageEvent[]" [ref=e28]:
+            - cell "budget.ts" [ref=e29]
+            - cell "budget-ledger.json, usage-log.jsonl" [ref=e30]
+            - cell "BudgetLedger, UsageEvent[]" [ref=e31]
+          - row "roadmap.ts Roadmap-*.md, plans/*.md Roadmap, PlanFile[]" [ref=e32]:
+            - cell "roadmap.ts" [ref=e33]
+            - cell "Roadmap-*.md, plans/*.md" [ref=e34]
+            - cell "Roadmap, PlanFile[]" [ref=e35]
+    - generic:
+      - heading [level=2]: "Markdown Parsing: HTML Comment Markers"
+      - paragraph: Custom markers — invisible in markdown, machine-readable by the parser.
+      - generic:
+        - code: "<!-- vena:phase id=\"1\" status=\"complete\" --> ### Phase 1 — Dashboard Shell **Status:** Complete (2026-03-19) **Goal:** App shell with sidebar navigation. - [x] Sidebar component - [x] Dark theme - [ ] Mobile responsive <!-- /vena:phase -->"
+      - heading [level=3]: What the Parser Does
+      - generic:
+        - generic: Find <!-- vena:phase --> blocks
+        - generic: →
+        - generic: Extract id & status
+        - generic: →
+        - generic: Parse heading, goal, checkboxes
+        - generic: →
+        - generic: Build RoadmapPhase object
+      - blockquote:
+        - paragraph:
+          - text: The roadmap is both
+          - strong: human-readable
+          - text: (it's just markdown) and
+          - strong: machine-parsable
+          - text: (the dashboard renders it as interactive UI).
+    - generic:
+      - heading [level=2]: "JSONL: The Session Log Format"
+      - paragraph: "usage-log.jsonl — one JSON object per line:"
+      - generic:
+        - code: "{\"event\":\"SessionStart\",\"ts\":\"2026-03-19T10:00:00Z\",\"session\":\"s-001\",\"source\":\"hook\"} {\"event\":\"SessionEnd\",\"ts\":\"2026-03-19T10:45:00Z\",\"session\":\"s-001\",\"source\":\"hook\"} {\"event\":\"SessionSummary\",\"ts\":\"2026-03-19T10:45:00Z\",\"session\":\"s-001\", \"phase\":\"Phase 2\",\"categories\":[\"code_build\",\"tests\"],\"api_cost_usd\":0.42}"
+      - heading [level=3]: Why JSONL Instead of JSON?
+      - generic:
+        - generic:
+          - heading [level=3]: Append-Friendly
+          - paragraph: New events added by appending a line. No need to parse the whole file first.
+        - generic:
+          - heading [level=3]: Stream-Parsable
+          - paragraph: Each line is a complete JSON object. Can be parsed independently.
+        - generic:
+          - heading [level=3]: Fault-Tolerant
+          - paragraph: A malformed line doesn't break the whole file. Parser skips bad lines.
+    - text: ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸
+  - link "9 / 24" [ref=e40] [cursor=pointer]:
+    - /url: "#/8"
+  - complementary:
+    - button "previous slide" [ref=e41] [cursor=pointer]
+    - button "next slide" [ref=e43] [cursor=pointer]
+  - text: Speaker notes
+  - generic [ref=e47]: "The Data Layer: Files as a Database File Structure .claude/ ├── design-team/ │ ├── nova-identity .md → AgentIdentity │ └── nova-memory .md → AgentMemory ├── qa-team/ │ └── viktor-identity .md ├── vault-and-valve/ │ ├── budget-ledger .json → BudgetLedger │ └── usage-log .jsonl → UsageEvent [] plans/ ├── Roadmap-* .md → Roadmap └── Plan-* .md → PlanFile The Parsing Pipeline 📄 Raw file on disk ↓ fs.readFileSync 📝 Raw string (JSON / JSONL / MD) ↓ Parser in src/lib/ 🔒 Typed TypeScript object ↓ Passed as props 🖥️ React component renders it Module Reads Produces scanner.ts .claude/ directory structure VenaProject agents.ts *-identity.md, *-memory.md AgentProfile[] budget.ts budget-ledger.json, usage-log.jsonl BudgetLedger, UsageEvent[] roadmap.ts Roadmap-*.md, plans/*.md Roadmap, PlanFile[]"

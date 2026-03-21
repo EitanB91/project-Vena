@@ -1,7 +1,7 @@
 # Silas — Working Memory
 
 ## Current Project
-**Project Vena** — Claude Code Project Dashboard. Phase 3 complete as of 2026-03-20.
+**Project Vena** — Claude Code Project Dashboard. Sprint 1 (Phases 0–6) complete. Sprint 2 starting Phase 7.
 Previous project context: Pixel Art Tool v0.2.0 shipped, O6 Animation sprint was active.
 
 ## Budget Status — Claude API
@@ -49,8 +49,22 @@ None.
 ## Open Items
 - Daily/weekly soft limits to be defined at next sprint planning meeting
 - Cron schedules for daily/weekly reports to be configured
-- Director to provide API usage updates periodically (Silas cannot query automatically)
 - Monitor Pro plan quota during Vena development
+
+---
+
+## Sprint 1 Retrospective (2026-03-21)
+See full retro: `memory/project_sprint1_retro.md`
+
+- **Best:** Entire project cost $0 API spend — runs on Pro plan quota only. V&V infrastructure ready for future use.
+- **Worst:** Budget data is stale — no automated way to get Claude Code usage into ledger. Monitoring stack without monitoring is just a filing cabinet.
+
+## Sprint 2 — MVP Direction
+v1.0 not releasing publicly. Sprint 2 is MVP sprint. Silas's key roles:
+- **Phase 7 (TOP PRIORITY):** Research Claude Code local telemetry — find where usage data lives (~/.claude/ files, logs, SQLite, config). This is the #1 priority per Director, above all else.
+- **Phase 8:** Build telemetry reader — pipe Claude Code usage into V&V budget ledger (assuming telemetry found)
+- **Phase 10:** Budget reconciliation — verify V&V numbers match reality
+- **Critical question:** If no local telemetry exists, fallback to hook-based estimation + manual cadence. Director's vision of live dashboard depends on this research.
 
 ## Notes
 _Update this file at session compaction and at every phase transition._

@@ -1,0 +1,109 @@
+- application [ref=e2]:
+  - generic:
+    - text: ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸
+    - generic:
+      - heading [level=2]: The Team
+      - generic:
+        - generic:
+          - generic: 🎯
+          - heading [level=3]: The Orchestrator
+          - paragraph: Main Agent — Claude Architecture, code, coordination
+        - generic:
+          - generic: 🎨
+          - heading [level=3]: Nova
+          - paragraph: Design Lead UI/UX, visual language, tokens
+        - generic:
+          - generic: 🔍
+          - heading [level=3]: Viktor
+          - paragraph: QA Team Lead 9-step pipeline, security gate
+        - generic:
+          - generic: 💰
+          - heading [level=3]: Silas Sterling
+          - paragraph: Budget & Resource Lead Vault & Valve, cost tracking
+      - generic:
+        - paragraph:
+          - text: Directed by
+          - strong: Eitan
+          - text: — the Director
+        - paragraph: Project Vena v1.0 — Sprint 1
+    - generic:
+      - heading [level=2]: Glossary
+      - generic:
+        - table:
+          - rowgroup:
+            - row:
+              - columnheader: Term
+              - columnheader: Definition
+          - rowgroup:
+            - row:
+              - cell: App Router
+              - cell: Next.js routing where folders = routes
+            - row:
+              - cell: Client Component
+              - cell: Runs in browser, marked "use client"
+            - row:
+              - cell: CSS Custom Property
+              - cell: CSS variable, e.g. --vena-bg
+            - row:
+              - cell: Design Token
+              - cell: Named design value (color, spacing, font)
+            - row:
+              - cell: Error Boundary
+              - cell: Component that catches runtime errors
+            - row:
+              - cell: JSX
+              - cell: HTML-like markup in JavaScript
+            - row:
+              - cell: JSONL
+              - cell: One JSON object per line
+            - row:
+              - cell: node-pty
+              - cell: Native module for pseudo-terminals
+            - row:
+              - cell: PTY
+              - cell: Pseudo-terminal bridging process to I/O
+        - table:
+          - rowgroup:
+            - row:
+              - columnheader: Term
+              - columnheader: Definition
+          - rowgroup:
+            - row:
+              - cell: Server Component
+              - cell: Runs on server, ships zero JS
+            - row:
+              - cell: Skeleton
+              - cell: Placeholder UI while content loads
+            - row:
+              - cell: Slug
+              - cell: URL-safe name ("Nova" → "nova")
+            - row:
+              - cell: Strict Mode
+              - cell: Max TypeScript type safety
+            - row:
+              - cell: Suspense
+              - cell: React fallback while async loads
+            - row:
+              - cell: Utility-First CSS
+              - cell: Small, single-purpose classes
+            - row:
+              - cell: V&V
+              - cell: Vault & Valve — budget system
+            - row:
+              - cell: WebSocket
+              - cell: Real-time bidirectional protocol
+            - row:
+              - cell: xterm.js
+              - cell: Terminal emulator for browsers
+    - generic [ref=e4]:
+      - heading "Thank You" [level=2] [ref=e5]
+      - paragraph [ref=e7]: Project Vena v1.0 — Sprint 1 Complete
+      - paragraph [ref=e8]:
+        - text: Prepared by The Orchestrator
+        - text: "Navigate: Arrow keys or swipe | Overview: Esc | Fullscreen: F"
+  - link "24 / 24" [ref=e13] [cursor=pointer]:
+    - /url: "#/23"
+  - complementary:
+    - button "previous slide" [ref=e14] [cursor=pointer]
+  - text: Speaker notes
+  - generic [ref=e18]: "Thank You Project Vena v1.0 — Sprint 1 Complete Prepared by The Orchestrator Navigate: Arrow keys or swipe | Overview: Esc | Fullscreen: F"

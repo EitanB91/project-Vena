@@ -1,0 +1,227 @@
+- generic [active] [ref=e1]:
+  - complementary [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e5]: Vena
+      - generic [ref=e6]: v0.1
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /
+        - img [ref=e9]
+        - text: Dashboard
+      - link "Agents" [ref=e14] [cursor=pointer]:
+        - /url: /agents
+        - img [ref=e15]
+        - text: Agents
+      - link "Budget" [ref=e20] [cursor=pointer]:
+        - /url: /budget
+        - img [ref=e21]
+        - text: Budget
+      - link "Roadmap" [ref=e23] [cursor=pointer]:
+        - /url: /roadmap
+        - img [ref=e24]
+        - text: Roadmap
+      - link "Sessions" [ref=e26] [cursor=pointer]:
+        - /url: /sessions
+        - img [ref=e27]
+        - text: Sessions
+      - link "Chat" [ref=e30] [cursor=pointer]:
+        - /url: /chat
+        - img [ref=e31]
+        - text: Chat
+    - paragraph [ref=e34]: Project Vena
+  - main [ref=e35]:
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - heading "Roadmap" [level=1] [ref=e38]
+        - paragraph [ref=e39]: Phase tracker, plans, and milestone progress.
+      - generic [ref=e40]:
+        - generic [ref=e41]:
+          - generic [ref=e42]: 4/7
+          - generic [ref=e43]: Phases Complete
+        - generic [ref=e44]:
+          - generic [ref=e45]: "11"
+          - generic [ref=e46]: Features
+      - generic [ref=e47]:
+        - heading "Vision" [level=2] [ref=e48]
+        - paragraph [ref=e49]: "Vena is a local web dashboard for monitoring Claude Code projects. It reads `.claude/` directories and surfaces agent identities, budget data, roadmaps, session history, and provides CLI passthrough chat."
+      - generic [ref=e50]:
+        - heading "Phases" [level=2] [ref=e51]
+        - generic [ref=e52]:
+          - generic [ref=e53]:
+            - generic [ref=e54]:
+              - generic [ref=e55]:
+                - heading "Phase 0 — Kickoff & Scaffold" [level=3] [ref=e58]
+                - paragraph [ref=e59]: Project setup, team alignment, foundational scaffold.
+              - generic [ref=e60]:
+                - generic [ref=e61]: Complete
+                - generic [ref=e62]: 2026-03-19
+            - generic [ref=e64]:
+              - generic [ref=e65]: 10/10 tasks
+              - generic [ref=e66]: 100%
+          - generic [ref=e69]:
+            - generic [ref=e70]:
+              - generic [ref=e71]:
+                - heading "Phase 1 — Dashboard Shell & Navigation" [level=3] [ref=e74]
+                - paragraph [ref=e75]: App shell with sidebar navigation, dark theme, layout system.
+              - generic [ref=e76]:
+                - generic [ref=e77]: Complete
+                - generic [ref=e78]: 2026-03-19
+            - generic [ref=e80]:
+              - generic [ref=e81]: 6/6 tasks
+              - generic [ref=e82]: 100%
+          - generic [ref=e85]:
+            - generic [ref=e86]:
+              - generic [ref=e87]:
+                - heading "Phase 2 — File Readers & Data Layer" [level=3] [ref=e90]
+                - paragraph [ref=e91]: "Server-side utilities that read `.claude/` directories and parse markdown/JSON."
+              - generic [ref=e92]:
+                - generic [ref=e93]: Complete
+                - generic [ref=e94]: 2026-03-19
+            - generic [ref=e96]:
+              - generic [ref=e97]: 9/9 tasks
+              - generic [ref=e98]: 100%
+          - generic [ref=e101]:
+            - generic [ref=e102]:
+              - generic [ref=e103]:
+                - heading "Phase 3 — Agent Dashboard" [level=3] [ref=e106]
+                - paragraph [ref=e107]: Display agent cards with identity, status, and memory summaries.
+              - generic [ref=e108]:
+                - generic [ref=e109]: Complete
+                - generic [ref=e110]: 2026-03-20
+            - generic [ref=e112]:
+              - generic [ref=e113]: 5/5 tasks
+              - generic [ref=e114]: 100%
+          - generic [ref=e117]:
+            - generic [ref=e118]:
+              - generic [ref=e119]:
+                - heading "Phase 4 — Budget & Roadmap Views" [level=3] [ref=e122]
+                - paragraph [ref=e123]: Visual budget dashboard and interactive roadmap viewer.
+              - generic [ref=e125]: In Progress
+            - generic [ref=e127]:
+              - generic [ref=e128]: 0/7 tasks
+              - generic [ref=e129]: 0%
+            - generic [ref=e131]:
+              - generic [ref=e132]:
+                - generic [ref=e133]: ○
+                - generic [ref=e134]: Budget overview — remaining balance, alert level, usage chart
+              - generic [ref=e135]:
+                - generic [ref=e136]: ○
+                - generic [ref=e137]: Session timeline — visual log of sessions with categories
+              - generic [ref=e138]:
+                - generic [ref=e139]: ○
+                - generic [ref=e140]: Roadmap viewer — render phases and tasks from parsed markdown
+              - generic [ref=e141]:
+                - generic [ref=e142]: ○
+                - generic [ref=e143]: Plan viewer — list and display plan documents
+              - generic [ref=e144]:
+                - generic [ref=e145]: ○
+                - generic [ref=e146]: Charts integration (Recharts)
+              - generic [ref=e147]:
+                - generic [ref=e148]: ○
+                - generic [ref=e149]: Viktor QA review
+              - generic [ref=e150]:
+                - generic [ref=e151]: ○
+                - generic [ref=e152]: "Director Checkpoint #5"
+          - generic [ref=e153]:
+            - generic [ref=e154]:
+              - generic [ref=e155]:
+                - heading "Phase 5 — CLI Passthrough Chat" [level=3] [ref=e158]
+                - paragraph [ref=e159]: Embedded terminal for Claude CLI interaction.
+              - generic [ref=e161]: Planned
+            - generic [ref=e163]:
+              - generic [ref=e164]: 0/5 tasks
+              - generic [ref=e165]: 0%
+          - generic [ref=e167]:
+            - generic [ref=e168]:
+              - generic [ref=e169]:
+                - heading "Phase 6 — Polish & v1.0" [level=3] [ref=e172]
+                - paragraph [ref=e173]: Responsive layout, animations, error states, documentation.
+              - generic [ref=e175]: Planned
+            - generic [ref=e177]:
+              - generic [ref=e178]: 0/6 tasks
+              - generic [ref=e179]: 0%
+      - generic [ref=e181]:
+        - heading "Feature Registry" [level=2] [ref=e182]
+        - table [ref=e184]:
+          - rowgroup [ref=e185]:
+            - row "Feature Phase Priority Status" [ref=e186]:
+              - columnheader "Feature" [ref=e187]
+              - columnheader "Phase" [ref=e188]
+              - columnheader "Priority" [ref=e189]
+              - columnheader "Status" [ref=e190]
+          - rowgroup [ref=e191]:
+            - row "Project scaffold 0 Critical Complete" [ref=e192]:
+              - cell "Project scaffold" [ref=e193]
+              - cell "0" [ref=e194]
+              - cell "Critical" [ref=e195]
+              - cell "Complete" [ref=e196]
+            - row "Design tokens 0 Critical Complete" [ref=e197]:
+              - cell "Design tokens" [ref=e198]
+              - cell "0" [ref=e199]
+              - cell "Critical" [ref=e200]
+              - cell "Complete" [ref=e201]
+            - row "Sidebar navigation 1 Critical Complete" [ref=e202]:
+              - cell "Sidebar navigation" [ref=e203]
+              - cell "1" [ref=e204]
+              - cell "Critical" [ref=e205]
+              - cell "Complete" [ref=e206]
+            - row "Dark theme 1 Critical Complete" [ref=e207]:
+              - cell "Dark theme" [ref=e208]
+              - cell "1" [ref=e209]
+              - cell "Critical" [ref=e210]
+              - cell "Complete" [ref=e211]
+            - row "File readers / parsers 2 Critical Complete" [ref=e212]:
+              - cell "File readers / parsers" [ref=e213]
+              - cell "2" [ref=e214]
+              - cell "Critical" [ref=e215]
+              - cell "Complete" [ref=e216]
+            - row "Agent dashboard 3 High Complete" [ref=e217]:
+              - cell "Agent dashboard" [ref=e218]
+              - cell "3" [ref=e219]
+              - cell "High" [ref=e220]
+              - cell "Complete" [ref=e221]
+            - row "Budget views 4 High Planned" [ref=e222]:
+              - cell "Budget views" [ref=e223]
+              - cell "4" [ref=e224]
+              - cell "High" [ref=e225]
+              - cell "Planned" [ref=e226]
+            - row "Roadmap viewer 4 High Planned" [ref=e227]:
+              - cell "Roadmap viewer" [ref=e228]
+              - cell "4" [ref=e229]
+              - cell "High" [ref=e230]
+              - cell "Planned" [ref=e231]
+            - row "Charts (Recharts) 4 Medium Planned" [ref=e232]:
+              - cell "Charts (Recharts)" [ref=e233]
+              - cell "4" [ref=e234]
+              - cell "Medium" [ref=e235]
+              - cell "Planned" [ref=e236]
+            - row "CLI chat (xterm.js) 5 Medium Planned" [ref=e237]:
+              - cell "CLI chat (xterm.js)" [ref=e238]
+              - cell "5" [ref=e239]
+              - cell "Medium" [ref=e240]
+              - cell "Planned" [ref=e241]
+            - row "Responsive design 6 Medium Planned" [ref=e242]:
+              - cell "Responsive design" [ref=e243]
+              - cell "6" [ref=e244]
+              - cell "Medium" [ref=e245]
+              - cell "Planned" [ref=e246]
+      - generic [ref=e247]:
+        - heading "Plan Documents" [level=2] [ref=e248]
+        - generic [ref=e249]:
+          - generic [ref=e251]:
+            - img [ref=e253]
+            - generic [ref=e256]:
+              - paragraph [ref=e257]: Plans Index — Project Vena
+              - paragraph [ref=e258]: INDEX.md · 9 lines
+          - generic [ref=e260]:
+            - img [ref=e262]
+            - generic [ref=e265]:
+              - paragraph [ref=e266]: Plan — MVP (v0.1.0)
+              - paragraph [ref=e267]: Plan-MVP.md · 45 lines
+          - generic [ref=e269]:
+            - img [ref=e271]
+            - generic [ref=e274]:
+              - paragraph [ref=e275]: Roadmap — Project Vena
+              - paragraph [ref=e276]: Roadmap-Project-Vena.md · 123 lines
+  - button "Open Next.js Dev Tools" [ref=e282] [cursor=pointer]:
+    - img [ref=e283]

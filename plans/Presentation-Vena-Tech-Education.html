@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vena v1.0 — Technology Education</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css" />
+  <style>
+    :root {
+      --vena-bg: #08080d;
+      --vena-surface: #0f0f17;
+      --vena-raised: #161622;
+      --vena-overlay: #1c1c2e;
+      --vena-border: #1e1e32;
+      --vena-text: #e4e4ef;
+      --vena-secondary: #8888a4;
+      --vena-muted: #55556e;
+      --vena-accent: #6366f1;
+      --vena-accent-hover: #818cf8;
+      --vena-success: #22c55e;
+      --vena-warning: #f59e0b;
+      --vena-error: #ef4444;
+      --vena-info: #38bdf8;
+      --vena-orchestrator: #6366f1;
+      --vena-nova: #f472b6;
+      --vena-viktor: #a78bfa;
+      --vena-silas: #fbbf24;
+    }
+
+    .reveal {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--vena-text);
+    }
+
+    .reveal .slides {
+      text-align: left;
+    }
+
+    .reveal .slides section {
+      background: var(--vena-bg);
+      overflow: hidden;
+    }
+
+    body {
+      background: var(--vena-bg);
+    }
+
+    .reveal h1, .reveal h2, .reveal h3 {
+      color: var(--vena-text);
+      font-weight: 600;
+      text-transform: none;
+      letter-spacing: -0.02em;
+    }
+
+    .reveal h1 {
+      font-size: 2em;
+    }
+
+    .reveal h2 {
+      font-size: 1.3em;
+      margin-bottom: 0.4em;
+    }
+
+    .reveal h3 {
+      font-size: 0.95em;
+      color: var(--vena-accent-hover);
+      margin-bottom: 0.3em;
+    }
+
+    .reveal p, .reveal li {
+      font-size: 0.62em;
+      line-height: 1.5;
+      color: var(--vena-secondary);
+    }
+
+    .reveal strong {
+      color: var(--vena-text);
+    }
+
+    .reveal ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .reveal ul li::before {
+      content: "▸ ";
+      color: var(--vena-accent);
+      font-weight: bold;
+    }
+
+    .reveal a {
+      color: var(--vena-accent-hover);
+    }
+
+    .reveal code {
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 0.9em;
+    }
+
+    .reveal pre {
+      background: var(--vena-surface);
+      border: 1px solid var(--vena-border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+      width: 100%;
+      margin: 6px 0;
+    }
+
+    .reveal pre code {
+      font-size: 0.58em;
+      line-height: 1.4;
+      max-height: 400px;
+      background: transparent;
+      color: var(--vena-text);
+    }
+
+    .reveal .inline-code {
+      background: var(--vena-raised);
+      border: 1px solid var(--vena-border);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 0.85em;
+      color: var(--vena-accent-hover);
+    }
+
+    /* Title slide */
+    .title-slide h1 {
+      font-size: 2.6em;
+      background: linear-gradient(135deg, var(--vena-accent), var(--vena-accent-hover), var(--vena-nova));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.2em;
+    }
+
+    .title-slide .subtitle {
+      font-size: 1.1em;
+      color: var(--vena-secondary);
+      margin-bottom: 2em;
+    }
+
+    .title-slide .meta {
+      font-size: 0.7em;
+      color: var(--vena-muted);
+    }
+
+    /* Section divider slides */
+    .section-divider {
+      text-align: center !important;
+    }
+
+    .section-divider h2 {
+      font-size: 2em;
+      background: linear-gradient(135deg, var(--vena-accent), var(--vena-accent-hover));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-divider .section-num {
+      font-size: 4em;
+      font-weight: 700;
+      color: var(--vena-raised);
+      line-height: 1;
+      margin-bottom: -0.1em;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--vena-surface);
+      border: 1px solid var(--vena-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin: 4px 0;
+    }
+
+    .card-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .card-grid-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .card-grid-3 {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .card-grid-4 {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      font-size: 0.8em;
+    }
+
+    .card p, .card li {
+      font-size: 0.58em;
+    }
+
+    /* Accent card borders */
+    .card-accent { border-left: 3px solid var(--vena-accent); }
+    .card-success { border-left: 3px solid var(--vena-success); }
+    .card-warning { border-left: 3px solid var(--vena-warning); }
+    .card-error { border-left: 3px solid var(--vena-error); }
+    .card-info { border-left: 3px solid var(--vena-info); }
+
+    /* Tables */
+    .reveal table {
+      font-size: 0.58em;
+      border-collapse: collapse;
+      width: 100%;
+      margin: 6px 0;
+    }
+
+    .reveal table th {
+      background: var(--vena-raised);
+      color: var(--vena-text);
+      font-weight: 600;
+      padding: 6px 10px;
+      border-bottom: 2px solid var(--vena-accent);
+      text-align: left;
+    }
+
+    .reveal table td {
+      padding: 5px 10px;
+      border-bottom: 1px solid var(--vena-border);
+      color: var(--vena-secondary);
+    }
+
+    .reveal table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Tags / Badges */
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 9999px;
+      font-size: 0.6em;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .badge-accent { background: rgba(99,102,241,0.15); color: var(--vena-accent-hover); }
+    .badge-success { background: rgba(34,197,94,0.15); color: var(--vena-success); }
+    .badge-warning { background: rgba(245,158,11,0.15); color: var(--vena-warning); }
+    .badge-error { background: rgba(239,68,68,0.15); color: var(--vena-error); }
+    .badge-info { background: rgba(56,189,248,0.15); color: var(--vena-info); }
+
+    /* Stat numbers */
+    .stat {
+      text-align: center;
+      padding: 8px;
+    }
+
+    .stat .number {
+      font-size: 1.8em;
+      font-weight: 700;
+      color: var(--vena-accent-hover);
+      line-height: 1.1;
+    }
+
+    .stat .label {
+      font-size: 0.55em;
+      color: var(--vena-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* Diagram / ASCII art */
+    .diagram {
+      background: var(--vena-surface);
+      border: 1px solid var(--vena-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 0.42em;
+      line-height: 1.35;
+      color: var(--vena-secondary);
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    /* Highlight text */
+    .accent { color: var(--vena-accent-hover); }
+    .success { color: var(--vena-success); }
+    .warning { color: var(--vena-warning); }
+    .error { color: var(--vena-error); }
+
+    /* Blockquote */
+    .reveal blockquote {
+      background: var(--vena-surface);
+      border-left: 4px solid var(--vena-accent);
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      margin: 8px 0;
+      font-style: normal;
+    }
+
+    .reveal blockquote p {
+      color: var(--vena-text);
+      font-size: 0.68em;
+    }
+
+    /* Flow arrows */
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .flow-step {
+      background: var(--vena-surface);
+      border: 1px solid var(--vena-border);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.58em;
+      color: var(--vena-text);
+    }
+
+    .flow-arrow {
+      color: var(--vena-accent);
+      font-size: 1.2em;
+    }
+
+    /* Agent colors */
+    .agent-orchestrator { color: var(--vena-orchestrator); }
+    .agent-nova { color: var(--vena-nova); }
+    .agent-viktor { color: var(--vena-viktor); }
+    .agent-silas { color: var(--vena-silas); }
+
+    /* Progress bar */
+    .progress-bar {
+      height: 8px;
+      background: var(--vena-raised);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--vena-accent), var(--vena-accent-hover));
+    }
+
+    /* Two-column layout */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    /* Footnote */
+    .footnote {
+      font-size: 0.5em;
+      color: var(--vena-muted);
+      margin-top: 24px;
+      border-top: 1px solid var(--vena-border);
+      padding-top: 8px;
+    }
+
+    /* Slide number styling */
+    .reveal .slide-number {
+      background: var(--vena-surface);
+      color: var(--vena-muted);
+      font-size: 14px;
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+
+    /* Custom progress bar */
+    .reveal .progress {
+      height: 3px;
+      color: var(--vena-accent);
+    }
+
+    .reveal .progress span {
+      background: var(--vena-accent);
+    }
+
+    /* Controls */
+    .reveal .controls {
+      color: var(--vena-accent);
+    }
+
+    /* Fragment highlights */
+    .reveal .fragment.highlight-current-blue.current-fragment {
+      color: var(--vena-accent-hover);
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ============================================ -->
+      <!-- SLIDE 1: Title -->
+      <!-- ============================================ -->
+      <section class="title-slide" data-background-color="#08080d">
+        <div style="text-align: center; padding-top: 40px;">
+          <h1>Vena v1.0</h1>
+          <p class="subtitle">Technology Education Presentation</p>
+          <div style="width: 80px; height: 3px; background: linear-gradient(90deg, var(--vena-accent), var(--vena-nova)); margin: 24px auto;"></div>
+          <p class="meta">
+            <strong style="color: var(--vena-secondary);">Audience:</strong> The Director and anyone joining the project<br/>
+            <strong style="color: var(--vena-secondary);">Goal:</strong> Understand every technology, pattern, and decision in Vena<br/>
+            <strong style="color: var(--vena-secondary);">Duration:</strong> ~45 minutes (self-paced or team walkthrough)
+          </p>
+          <div style="margin-top: 40px;">
+            <span class="badge badge-accent">Next.js 16</span>
+            <span class="badge badge-success">TypeScript</span>
+            <span class="badge badge-warning">Tailwind v4</span>
+            <span class="badge badge-info">xterm.js</span>
+            <span class="badge badge-error">Recharts</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 2: What Is Vena? -->
+      <!-- ============================================ -->
+      <section>
+        <h2>What Is Vena?</h2>
+        <p style="font-size: 0.8em; color: var(--vena-text); margin-bottom: 16px;">A local web dashboard that reads <span class="inline-code">.claude/</span> project directories and displays:</p>
+        <div class="card-grid card-grid-2" style="margin-bottom: 20px;">
+          <div class="card card-accent">
+            <h3>🤖 Agent Monitoring</h3>
+            <p>Identities, memory files, and activity status for each team agent</p>
+          </div>
+          <div class="card card-warning">
+            <h3>💰 Budget Tracking</h3>
+            <p>API budget via the Vault & Valve system with alert levels</p>
+          </div>
+          <div class="card card-success">
+            <h3>🗺️ Roadmap Progress</h3>
+            <p>Phase completion, task checklists, and plan documents</p>
+          </div>
+          <div class="card card-info">
+            <h3>💻 CLI Passthrough</h3>
+            <p>Embedded terminal for direct CLI interaction via xterm.js</p>
+          </div>
+        </div>
+        <blockquote>
+          <p><strong>Key principle:</strong> No database. No cloud. No auth. Reads files directly from disk. Runs entirely on localhost.</p>
+        </blockquote>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 3: Big Picture Architecture -->
+      <!-- ============================================ -->
+      <section>
+        <h2>The Big Picture Architecture</h2>
+        <div class="diagram">┌─────────────────────────────────────────────────────────┐
+│                        <span class="accent">BROWSER</span>                          │
+│                                                         │
+│   Next.js App (React)          xterm.js Terminal        │
+│   ├── Dashboard                ├── WebSocket client     │
+│   ├── Agents page              └── Sends keystrokes     │
+│   ├── Budget page                   ↕ ws://localhost:3001│
+│   ├── Roadmap page                  │                   │
+│   ├── Sessions page                 │                   │
+│   └── Chat page ──────────────────→ │                   │
+│         ↕ HTTP                      │                   │
+└─────────┼───────────────────────────┼───────────────────┘
+          │                           │
+┌─────────┼───────────────────────────┼───────────────────┐
+│         ↓         <span class="success">SERVER</span>            ↓                   │
+│                                                         │
+│   Next.js Server               PTY Server               │
+│   ├── Server Components        ├── WebSocket server     │
+│   │   └── Read .claude/ files  ├── Spawns shell (PTY)   │
+│   ├── API Routes               └── Token auth (S8)      │
+│   │   └── /api/pty-token                                │
+│   └── Renders HTML                                      │
+│         ↕ fs.readFileSync          ↕ node-pty            │
+│   ┌─────┴──────────┐        ┌─────┴──────────┐         │
+│   │  <span class="warning">.claude/ dir</span>  │        │  <span class="warning">Shell process</span>  │         │
+│   │  (files on     │        │  (PowerShell/   │         │
+│   │   disk)        │        │   bash)         │         │
+│   └────────────────┘        └────────────────┘         │
+└─────────────────────────────────────────────────────────┘</div>
+        <p style="margin-top: 12px;">Two servers run side by side: <strong>Next.js</strong> (port 3000) serves the web UI & reads files — <strong>PTY Server</strong> (port 3001) bridges browser terminal to a real shell.</p>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 4: Next.js & App Router -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Next.js &amp; the App Router</h2>
+        <div class="two-col">
+          <div>
+            <h3>What is Next.js?</h3>
+            <p>A framework on top of React handling routing, server rendering, API endpoints, and optimization.</p>
+            <h3 style="margin-top: 16px;">The folder structure IS the routes</h3>
+            <pre><code>src/app/
+├── page.tsx          → /
+├── agents/
+│   ├── page.tsx      → /agents
+│   └── [name]/
+│       page.tsx      → /agents/nova
+├── budget/page.tsx   → /budget
+├── roadmap/page.tsx  → /roadmap
+├── sessions/page.tsx → /sessions
+└── chat/page.tsx     → /chat</code></pre>
+          </div>
+          <div>
+            <h3>Special Files</h3>
+            <table>
+              <thead>
+                <tr><th>File</th><th>Purpose</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><span class="inline-code">page.tsx</span></td><td>The page content</td></tr>
+                <tr><td><span class="inline-code">layout.tsx</span></td><td>Wraps child pages (sidebar, theme)</td></tr>
+                <tr><td><span class="inline-code">loading.tsx</span></td><td>Skeleton shown while data loads</td></tr>
+                <tr><td><span class="inline-code">error.tsx</span></td><td>Error recovery UI</td></tr>
+              </tbody>
+            </table>
+            <blockquote style="margin-top: 16px;">
+              <p>Create a folder → it becomes a URL.<br/>Delete the folder → the route disappears.</p>
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 5: Server vs Client Components -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Server Components vs Client Components</h2>
+        <p style="font-size: 0.75em; color: var(--vena-text); margin-bottom: 12px;">The most important concept in modern Next.js.</p>
+        <div class="card-grid card-grid-2">
+          <div class="card card-accent">
+            <h3>Server Components <span class="badge badge-accent">default</span></h3>
+            <ul>
+              <li>Run <strong>on the server</strong> (Node.js)</li>
+              <li>Can read files (<span class="inline-code">fs.readFileSync</span>)</li>
+              <li>Ship <strong>zero JavaScript</strong> to the browser</li>
+              <li>Cannot use useState, useEffect, onClick</li>
+            </ul>
+            <p style="margin-top: 8px;"><strong>In Vena:</strong> All <span class="inline-code">page.tsx</span> files</p>
+          </div>
+          <div class="card card-warning">
+            <h3>Client Components <span class="badge badge-warning">opt-in</span></h3>
+            <ul>
+              <li>Run <strong>in the browser</strong></li>
+              <li>Can use state, effects, event handlers</li>
+              <li>Must be marked with <span class="inline-code">"use client"</span></li>
+              <li>Ship JavaScript bundle to browser</li>
+            </ul>
+            <p style="margin-top: 8px;"><strong>In Vena:</strong> Sidebar, Terminal, Charts, Errors</p>
+          </div>
+        </div>
+        <blockquote style="margin-top: 16px;">
+          <p>Keep components as Server Components unless they absolutely need browser interactivity. This makes the app faster and more secure.</p>
+        </blockquote>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 6: TypeScript -->
+      <!-- ============================================ -->
+      <section>
+        <h2>TypeScript: Types as Safety Nets</h2>
+        <div class="two-col">
+          <div>
+            <h3>Without TypeScript</h3>
+            <pre><code class="language-javascript">// Bug hides until runtime
+function getBalance(ledger) {
+  return ledger.remaining_balance;
+  // typo? wrong field? No one
+  // knows until it crashes
+}</code></pre>
+            <h3 style="margin-top: 16px;">With TypeScript</h3>
+            <pre><code class="language-typescript">// Bug caught at build time
+function getBalance(
+  ledger: BudgetLedger
+): number {
+  return ledger.remainingBalance;
+  // TypeScript knows the exact shape
+}</code></pre>
+          </div>
+          <div>
+            <h3>Strict Mode Means</h3>
+            <div class="card card-error" style="margin-bottom: 8px;">
+              <p><strong>No guessing types</strong> — <span class="inline-code">any</span> is banned</p>
+            </div>
+            <div class="card card-warning" style="margin-bottom: 8px;">
+              <p><strong>Null must be checked</strong> — <span class="inline-code">if (value !== null)</span> before using</p>
+            </div>
+            <div class="card card-accent">
+              <p><strong>Signatures must match</strong> — function calls are validated</p>
+            </div>
+            <p style="margin-top: 16px; font-size: 0.7em;">The build (<span class="inline-code">npm run build</span>) fails if types don't match. This is intentional — bugs are caught before reaching the browser.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 7: Tailwind CSS v4 -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Tailwind CSS v4: Utility-First Styling</h2>
+        <div class="two-col">
+          <div>
+            <h3>Traditional CSS</h3>
+            <pre><code class="language-css">/* Separate CSS file */
+.card {
+  background: #0f0f17;
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid #1e1e32;
+}</code></pre>
+            <pre><code class="language-html">&lt;div class="card"&gt;...&lt;/div&gt;</code></pre>
+          </div>
+          <div>
+            <h3>Tailwind CSS</h3>
+            <pre><code class="language-html">&lt;div className="
+  rounded-lg
+  bg-vena-surface
+  p-4
+  border border-vena-border
+"&gt;...&lt;/div&gt;</code></pre>
+            <p style="margin-top: 12px;">No separate CSS file needed. Classes describe exactly what they do.</p>
+          </div>
+        </div>
+        <div class="card card-info" style="margin-top: 16px;">
+          <h3>v4 Changes from v3</h3>
+          <ul>
+            <li>No <span class="inline-code">tailwind.config.js</span> — everything configured in CSS with <span class="inline-code">@theme</span> blocks</li>
+            <li>Design tokens defined in <span class="inline-code">globals.css</span>, not in JavaScript</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 8: Design Token System -->
+      <!-- ============================================ -->
+      <section>
+        <h2>The Design Token System</h2>
+        <p style="font-size: 0.7em; margin-bottom: 12px;">Nova's layered color architecture in <span class="inline-code">globals.css</span></p>
+        <div class="card-grid card-grid-3">
+          <div class="card">
+            <h3>Background Layers</h3>
+            <div style="font-size: 0.6em; font-family: monospace;">
+              <div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="width:14px;height:14px;background:#08080d;border:1px solid #1e1e32;border-radius:3px;display:inline-block"></span> bg #08080d</div>
+              <div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="width:14px;height:14px;background:#0f0f17;border:1px solid #1e1e32;border-radius:3px;display:inline-block"></span> surface #0f0f17</div>
+              <div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="width:14px;height:14px;background:#161622;border:1px solid #1e1e32;border-radius:3px;display:inline-block"></span> raised #161622</div>
+              <div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="width:14px;height:14px;background:#1c1c2e;border:1px solid #1e1e32;border-radius:3px;display:inline-block"></span> overlay #1c1c2e</div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Text Hierarchy</h3>
+            <div style="font-size: 0.6em; font-family: monospace;">
+              <div style="color:#e4e4ef;margin:4px 0">■ text #e4e4ef — Primary</div>
+              <div style="color:#8888a4;margin:4px 0">■ secondary #8888a4</div>
+              <div style="color:#55556e;margin:4px 0">■ muted #55556e</div>
+            </div>
+            <h3 style="margin-top: 12px;">Status Colors</h3>
+            <div style="font-size: 0.6em; font-family: monospace;">
+              <div style="color:#6366f1;margin:4px 0">■ accent #6366f1</div>
+              <div style="color:#22c55e;margin:4px 0">■ success #22c55e</div>
+              <div style="color:#f59e0b;margin:4px 0">■ warning #f59e0b</div>
+              <div style="color:#ef4444;margin:4px 0">■ error #ef4444</div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Agent Colors</h3>
+            <div style="font-size: 0.6em; font-family: monospace;">
+              <div style="color:#6366f1;margin:6px 0">■ Orchestrator — indigo</div>
+              <div style="color:#f472b6;margin:6px 0">■ Nova — pink</div>
+              <div style="color:#a78bfa;margin:6px 0">■ Viktor — purple</div>
+              <div style="color:#fbbf24;margin:6px 0">■ Silas — gold</div>
+            </div>
+            <p style="margin-top: 16px; font-size: 0.6em;">Change a color in one place → it updates everywhere.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 9: Data Layer -->
+      <!-- ============================================ -->
+      <section>
+        <h2>The Data Layer: Files as a Database</h2>
+        <div class="two-col">
+          <div>
+            <h3>File Structure</h3>
+            <pre style="margin:4px 0"><code style="font-size:0.52em">.claude/
+├── design-team/
+│   ├── nova-identity.md   → AgentIdentity
+│   └── nova-memory.md     → AgentMemory
+├── qa-team/
+│   └── viktor-identity.md
+├── vault-and-valve/
+│   ├── budget-ledger.json → BudgetLedger
+│   └── usage-log.jsonl    → UsageEvent[]
+plans/
+├── Roadmap-*.md           → Roadmap
+└── Plan-*.md              → PlanFile</code></pre>
+          </div>
+          <div>
+            <h3>The Parsing Pipeline</h3>
+            <div style="font-size:0.55em; color:var(--vena-secondary); line-height:1.8;">
+              📄 Raw file on disk<br/>
+              &nbsp;&nbsp;↓ <span class="accent">fs.readFileSync</span><br/>
+              📝 Raw string (JSON / JSONL / MD)<br/>
+              &nbsp;&nbsp;↓ <span class="accent">Parser in src/lib/</span><br/>
+              🔒 Typed TypeScript object<br/>
+              &nbsp;&nbsp;↓ <span class="accent">Passed as props</span><br/>
+              🖥️ React component renders it
+            </div>
+          </div>
+        </div>
+        <table style="margin-top: 6px;">
+          <thead><tr><th>Module</th><th>Reads</th><th>Produces</th></tr></thead>
+          <tbody>
+            <tr><td><span class="inline-code">scanner.ts</span></td><td>.claude/ directory structure</td><td>VenaProject</td></tr>
+            <tr><td><span class="inline-code">agents.ts</span></td><td>*-identity.md, *-memory.md</td><td>AgentProfile[]</td></tr>
+            <tr><td><span class="inline-code">budget.ts</span></td><td>budget-ledger.json, usage-log.jsonl</td><td>BudgetLedger, UsageEvent[]</td></tr>
+            <tr><td><span class="inline-code">roadmap.ts</span></td><td>Roadmap-*.md, plans/*.md</td><td>Roadmap, PlanFile[]</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 10: Markdown Parsing -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Markdown Parsing: HTML Comment Markers</h2>
+        <p style="font-size: 0.72em; margin-bottom: 12px;">Custom markers — invisible in markdown, machine-readable by the parser.</p>
+        <pre><code class="language-markdown">&lt;!-- vena:phase id="1" status="complete" --&gt;
+### Phase 1 — Dashboard Shell
+**Status:** Complete (2026-03-19)
+**Goal:** App shell with sidebar navigation.
+- [x] Sidebar component
+- [x] Dark theme
+- [ ] Mobile responsive
+&lt;!-- /vena:phase --&gt;</code></pre>
+        <h3 style="margin-top: 16px;">What the Parser Does</h3>
+        <div class="flow" style="margin-top: 8px;">
+          <div class="flow-step">Find <span class="inline-code">&lt;!-- vena:phase --&gt;</span> blocks</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">Extract id &amp; status</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">Parse heading, goal, checkboxes</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">Build <span class="inline-code">RoadmapPhase</span> object</div>
+        </div>
+        <blockquote style="margin-top: 16px;">
+          <p>The roadmap is both <strong>human-readable</strong> (it's just markdown) and <strong>machine-parsable</strong> (the dashboard renders it as interactive UI).</p>
+        </blockquote>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 11: JSONL -->
+      <!-- ============================================ -->
+      <section>
+        <h2>JSONL: The Session Log Format</h2>
+        <p style="font-size: 0.72em; margin-bottom: 12px;"><span class="inline-code">usage-log.jsonl</span> — one JSON object per line:</p>
+        <pre><code class="language-json">{"event":"SessionStart","ts":"2026-03-19T10:00:00Z","session":"s-001","source":"hook"}
+{"event":"SessionEnd","ts":"2026-03-19T10:45:00Z","session":"s-001","source":"hook"}
+{"event":"SessionSummary","ts":"2026-03-19T10:45:00Z","session":"s-001",
+  "phase":"Phase 2","categories":["code_build","tests"],"api_cost_usd":0.42}</code></pre>
+        <h3 style="margin-top: 16px;">Why JSONL Instead of JSON?</h3>
+        <div class="card-grid card-grid-3">
+          <div class="card card-success">
+            <h3>Append-Friendly</h3>
+            <p>New events added by appending a line. No need to parse the whole file first.</p>
+          </div>
+          <div class="card card-info">
+            <h3>Stream-Parsable</h3>
+            <p>Each line is a complete JSON object. Can be parsed independently.</p>
+          </div>
+          <div class="card card-warning">
+            <h3>Fault-Tolerant</h3>
+            <p>A malformed line doesn't break the whole file. Parser skips bad lines.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 12: Terminal System -->
+      <!-- ============================================ -->
+      <section>
+        <h2>The Terminal System</h2>
+        <p style="font-size: 0.75em; color: var(--vena-text); margin-bottom: 12px;">xterm.js + PTY Server — a real terminal in the browser</p>
+        <div class="diagram" style="font-size: 0.55em;">┌──────────────┐    WebSocket     ┌──────────────┐   stdin/stdout   ┌──────────┐
+│   <span class="accent">xterm.js</span>   │ ◄──────────────► │  <span class="success">PTY Server</span>  │ ◄──────────────► │  <span class="warning">Shell</span>    │
+│   (browser)  │    port 3001    │  (Node.js)   │    (node-pty)   │  (bash/  │
+│              │                  │              │                  │  pwsh)   │
+└──────────────┘                  └──────────────┘                  └──────────┘</div>
+        <div class="card-grid card-grid-2" style="margin-top: 16px;">
+          <div class="card card-accent">
+            <h3>Data Flow</h3>
+            <ol style="padding-left: 16px; list-style: decimal;">
+              <li style="font-size:0.6em;color:var(--vena-secondary)">xterm.js renders terminal UI in browser</li>
+              <li style="font-size:0.6em;color:var(--vena-secondary)">Keystrokes sent via WebSocket to PTY server</li>
+              <li style="font-size:0.6em;color:var(--vena-secondary)">PTY server writes to real shell (node-pty)</li>
+              <li style="font-size:0.6em;color:var(--vena-secondary)">Shell output flows back through WebSocket</li>
+              <li style="font-size:0.6em;color:var(--vena-secondary)">xterm.js renders with full color support</li>
+            </ol>
+          </div>
+          <div class="card card-warning">
+            <h3>Authentication Flow</h3>
+            <ol style="padding-left: 16px; list-style: decimal;">
+              <li style="font-size:0.6em;color:var(--vena-secondary)">PTY server generates random token → <span class="inline-code">.pty-auth-token</span></li>
+              <li style="font-size:0.6em;color:var(--vena-secondary)">Browser calls <span class="inline-code">/api/pty-token</span> API route</li>
+              <li style="font-size:0.6em;color:var(--vena-secondary)">Browser sends auth as first WebSocket message</li>
+              <li style="font-size:0.6em;color:var(--vena-secondary)">PTY server verifies → spawns shell</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 13: Security -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Security: The 8 Hardening Measures</h2>
+        <p style="font-size: 0.7em; margin-bottom: 8px;">The PTY server is the most security-sensitive part — it spawns real shell processes.</p>
+        <table>
+          <thead>
+            <tr><th>#</th><th>Threat</th><th>Measure</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="badge badge-error">S1</span></td><td>Network exposure</td><td>Bind to <span class="inline-code">127.0.0.1</span> only — never <span class="inline-code">0.0.0.0</span></td></tr>
+            <tr><td><span class="badge badge-error">S2</span></td><td>Resource exhaustion</td><td>Cap at 5 concurrent sessions</td></tr>
+            <tr><td><span class="badge badge-error">S3</span></td><td>Malformed resize</td><td>Validate cols/rows as integers 1–500</td></tr>
+            <tr><td><span class="badge badge-error">S4</span></td><td>Cross-site hijack</td><td>Check WebSocket Origin header</td></tr>
+            <tr><td><span class="badge badge-warning">S5</span></td><td>Connection flood</td><td>Rate limit: 10 connections/IP/minute</td></tr>
+            <tr><td><span class="badge badge-warning">S6</span></td><td>Path traversal</td><td>Validate PTY working directory</td></tr>
+            <tr><td><span class="badge badge-warning">S7</span></td><td>Memory exhaustion</td><td>Limit WebSocket messages to 1 MB</td></tr>
+            <tr><td><span class="badge badge-accent">S8</span></td><td>Unauthorized access</td><td>Random token auth + 5s timeout</td></tr>
+          </tbody>
+        </table>
+        <div class="card card-success" style="margin-top: 8px;">
+          <p><strong>Beyond PTY:</strong> No database = no SQL injection · No user input = no XSS · No auth = no session hijacking · Local-only = no CORS</p>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 14: React Patterns -->
+      <!-- ============================================ -->
+      <section>
+        <h2>React Patterns Used in Vena</h2>
+        <div class="card-grid card-grid-3">
+          <div class="card card-accent">
+            <h3>Components</h3>
+            <p>Functions that return JSX — the building block of every UI element.</p>
+            <pre style="margin-top:8px"><code class="language-tsx" style="font-size:0.6em">function StatusCard({
+  label, value
+}) {
+  return (
+    &lt;div className="..."&gt;
+      &lt;p&gt;{label}&lt;/p&gt;
+      &lt;p&gt;{value}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+          </div>
+          <div class="card card-info">
+            <h3>State &amp; Effects</h3>
+            <pre style="margin-top:8px"><code class="language-tsx" style="font-size:0.6em">// State — data that changes
+const [open, setOpen] =
+  useState(false);
+
+// Effect — runs after render
+useEffect(() => {
+  setOpen(false);
+}, [pathname]);</code></pre>
+          </div>
+          <div class="card card-success">
+            <h3>Refs &amp; Callbacks</h3>
+            <pre style="margin-top:8px"><code class="language-tsx" style="font-size:0.6em">// Ref — DOM access
+const termRef =
+  useRef&lt;XTerm | null&gt;(null);
+
+// Callback — memoized fn
+const connect = useCallback(
+  async () => { ... },
+  [updateStatus]
+);</code></pre>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 12px;">
+          <p><strong>Props</strong> = data passed from parent to child (like function arguments). <strong>State</strong> updates trigger re-renders. <strong>Effects</strong> run side effects after render. <strong>Refs</strong> hold mutable values without re-rendering.</p>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 15: Recharts -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Recharts: Data Visualization</h2>
+        <div class="two-col">
+          <div>
+            <h3>Declarative Chart Composition</h3>
+            <pre><code class="language-tsx">&lt;ResponsiveContainer
+  width="100%" height={200}
+&gt;
+  &lt;BarChart data={chartData}&gt;
+    &lt;XAxis dataKey="label" /&gt;
+    &lt;YAxis /&gt;
+    &lt;Tooltip /&gt;
+    &lt;Bar
+      dataKey="sessions"
+      fill="var(--vena-accent)"
+    /&gt;
+    &lt;Bar
+      dataKey="minutes"
+      fill="var(--vena-accent-hover)"
+    /&gt;
+  &lt;/BarChart&gt;
+&lt;/ResponsiveContainer&gt;</code></pre>
+          </div>
+          <div>
+            <h3>Used in Vena For</h3>
+            <div class="card card-accent" style="margin-bottom: 8px;">
+              <h3>Budget Page</h3>
+              <p>Donut/pie chart showing usable vs floor vs spent budget</p>
+            </div>
+            <div class="card card-info">
+              <h3>Sessions Page</h3>
+              <p>Bar chart showing daily session count and total minutes</p>
+            </div>
+            <p style="margin-top: 16px;">Charts are <strong>Client Components</strong> — they need browser APIs for canvas/SVG rendering.</p>
+            <p style="margin-top: 8px;">React-native API: compose charts like JSX elements, not imperative drawing code.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 16: Testing Strategy -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Testing Strategy</h2>
+        <div class="card-grid card-grid-3">
+          <div class="card card-success">
+            <h3>Unit Tests (Vitest)</h3>
+            <p>54+ tests covering all <span class="inline-code">src/lib/</span>:</p>
+            <ul style="margin-top: 8px;">
+              <li>Agent identity &amp; memory parsing</li>
+              <li>Budget ledger &amp; summaries</li>
+              <li>JSONL usage log parsing</li>
+              <li>Session timeline pairing</li>
+              <li>Roadmap markdown parsing</li>
+              <li>Slug generation edge cases</li>
+            </ul>
+            <p style="margin-top: 8px;"><span class="inline-code">npm run test</span></p>
+          </div>
+          <div class="card card-info">
+            <h3>Visual Testing (Playwright)</h3>
+            <p>Browser automation for screenshot evidence:</p>
+            <ul style="margin-top: 8px;">
+              <li>Navigate to each page</li>
+              <li>Interact with UI elements</li>
+              <li>Capture screenshots</li>
+              <li>Save to <span class="inline-code">tests/screenshots/</span></li>
+            </ul>
+            <p style="margin-top: 8px;">Viktor reviews before approval.</p>
+          </div>
+          <div class="card card-error">
+            <h3>QA Pipeline (9 Steps)</h3>
+            <div style="font-size: 0.6em; line-height: 1.8;">
+              1. Structure analysis<br/>
+              2. Bug check <span class="badge badge-error">blocks</span><br/>
+              3. Security review <span class="badge badge-error">blocks</span><br/>
+              4. Readability<br/>
+              5. Conventions <span class="badge badge-error">blocks</span><br/>
+              6. Unit tests <span class="badge badge-error">blocks</span><br/>
+              7. Fix cycle<br/>
+              8. Report to Director<br/>
+              9. Director approval
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 17: Error Handling -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Error Handling Strategy</h2>
+        <p style="font-size: 0.75em; color: var(--vena-text); margin-bottom: 16px;">Three layers — never show a blank page or an unhandled crash.</p>
+        <div class="card-grid" style="grid-template-columns: 1fr;">
+          <div class="card card-success">
+            <h3>Layer 1: Data Layer (Graceful Nulls)</h3>
+            <p>Every reader returns <span class="inline-code">null</span> or <span class="inline-code">[]</span> if the file doesn't exist. Pages check and show empty states.</p>
+            <pre style="margin-top:8px"><code class="language-tsx" style="font-size:0.7em">const ledger = readBudgetLedger(claudeDir);
+if (!ledger) return &lt;EmptyState message="No budget ledger found." /&gt;;</code></pre>
+          </div>
+          <div class="card card-info">
+            <h3>Layer 2: Loading States</h3>
+            <p>Every route has a <span class="inline-code">loading.tsx</span> with skeleton placeholders. Next.js shows these automatically via React Suspense while the Server Component fetches data.</p>
+          </div>
+          <div class="card card-error">
+            <h3>Layer 3: Error Boundaries</h3>
+            <p>Every route has an <span class="inline-code">error.tsx</span> — a Client Component that catches runtime crashes and shows a recovery UI with a "Try again" button.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 18: Responsive Design -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Responsive Design</h2>
+        <div class="two-col">
+          <div>
+            <h3>Desktop (≥768px)</h3>
+            <div class="card card-accent">
+              <ul>
+                <li>Sidebar always visible, fixed left</li>
+                <li>Content area with <span class="inline-code">md:p-8</span> padding</li>
+                <li>Full grid layouts</li>
+              </ul>
+            </div>
+            <h3 style="margin-top: 12px;">Mobile (&lt;768px)</h3>
+            <div class="card card-warning">
+              <ul>
+                <li>Sidebar hidden (<span class="inline-code">-translate-x-full</span>)</li>
+                <li>Top bar with hamburger menu</li>
+                <li>Slide-in sidebar + backdrop overlay</li>
+                <li>Body scroll locked when open</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <h3>Grid Breakpoints</h3>
+            <table>
+              <thead><tr><th>Element</th><th>Columns</th></tr></thead>
+              <tbody>
+                <tr><td>Status cards</td><td>1 → 2 → 4</td></tr>
+                <tr><td>Agent cards</td><td>1 → 2 → 3</td></tr>
+                <tr><td>Chart containers</td><td>1 → 2</td></tr>
+              </tbody>
+            </table>
+            <p style="margin-top: 16px;">All handled by Tailwind's responsive prefixes:</p>
+            <pre style="margin-top:8px"><code style="font-size:0.7em">grid-cols-1
+sm:grid-cols-2
+lg:grid-cols-4</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 19: V&V Budget Model -->
+      <!-- ============================================ -->
+      <section>
+        <h2>The V&amp;V Budget Model</h2>
+        <p style="font-size: 0.72em; margin-bottom: 12px;"><span class="agent-silas">Silas Sterling</span> manages the Vault &amp; Valve budget system.</p>
+        <div class="diagram" style="font-size: 0.55em;">Total Credit: $100.00
+              ┌─────────────────────────────────────┐
+Floor (locked): │<span class="error">██████████████████████████████</span> $40.00 │ ← Can't touch this
+              ├─────────────────────────────────────┤
+Usable Budget:  │<span class="warning">████████████</span> $30.00 (spent)          │
+              │<span class="success">░░░░░░░░░░░░</span> $30.00 (available)      │ ← Monthly cap
+              └─────────────────────────────────────┘
+
+Alert:  &gt;30% → <span class="success">Normal</span>  │  ≤30% → <span class="warning">Warn</span>  │  ≤10% → <span class="error">Critical</span>  │  0% → <span class="error">LOCKED</span></div>
+        <h3 style="margin-top: 16px;">4-Layer Monitoring Stack</h3>
+        <div class="card-grid card-grid-4">
+          <div class="card card-success">
+            <h3>L1: Hooks</h3>
+            <p>Shell scripts — automatic session logging. <strong>Zero cost.</strong></p>
+          </div>
+          <div class="card card-info">
+            <h3>L2: Bookends</h3>
+            <p>Orchestrator reads ledger at session start/end. <strong>~200 tokens.</strong></p>
+          </div>
+          <div class="card card-warning">
+            <h3>L3: Reports</h3>
+            <p>Daily snapshots, weekly summaries via cron.</p>
+          </div>
+          <div class="card card-accent">
+            <h3>L4: /silas</h3>
+            <p>On-demand full budget analysis with personality.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 20: Key Files Reference -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Key Files Quick Reference</h2>
+        <table>
+          <thead>
+            <tr><th>If you want to...</th><th>Look at...</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Change the color scheme</td><td><span class="inline-code">src/app/globals.css</span></td></tr>
+            <tr><td>Add a new page/route</td><td>Create <span class="inline-code">src/app/your-route/page.tsx</span></td></tr>
+            <tr><td>Add a new sidebar link</td><td><span class="inline-code">src/components/Sidebar.tsx</span> → navItems array</td></tr>
+            <tr><td>Read a new data source</td><td>Create a reader in <span class="inline-code">src/lib/</span></td></tr>
+            <tr><td>Add a TypeScript type</td><td><span class="inline-code">src/types/index.ts</span></td></tr>
+            <tr><td>Change terminal appearance</td><td><span class="inline-code">src/lib/terminal-theme.ts</span></td></tr>
+            <tr><td>Modify PTY security</td><td><span class="inline-code">server/pty-server.ts</span> (constants at top)</td></tr>
+            <tr><td>Write a unit test</td><td><span class="inline-code">tests/</span> directory</td></tr>
+            <tr><td>Add a plan document</td><td><span class="inline-code">plans/</span> directory</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 21: By the Numbers -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Sprint 1 — By the Numbers</h2>
+        <div class="card-grid card-grid-4" style="margin-bottom: 16px;">
+          <div class="card stat">
+            <div class="number">6</div>
+            <div class="label">Phases Completed</div>
+          </div>
+          <div class="card stat">
+            <div class="number">38</div>
+            <div class="label">TypeScript Files</div>
+          </div>
+          <div class="card stat">
+            <div class="number">54+</div>
+            <div class="label">Unit Tests</div>
+          </div>
+          <div class="card stat">
+            <div class="number">8</div>
+            <div class="label">Security Measures</div>
+          </div>
+        </div>
+        <div class="card-grid card-grid-4" style="margin-bottom: 16px;">
+          <div class="card stat">
+            <div class="number">9</div>
+            <div class="label">QA Pipeline Steps</div>
+          </div>
+          <div class="card stat">
+            <div class="number">20+</div>
+            <div class="label">Design Tokens</div>
+          </div>
+          <div class="card stat">
+            <div class="number">3K+</div>
+            <div class="label">Lines of Code</div>
+          </div>
+          <div class="card stat">
+            <div class="number">4</div>
+            <div class="label">Team Members</div>
+          </div>
+        </div>
+        <div class="card-grid card-grid-2">
+          <div class="card card-success" style="text-align:center">
+            <p style="font-size: 1.2em;"><strong style="color: var(--vena-success);">0</strong> <span style="color:var(--vena-muted)">Database Tables</span></p>
+            <p style="font-size:0.6em">(by design)</p>
+          </div>
+          <div class="card card-success" style="text-align:center">
+            <p style="font-size: 1.2em;"><strong style="color: var(--vena-success);">0</strong> <span style="color:var(--vena-muted)">Cloud Services</span></p>
+            <p style="font-size:0.6em">(by design)</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 22: The Team -->
+      <!-- ============================================ -->
+      <section>
+        <h2>The Team</h2>
+        <div class="card-grid card-grid-4">
+          <div class="card" style="border-left: 3px solid var(--vena-orchestrator); text-align: center;">
+            <div style="font-size: 2em; margin-bottom: 8px;">🎯</div>
+            <h3 class="agent-orchestrator" style="color: var(--vena-orchestrator);">The Orchestrator</h3>
+            <p>Main Agent — Claude<br/>Architecture, code, coordination</p>
+          </div>
+          <div class="card" style="border-left: 3px solid var(--vena-nova); text-align: center;">
+            <div style="font-size: 2em; margin-bottom: 8px;">🎨</div>
+            <h3 style="color: var(--vena-nova);">Nova</h3>
+            <p>Design Lead<br/>UI/UX, visual language, tokens</p>
+          </div>
+          <div class="card" style="border-left: 3px solid var(--vena-viktor); text-align: center;">
+            <div style="font-size: 2em; margin-bottom: 8px;">🔍</div>
+            <h3 style="color: var(--vena-viktor);">Viktor</h3>
+            <p>QA Team Lead<br/>9-step pipeline, security gate</p>
+          </div>
+          <div class="card" style="border-left: 3px solid var(--vena-silas); text-align: center;">
+            <div style="font-size: 2em; margin-bottom: 8px;">💰</div>
+            <h3 style="color: var(--vena-silas);">Silas Sterling</h3>
+            <p>Budget &amp; Resource Lead<br/>Vault &amp; Valve, cost tracking</p>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 32px;">
+          <p style="font-size: 0.9em; color: var(--vena-text);">Directed by <strong>Eitan</strong> — the Director</p>
+          <div style="width: 80px; height: 3px; background: linear-gradient(90deg, var(--vena-orchestrator), var(--vena-nova), var(--vena-viktor), var(--vena-silas)); margin: 16px auto;"></div>
+          <p style="font-size: 0.7em; color: var(--vena-muted);">Project Vena v1.0 — Sprint 1</p>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 23: Glossary -->
+      <!-- ============================================ -->
+      <section>
+        <h2>Glossary</h2>
+        <div class="two-col">
+          <table style="font-size:0.5em">
+            <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+            <tbody>
+              <tr><td>App Router</td><td>Next.js routing where folders = routes</td></tr>
+              <tr><td>Client Component</td><td>Runs in browser, marked <span class="inline-code">"use client"</span></td></tr>
+              <tr><td>CSS Custom Property</td><td>CSS variable, e.g. <span class="inline-code">--vena-bg</span></td></tr>
+              <tr><td>Design Token</td><td>Named design value (color, spacing, font)</td></tr>
+              <tr><td>Error Boundary</td><td>Component that catches runtime errors</td></tr>
+              <tr><td>JSX</td><td>HTML-like markup in JavaScript</td></tr>
+              <tr><td>JSONL</td><td>One JSON object per line</td></tr>
+              <tr><td>node-pty</td><td>Native module for pseudo-terminals</td></tr>
+              <tr><td>PTY</td><td>Pseudo-terminal bridging process to I/O</td></tr>
+            </tbody>
+          </table>
+          <table style="font-size:0.5em">
+            <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+            <tbody>
+              <tr><td>Server Component</td><td>Runs on server, ships zero JS</td></tr>
+              <tr><td>Skeleton</td><td>Placeholder UI while content loads</td></tr>
+              <tr><td>Slug</td><td>URL-safe name ("Nova" → "nova")</td></tr>
+              <tr><td>Strict Mode</td><td>Max TypeScript type safety</td></tr>
+              <tr><td>Suspense</td><td>React fallback while async loads</td></tr>
+              <tr><td>Utility-First CSS</td><td>Small, single-purpose classes</td></tr>
+              <tr><td>V&V</td><td>Vault & Valve — budget system</td></tr>
+              <tr><td>WebSocket</td><td>Real-time bidirectional protocol</td></tr>
+              <tr><td>xterm.js</td><td>Terminal emulator for browsers</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 24: End -->
+      <!-- ============================================ -->
+      <section class="section-divider" data-background-color="#08080d">
+        <div style="padding-top: 80px;">
+          <h2 style="font-size: 2.5em;">Thank You</h2>
+          <div style="width: 120px; height: 3px; background: linear-gradient(90deg, var(--vena-accent), var(--vena-nova), var(--vena-silas)); margin: 24px auto;"></div>
+          <p style="font-size: 0.9em; color: var(--vena-secondary);">Project Vena v1.0 — Sprint 1 Complete</p>
+          <p style="font-size: 0.7em; color: var(--vena-muted); margin-top: 32px;">
+            Prepared by The Orchestrator<br/>
+            Navigate: Arrow keys or swipe &nbsp;|&nbsp; Overview: <span class="inline-code">Esc</span> &nbsp;|&nbsp; Fullscreen: <span class="inline-code">F</span>
+          </p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: 'c/t',
+      width: 1100,
+      height: 700,
+      margin: 0.12,
+      minScale: 0.2,
+      maxScale: 1.6,
+      transition: 'fade',
+      transitionSpeed: 'fast',
+      backgroundTransition: 'fade',
+      center: false,
+      plugins: [RevealHighlight],
+      highlight: {
+        highlightOnLoad: true
+      }
+    });
+  </script>
+</body>
+</html>

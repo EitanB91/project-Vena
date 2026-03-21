@@ -1,0 +1,95 @@
+- generic [active] [ref=e1]:
+  - complementary [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e5]: Vena
+      - generic [ref=e6]: v0.1
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /
+        - img [ref=e9]
+        - text: Dashboard
+      - link "Agents" [ref=e14] [cursor=pointer]:
+        - /url: /agents
+        - img [ref=e15]
+        - text: Agents
+      - link "Budget" [ref=e20] [cursor=pointer]:
+        - /url: /budget
+        - img [ref=e21]
+        - text: Budget
+      - link "Roadmap" [ref=e23] [cursor=pointer]:
+        - /url: /roadmap
+        - img [ref=e24]
+        - text: Roadmap
+      - link "Sessions" [ref=e26] [cursor=pointer]:
+        - /url: /sessions
+        - img [ref=e27]
+        - text: Sessions
+      - link "Chat" [ref=e30] [cursor=pointer]:
+        - /url: /chat
+        - img [ref=e31]
+        - text: Chat
+    - paragraph [ref=e34]: Project Vena
+  - main [ref=e35]:
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - heading "Budget" [level=1] [ref=e38]
+        - paragraph [ref=e39]: Vault & Valve — balance, usage, and alert status.
+      - generic [ref=e40]:
+        - generic [ref=e41]:
+          - paragraph [ref=e42]: Remaining Balance
+          - paragraph [ref=e43]: $4.87
+        - generic [ref=e44]:
+          - paragraph [ref=e45]: Usable Budget
+          - paragraph [ref=e46]: $4.00
+          - paragraph [ref=e47]: 100% of monthly cap
+        - generic [ref=e48]:
+          - paragraph [ref=e49]: Floor (Reserved)
+          - paragraph [ref=e50]: $0.87
+          - paragraph [ref=e51]: Untouchable
+        - generic [ref=e52]:
+          - paragraph [ref=e53]: Alert Level
+          - generic [ref=e57]: Normal
+      - generic [ref=e58]:
+        - generic [ref=e59]:
+          - heading "Budget Breakdown" [level=2] [ref=e60]
+          - generic [ref=e61]:
+            - application [ref=e64]
+            - generic:
+              - generic:
+                - paragraph: $4.87
+                - paragraph: USD
+          - generic [ref=e65]:
+            - generic [ref=e68]: Available
+            - generic [ref=e71]: Floor
+        - generic [ref=e72]:
+          - heading "Claude Code Usage" [level=2] [ref=e73]
+          - generic [ref=e74]:
+            - generic [ref=e75]:
+              - generic [ref=e76]: Plan
+              - generic [ref=e77]: pro
+            - generic [ref=e79]:
+              - generic [ref=e80]: Session Usage
+              - generic [ref=e81]: 10%
+            - generic [ref=e85]:
+              - generic [ref=e86]: Weekly Usage
+              - generic [ref=e87]: 55%
+            - generic [ref=e90]:
+              - paragraph [ref=e91]: "Session resets: Mar 17, 5:00 AM"
+              - paragraph [ref=e92]: "Weekly resets: Mar 17, 10:00 PM"
+              - paragraph [ref=e93]: Soft limits TBD at next sprint planning.
+      - generic [ref=e94]:
+        - heading "Alert Thresholds & Authority" [level=2] [ref=e95]
+        - generic [ref=e96]:
+          - generic [ref=e97]:
+            - text: Warn
+            - paragraph [ref=e98]: ≤ 30% usable remaining
+          - generic [ref=e99]:
+            - text: Critical
+            - paragraph [ref=e100]: ≤ 10% usable remaining
+          - generic [ref=e101]:
+            - text: At Floor
+            - paragraph [ref=e102]: director only
+            - paragraph [ref=e103]: When any API balance reaches its floor, ALL API calls for that service are locked. Only the Director can authorize further usage.
+  - button "Open Next.js Dev Tools" [ref=e109] [cursor=pointer]:
+    - img [ref=e110]
+  - alert [ref=e113]

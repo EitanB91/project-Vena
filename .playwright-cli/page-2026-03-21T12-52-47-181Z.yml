@@ -1,0 +1,148 @@
+- application [ref=e2]:
+  - generic:
+    - text: ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸
+    - generic:
+      - heading [level=2]: Sprint 1 — By the Numbers
+      - generic:
+        - generic:
+          - generic: "6"
+          - generic: Phases Completed
+        - generic:
+          - generic: "38"
+          - generic: TypeScript Files
+        - generic:
+          - generic: 54+
+          - generic: Unit Tests
+        - generic:
+          - generic: "8"
+          - generic: Security Measures
+      - generic:
+        - generic:
+          - generic: "9"
+          - generic: QA Pipeline Steps
+        - generic:
+          - generic: 20+
+          - generic: Design Tokens
+        - generic:
+          - generic: 3K+
+          - generic: Lines of Code
+        - generic:
+          - generic: "4"
+          - generic: Team Members
+      - generic:
+        - generic:
+          - paragraph:
+            - strong: "0"
+            - text: Database Tables
+          - paragraph: (by design)
+        - generic:
+          - paragraph:
+            - strong: "0"
+            - text: Cloud Services
+          - paragraph: (by design)
+    - generic:
+      - heading [level=2]: The Team
+      - generic:
+        - generic:
+          - generic: 🎯
+          - heading [level=3]: The Orchestrator
+          - paragraph: Main Agent — Claude Architecture, code, coordination
+        - generic:
+          - generic: 🎨
+          - heading [level=3]: Nova
+          - paragraph: Design Lead UI/UX, visual language, tokens
+        - generic:
+          - generic: 🔍
+          - heading [level=3]: Viktor
+          - paragraph: QA Team Lead 9-step pipeline, security gate
+        - generic:
+          - generic: 💰
+          - heading [level=3]: Silas Sterling
+          - paragraph: Budget & Resource Lead Vault & Valve, cost tracking
+      - generic:
+        - paragraph:
+          - text: Directed by
+          - strong: Eitan
+          - text: — the Director
+        - paragraph: Project Vena v1.0 — Sprint 1
+    - generic [ref=e3]:
+      - heading "Glossary" [level=2] [ref=e4]
+      - generic [ref=e5]:
+        - table [ref=e6]:
+          - rowgroup [ref=e7]:
+            - row "Term Definition" [ref=e8]:
+              - columnheader "Term" [ref=e9]
+              - columnheader "Definition" [ref=e10]
+          - rowgroup [ref=e11]:
+            - row "App Router Next.js routing where folders = routes" [ref=e12]:
+              - cell "App Router" [ref=e13]
+              - cell "Next.js routing where folders = routes" [ref=e14]
+            - row "Client Component Runs in browser, marked \"use client\"" [ref=e15]:
+              - cell "Client Component" [ref=e16]
+              - cell "Runs in browser, marked \"use client\"" [ref=e17]
+            - row "CSS Custom Property CSS variable, e.g. --vena-bg" [ref=e18]:
+              - cell "CSS Custom Property" [ref=e19]
+              - cell "CSS variable, e.g. --vena-bg" [ref=e20]
+            - row "Design Token Named design value (color, spacing, font)" [ref=e21]:
+              - cell "Design Token" [ref=e22]
+              - cell "Named design value (color, spacing, font)" [ref=e23]
+            - row "Error Boundary Component that catches runtime errors" [ref=e24]:
+              - cell "Error Boundary" [ref=e25]
+              - cell "Component that catches runtime errors" [ref=e26]
+            - row "JSX HTML-like markup in JavaScript" [ref=e27]:
+              - cell "JSX" [ref=e28]
+              - cell "HTML-like markup in JavaScript" [ref=e29]
+            - row "JSONL One JSON object per line" [ref=e30]:
+              - cell "JSONL" [ref=e31]
+              - cell "One JSON object per line" [ref=e32]
+            - row "node-pty Native module for pseudo-terminals" [ref=e33]:
+              - cell "node-pty" [ref=e34]
+              - cell "Native module for pseudo-terminals" [ref=e35]
+            - row "PTY Pseudo-terminal bridging process to I/O" [ref=e36]:
+              - cell "PTY" [ref=e37]
+              - cell "Pseudo-terminal bridging process to I/O" [ref=e38]
+        - table [ref=e39]:
+          - rowgroup [ref=e40]:
+            - row "Term Definition" [ref=e41]:
+              - columnheader "Term" [ref=e42]
+              - columnheader "Definition" [ref=e43]
+          - rowgroup [ref=e44]:
+            - row "Server Component Runs on server, ships zero JS" [ref=e45]:
+              - cell "Server Component" [ref=e46]
+              - cell "Runs on server, ships zero JS" [ref=e47]
+            - row "Skeleton Placeholder UI while content loads" [ref=e48]:
+              - cell "Skeleton" [ref=e49]
+              - cell "Placeholder UI while content loads" [ref=e50]
+            - row "Slug URL-safe name (\"Nova\" → \"nova\")" [ref=e51]:
+              - cell "Slug" [ref=e52]
+              - cell "URL-safe name (\"Nova\" → \"nova\")" [ref=e53]
+            - row "Strict Mode Max TypeScript type safety" [ref=e54]:
+              - cell "Strict Mode" [ref=e55]
+              - cell "Max TypeScript type safety" [ref=e56]
+            - row "Suspense React fallback while async loads" [ref=e57]:
+              - cell "Suspense" [ref=e58]
+              - cell "React fallback while async loads" [ref=e59]
+            - row "Utility-First CSS Small, single-purpose classes" [ref=e60]:
+              - cell "Utility-First CSS" [ref=e61]
+              - cell "Small, single-purpose classes" [ref=e62]
+            - row "V&V Vault & Valve — budget system" [ref=e63]:
+              - cell "V&V" [ref=e64]
+              - cell "Vault & Valve — budget system" [ref=e65]
+            - row "WebSocket Real-time bidirectional protocol" [ref=e66]:
+              - cell "WebSocket" [ref=e67]
+              - cell "Real-time bidirectional protocol" [ref=e68]
+            - row "xterm.js Terminal emulator for browsers" [ref=e69]:
+              - cell "xterm.js" [ref=e70]
+              - cell "Terminal emulator for browsers" [ref=e71]
+    - generic:
+      - generic:
+        - heading [level=2]: Thank You
+        - paragraph: Project Vena v1.0 — Sprint 1 Complete
+        - paragraph: "Prepared by The Orchestrator Navigate: Arrow keys or swipe | Overview: Esc | Fullscreen: F"
+  - link "23 / 24" [ref=e76] [cursor=pointer]:
+    - /url: "#/22"
+  - complementary:
+    - button "previous slide" [ref=e77] [cursor=pointer]
+    - button "next slide" [ref=e79] [cursor=pointer]
+  - text: Speaker notes
+  - generic [ref=e83]: Glossary Term Definition App Router Next.js routing where folders = routes Client Component Runs in browser, marked "use client" CSS Custom Property CSS variable, e.g. --vena-bg Design Token Named design value (color, spacing, font) Error Boundary Component that catches runtime errors JSX HTML-like markup in JavaScript JSONL One JSON object per line node-pty Native module for pseudo-terminals PTY Pseudo-terminal bridging process to I/O Term Definition Server Component Runs on server, ships zero JS Skeleton Placeholder UI while content loads Slug URL-safe name ("Nova" → "nova") Strict Mode Max TypeScript type safety Suspense React fallback while async loads Utility-First CSS Small, single-purpose classes V&V Vault & Valve — budget system WebSocket Real-time bidirectional protocol xterm.js Terminal emulator for browsers

@@ -1,0 +1,38 @@
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e7] [cursor=pointer]:
+    - img [ref=e8]
+  - complementary [ref=e11]:
+    - generic [ref=e12]:
+      - generic [ref=e14]: Vena
+      - generic [ref=e15]: v0.1
+    - navigation [ref=e16]:
+      - link "Dashboard" [ref=e17] [cursor=pointer]:
+        - /url: /
+        - img [ref=e18]
+        - text: Dashboard
+      - link "Agents" [ref=e23] [cursor=pointer]:
+        - /url: /agents
+        - img [ref=e24]
+        - text: Agents
+      - link "Budget" [ref=e29] [cursor=pointer]:
+        - /url: /budget
+        - img [ref=e30]
+        - text: Budget
+      - link "Roadmap" [ref=e32] [cursor=pointer]:
+        - /url: /roadmap
+        - img [ref=e33]
+        - text: Roadmap
+      - link "Sessions" [ref=e35] [cursor=pointer]:
+        - /url: /sessions
+        - img [ref=e36]
+        - text: Sessions
+      - link "Chat" [ref=e39] [cursor=pointer]:
+        - /url: /chat
+        - img [ref=e40]
+        - text: Chat
+    - paragraph [ref=e43]: Project Vena
+  - main [ref=e44]:
+    - generic [ref=e46]:
+      - heading "404" [level=1] [ref=e47]
+      - heading "This page could not be found." [level=2] [ref=e49]
+  - alert [ref=e50]

@@ -1,0 +1,37 @@
+[     329ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/agents/silas:0
+[   47058ms] [ERROR] ./src/components/AgentCard.tsx:3:1
+Module not found: Can't resolve '@/lib/slugify'
+  1 | import Link from 'next/link';
+  2 | import type { AgentProfile } from '@/types';
+> 3 | import { slugify } from '@/lib/slugify';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | // ---------------------------------------------------------------------------
+  6 | // Status helpers
+
+Import map: aliased to relative './src/lib/slugify' inside of [project]/
+
+Import trace:
+  Server Component:
+    ./src/components/AgentCard.tsx
+    ./src/app/agents/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:3272
+[   47372ms] [ERROR] ./src/components/AgentCard.tsx:3:1
+Module not found: Can't resolve '@/lib/slugify'
+  1 | import Link from 'next/link';
+  2 | import type { AgentProfile } from '@/types';
+> 3 | import { slugify } from '@/lib/slugify';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | // ---------------------------------------------------------------------------
+  6 | // Status helpers
+
+Import map: aliased to relative './src/lib/slugify' inside of [project]/
+
+Import trace:
+  Server Component:
+    ./src/components/AgentCard.tsx
+    ./src/app/agents/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_115brz8._.js:3272

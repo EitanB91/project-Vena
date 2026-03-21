@@ -1,0 +1,53 @@
+- generic [active] [ref=e1]:
+  - complementary [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e5]: Vena
+      - generic [ref=e6]: v0.1
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /
+        - img [ref=e9]
+        - text: Dashboard
+      - link "Agents" [ref=e14] [cursor=pointer]:
+        - /url: /agents
+        - img [ref=e15]
+        - text: Agents
+      - link "Budget" [ref=e20] [cursor=pointer]:
+        - /url: /budget
+        - img [ref=e21]
+        - text: Budget
+      - link "Roadmap" [ref=e23] [cursor=pointer]:
+        - /url: /roadmap
+        - img [ref=e24]
+        - text: Roadmap
+      - link "Sessions" [ref=e26] [cursor=pointer]:
+        - /url: /sessions
+        - img [ref=e27]
+        - text: Sessions
+      - link "Chat" [ref=e30] [cursor=pointer]:
+        - /url: /chat
+        - img [ref=e31]
+        - text: Chat
+    - paragraph [ref=e34]: Project Vena
+  - main [ref=e35]:
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - heading "Chat" [level=1] [ref=e39]
+          - paragraph [ref=e40]: CLI passthrough — embedded terminal for Claude interaction.
+        - generic [ref=e41]:
+          - generic [ref=e60]: pty-2-mmz3ul2u
+          - generic [ref=e44]: Connected
+          - button "New Session" [ref=e45]
+      - generic [ref=e64]:
+        - textbox "Terminal input" [ref=e65]
+        - generic:
+          - generic:
+            - generic: PS C:\Users\user\Desktop\Ai\Claude\project-Vena>
+      - generic [ref=e47]:
+        - generic [ref=e48]: claude to start a Claude CLI session
+        - generic [ref=e49]: "|"
+        - generic [ref=e50]: PTY server must be running on port 3001
+  - button "Open Next.js Dev Tools" [ref=e56] [cursor=pointer]:
+    - img [ref=e57]
+  - alert [ref=e66]

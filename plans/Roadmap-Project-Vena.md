@@ -93,17 +93,72 @@ Vena is a local web dashboard for monitoring Claude Code projects. It reads `.cl
 - [x] Director Checkpoint #6
 <!-- /vena:phase -->
 
-<!-- vena:phase id="6" status="next" -->
+<!-- vena:phase id="6" status="complete" -->
 ### Phase 6 — Polish & v1.0
-**Status:** Planned
+**Status:** Complete (2026-03-21)
 **Goal:** Responsive layout, animations, error states, documentation.
 
-- [ ] Responsive design pass
-- [ ] Loading states and error boundaries
-- [ ] Empty state designs
-- [ ] README.md with setup instructions
-- [ ] Final Viktor QA review
-- [ ] Director sign-off → v1.0
+- [x] Responsive design pass (collapsible mobile sidebar, responsive padding)
+- [x] Loading states (Skeleton components matching page layouts)
+- [x] Error boundaries (ErrorDisplay component)
+- [x] Empty state designs (EmptyState component, compact inline variants)
+- [x] README.md with setup instructions
+- [x] Viktor QA review — verdict: PASS (2 rounds)
+- [x] Director testing — verdict: FAIL (data freshness issues → Sprint 2)
+<!-- /vena:phase -->
+
+<!-- vena:phase id="7" status="next" -->
+### Phase 7 — Research & Foundation Fixes
+**Status:** In Progress
+**Goal:** Research Claude Code telemetry, fix lint errors, refactor agent status to data layer.
+
+- [ ] Research: Claude Code local telemetry (P0 — Director mandate)
+- [ ] Research: Data refresh patterns for Next.js App Router
+- [ ] Research: Session logger hook diagnosis
+- [ ] Fix: All 5 lint errors (Date.now purity, setState in effect, unused var)
+- [ ] Fix: Move agent status computation to data layer
+- [ ] QA checkpoint
+- [ ] GATE: Phase 7 team meeting — finalize Sprint 2 roadmap based on findings
+<!-- /vena:phase -->
+
+<!-- vena:phase id="8" status="planned" -->
+### Phase 8 — Live Data Pipeline
+**Status:** Planned
+**Goal:** Real-time data updates — API routes, client polling, telemetry reader, session logger fix.
+
+- [ ] API Route endpoints for client polling
+- [ ] Telemetry reader for V&V budget ledger
+- [ ] Fix session logger hook
+- [ ] Client-side polling components (usePolling hook)
+- [ ] Visual heartbeat indicators ("Updated Xs ago")
+- [ ] Session titles and summaries
+- [ ] Date format updates (DD-MM-YYYY)
+<!-- /vena:phase -->
+
+<!-- vena:phase id="9" status="planned" -->
+### Phase 9 — Chat & UX Polish
+**Status:** Planned
+**Goal:** Chatbox UI, PTY auto-start, VenaOS branding, interactive roadmap.
+
+- [ ] Chatbox UI component (split view with terminal)
+- [ ] PTY server auto-start with npm run dev
+- [ ] VenaOS branding & version text polish
+- [ ] Roadmap phase expand/collapse
+- [ ] Phase detail metadata panels
+<!-- /vena:phase -->
+
+<!-- vena:phase id="10" status="planned" -->
+### Phase 10 — QA, Stabilization & MVP Release
+**Status:** Planned
+**Goal:** Comprehensive QA, Playwright e2e tests, Director testing, v0.2.0-mvp release.
+
+- [ ] Full Viktor QA pipeline (all pages + new features)
+- [ ] Playwright end-to-end test suite
+- [ ] Fix all QA findings
+- [ ] Budget reconciliation
+- [ ] Performance pass
+- [ ] Director testing round 2
+- [ ] MVP release preparation (v0.2.0)
 <!-- /vena:phase -->
 
 ## Feature Registry
@@ -120,4 +175,17 @@ Vena is a local web dashboard for monitoring Claude Code projects. It reads `.cl
 | Roadmap viewer | 4 | High | Complete |
 | Charts (Recharts) | 4 | Medium | Complete |
 | CLI chat (xterm.js) | 5 | Medium | Complete |
-| Responsive design | 6 | Medium | Planned |
+| Responsive design | 6 | Medium | Complete |
+| Telemetry research | 7 | Critical | In Progress |
+| Lint fixes & agent status refactor | 7 | Critical | Planned |
+| API route endpoints | 8 | Critical | Planned |
+| Client-side polling | 8 | Critical | Planned |
+| Telemetry reader | 8 | High | Planned |
+| Session logger fix | 8 | High | Planned |
+| Visual heartbeat indicators | 8 | Medium | Planned |
+| Chatbox UI | 9 | High | Planned |
+| PTY auto-start | 9 | Medium | Planned |
+| VenaOS branding | 9 | Low | Planned |
+| Roadmap expand/collapse | 9 | Medium | Planned |
+| Playwright e2e tests | 10 | Critical | Planned |
+| MVP release (v0.2.0) | 10 | Critical | Planned |

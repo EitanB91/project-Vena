@@ -1,0 +1,59 @@
+- generic [active] [ref=e1]:
+  - complementary [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e5]: Vena
+      - generic [ref=e6]: v0.1
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /
+        - img [ref=e9]
+        - text: Dashboard
+      - link "Agents" [ref=e14] [cursor=pointer]:
+        - /url: /agents
+        - img [ref=e15]
+        - text: Agents
+      - link "Budget" [ref=e20] [cursor=pointer]:
+        - /url: /budget
+        - img [ref=e21]
+        - text: Budget
+      - link "Roadmap" [ref=e23] [cursor=pointer]:
+        - /url: /roadmap
+        - img [ref=e24]
+        - text: Roadmap
+      - link "Sessions" [ref=e26] [cursor=pointer]:
+        - /url: /sessions
+        - img [ref=e27]
+        - text: Sessions
+      - link "Chat" [ref=e30] [cursor=pointer]:
+        - /url: /chat
+        - img [ref=e31]
+        - text: Chat
+    - paragraph [ref=e34]: Project Vena
+  - main [ref=e35]:
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - heading "Dashboard" [level=1] [ref=e38]
+        - paragraph [ref=e39]: Project overview and status at a glance.
+      - generic [ref=e40]:
+        - generic [ref=e41]:
+          - paragraph [ref=e42]: Phase
+          - paragraph [ref=e43]: "1"
+          - paragraph [ref=e44]: Shell & Navigation
+        - generic [ref=e45]:
+          - paragraph [ref=e46]: Agents
+          - paragraph [ref=e47]: "4"
+          - paragraph [ref=e48]: Orchestrator, Nova, Viktor, Silas
+        - generic [ref=e49]:
+          - paragraph [ref=e50]: API Budget
+          - paragraph [ref=e51]: $4.87
+          - paragraph [ref=e52]: Normal
+        - generic [ref=e53]:
+          - paragraph [ref=e54]: Sessions
+          - paragraph [ref=e55]: —
+          - paragraph [ref=e56]: Tracking starts Phase 2
+      - generic [ref=e58]:
+        - generic [ref=e61]: systems online
+        - paragraph [ref=e62]: Live data widgets will populate in later phases.
+  - button "Open Next.js Dev Tools" [ref=e68] [cursor=pointer]:
+    - img [ref=e69]
+  - alert [ref=e72]

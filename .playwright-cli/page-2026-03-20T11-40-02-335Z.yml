@@ -1,0 +1,141 @@
+- generic [active] [ref=e1]:
+  - complementary [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e5]: Vena
+      - generic [ref=e6]: v0.1
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /
+        - img [ref=e9]
+        - text: Dashboard
+      - link "Agents" [ref=e14] [cursor=pointer]:
+        - /url: /agents
+        - img [ref=e15]
+        - text: Agents
+      - link "Budget" [ref=e20] [cursor=pointer]:
+        - /url: /budget
+        - img [ref=e21]
+        - text: Budget
+      - link "Roadmap" [ref=e23] [cursor=pointer]:
+        - /url: /roadmap
+        - img [ref=e24]
+        - text: Roadmap
+      - link "Sessions" [ref=e26] [cursor=pointer]:
+        - /url: /sessions
+        - img [ref=e27]
+        - text: Sessions
+      - link "Chat" [ref=e30] [cursor=pointer]:
+        - /url: /chat
+        - img [ref=e31]
+        - text: Chat
+    - paragraph [ref=e34]: Project Vena
+  - main [ref=e35]:
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - heading "Sessions" [level=1] [ref=e38]
+        - paragraph [ref=e39]: Session history, timeline, and usage categories.
+      - generic [ref=e40]:
+        - generic [ref=e41]:
+          - generic [ref=e42]: "10"
+          - generic [ref=e43]: Sessions
+        - generic [ref=e44]:
+          - generic [ref=e45]: "1616.3"
+          - generic [ref=e46]: Total Minutes
+        - generic [ref=e47]:
+          - generic [ref=e48]: "2"
+          - generic [ref=e49]: Days Active
+      - generic [ref=e50]:
+        - heading "Daily Activity" [level=2] [ref=e51]
+        - generic [ref=e54]:
+          - generic [ref=e57]: Sessions
+          - generic [ref=e60]: Minutes
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - heading "Wed, Mar 18" [level=3] [ref=e64]
+            - generic [ref=e65]: 2 sessions · 0.0 min
+          - generic [ref=e67]:
+            - generic [ref=e69]:
+              - generic [ref=e71]:
+                - generic [ref=e73]: 4c2356f8
+                - generic [ref=e74]: 9:21 PM → running
+              - generic [ref=e75]:
+                - generic [ref=e76]: active
+                - generic [ref=e77]: hook
+            - generic [ref=e79]:
+              - generic [ref=e80]:
+                - generic [ref=e81]:
+                  - generic [ref=e83]: syntheti
+                  - generic [ref=e84]: 2:00 AM → running
+                - generic [ref=e85]:
+                  - generic [ref=e86]: O6-1
+                  - generic [ref=e87]: code_build
+                  - generic [ref=e88]: qa
+                  - generic [ref=e89]: admin
+                  - paragraph [ref=e90]: "Phase O6-1 Architecture & Data Model complete. history.js factory refactor, 5 animation skeleton files, AppState extension, IPC stub, script load order, 2 test suites (87 total passing). Viktor: BLOCKED on first pass (B1 History regression), PASS WITH NOTES after fix. Memory files updated. Phase O6-2 queued for next session."
+              - generic [ref=e91]:
+                - generic [ref=e92]: active
+                - generic [ref=e93]: orchestrator
+        - generic [ref=e94]:
+          - generic [ref=e95]:
+            - heading "Tue, Mar 17" [level=3] [ref=e96]
+            - generic [ref=e97]: 8 sessions · 1616.3 min
+          - generic [ref=e99]:
+            - generic [ref=e101]:
+              - generic [ref=e103]:
+                - generic [ref=e104]: fa776e45
+                - generic [ref=e105]: 12:10 AM → 9:22 PM
+              - generic [ref=e106]:
+                - generic [ref=e107]: 1271.8m
+                - generic [ref=e108]: hook
+            - generic [ref=e110]:
+              - generic [ref=e112]:
+                - generic [ref=e114]: f1b73ae1
+                - generic [ref=e115]: 11:36 PM → running
+              - generic [ref=e116]:
+                - generic [ref=e117]: active
+                - generic [ref=e118]: hook
+            - generic [ref=e120]:
+              - generic [ref=e122]:
+                - generic [ref=e123]: 44dffaa0
+                - generic [ref=e124]: 11:28 PM → 11:28 PM
+              - generic [ref=e125]:
+                - generic [ref=e126]: 0.1m
+                - generic [ref=e127]: hook
+            - generic [ref=e129]:
+              - generic [ref=e131]:
+                - generic [ref=e133]: 07c093bd
+                - generic [ref=e134]: 11:28 PM → running
+              - generic [ref=e135]:
+                - generic [ref=e136]: active
+                - generic [ref=e137]: hook
+            - generic [ref=e139]:
+              - generic [ref=e141]:
+                - generic [ref=e142]: 5e3a3c65
+                - generic [ref=e143]: 11:11 PM → 12:08 AM
+              - generic [ref=e144]:
+                - generic [ref=e145]: 57.0m
+                - generic [ref=e146]: hook
+            - generic [ref=e148]:
+              - generic [ref=e150]:
+                - generic [ref=e151]: 82a2414f
+                - generic [ref=e152]: 11:05 PM → 11:28 PM
+              - generic [ref=e153]:
+                - generic [ref=e154]: 23.0m
+                - generic [ref=e155]: hook
+            - generic [ref=e157]:
+              - generic [ref=e159]:
+                - generic [ref=e161]: e1f13594
+                - generic [ref=e162]: 11:03 PM → running
+              - generic [ref=e163]:
+                - generic [ref=e164]: active
+                - generic [ref=e165]: hook
+            - generic [ref=e167]:
+              - generic [ref=e169]:
+                - generic [ref=e170]: dd724985
+                - generic [ref=e171]: 7:44 PM → 12:08 AM
+              - generic [ref=e172]:
+                - generic [ref=e173]: 264.4m
+                - generic [ref=e174]: hook
+  - button "Open Next.js Dev Tools" [ref=e180] [cursor=pointer]:
+    - img [ref=e181]

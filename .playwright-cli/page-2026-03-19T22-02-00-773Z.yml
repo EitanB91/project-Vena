@@ -1,0 +1,94 @@
+- generic [active] [ref=e1]:
+  - complementary [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e5]: Vena
+      - generic [ref=e6]: v0.1
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /
+        - img [ref=e9]
+        - text: Dashboard
+      - link "Agents" [ref=e14] [cursor=pointer]:
+        - /url: /agents
+        - img [ref=e15]
+        - text: Agents
+      - link "Budget" [ref=e20] [cursor=pointer]:
+        - /url: /budget
+        - img [ref=e21]
+        - text: Budget
+      - link "Roadmap" [ref=e23] [cursor=pointer]:
+        - /url: /roadmap
+        - img [ref=e24]
+        - text: Roadmap
+      - link "Sessions" [ref=e26] [cursor=pointer]:
+        - /url: /sessions
+        - img [ref=e27]
+        - text: Sessions
+      - link "Chat" [ref=e30] [cursor=pointer]:
+        - /url: /chat
+        - img [ref=e31]
+        - text: Chat
+    - paragraph [ref=e34]: Project Vena
+  - main [ref=e35]:
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - heading "Agents" [level=1] [ref=e38]
+        - paragraph [ref=e39]: Team members, identities, and memory snapshots.
+      - generic [ref=e40]:
+        - generic [ref=e41]:
+          - generic [ref=e42]: "4"
+          - generic [ref=e43]: Total Agents
+        - generic [ref=e44]:
+          - generic [ref=e46]: "3"
+          - generic [ref=e47]: Active
+      - generic [ref=e48]:
+        - link "Identity The Master Web Architect No data No memory file" [ref=e49] [cursor=pointer]:
+          - /url: /agents/identity
+          - generic [ref=e52]:
+            - heading "Identity" [level=3] [ref=e53]
+            - paragraph [ref=e54]: The Master Web Architect
+          - generic [ref=e55]:
+            - generic [ref=e58]: No data
+            - generic [ref=e59]: No memory file
+        - link "Nova Visual Design Lead “this is a disaster” “Look at this curve — it's not just a line, it's the character's entire history in one stroke. Can you feel that?” Ages of War Pixel Art Tool Project Vena Active Last seen 16m ago" [ref=e60] [cursor=pointer]:
+          - /url: /agents/nova
+          - generic [ref=e63]:
+            - heading "Nova" [level=3] [ref=e64]
+            - paragraph [ref=e65]: Visual Design Lead
+          - generic [ref=e66]:
+            - paragraph [ref=e67]: “this is a disaster”
+            - paragraph [ref=e68]: “Look at this curve — it's not just a line, it's the character's entire history in one stroke. Can you feel that?”
+          - generic [ref=e69]:
+            - generic [ref=e70]: Ages of War
+            - generic [ref=e71]: Pixel Art Tool
+            - generic [ref=e72]: Project Vena
+          - generic [ref=e73]:
+            - generic [ref=e76]: Active
+            - generic [ref=e77]: Last seen 16m ago
+        - link "Viktor QA Team Lead “Dis function... it do too many tings. Is like borscht with ketchup. Why. Just... why.” “You know why Russian calendar have no bugs? Because every day is exception handling. Ha. Ha. Now fix dis.” Pixel Art Tool Project Vena Active Last seen 18m ago" [ref=e78] [cursor=pointer]:
+          - /url: /agents/viktor
+          - generic [ref=e81]:
+            - heading "Viktor" [level=3] [ref=e82]
+            - paragraph [ref=e83]: QA Team Lead
+          - generic [ref=e84]:
+            - paragraph [ref=e85]: “Dis function... it do too many tings. Is like borscht with ketchup. Why. Just... why.”
+            - paragraph [ref=e86]: “You know why Russian calendar have no bugs? Because every day is exception handling. Ha. Ha. Now fix dis.”
+          - generic [ref=e87]:
+            - generic [ref=e88]: Pixel Art Tool
+            - generic [ref=e89]: Project Vena
+          - generic [ref=e90]:
+            - generic [ref=e93]: Active
+            - generic [ref=e94]: Last seen 18m ago
+        - link "Silas \"Penny-Pincher\" Sterling Budget & Resource Lead Pixel Art Tool Project Vena Active Last seen 15m ago" [ref=e95] [cursor=pointer]:
+          - /url: /agents/silas "penny-pincher" sterling
+          - generic [ref=e98]:
+            - heading "Silas \"Penny-Pincher\" Sterling" [level=3] [ref=e99]
+            - paragraph [ref=e100]: Budget & Resource Lead
+          - generic [ref=e101]:
+            - generic [ref=e102]: Pixel Art Tool
+            - generic [ref=e103]: Project Vena
+          - generic [ref=e104]:
+            - generic [ref=e107]: Active
+            - generic [ref=e108]: Last seen 15m ago
+  - button "Open Next.js Dev Tools" [ref=e114] [cursor=pointer]:
+    - img [ref=e115]

@@ -160,3 +160,17 @@ Convention note:
 - Total findings: F1-F2 + 8 security + 4 required + ~12 notes = ~26 findings caught
 - Zero bugs shipped to git. QA pipeline is battle-tested across 6 phases.
 - All phases passed with either PASS or PASS WITH NOTES → fixes → PASS.
+
+---
+
+## Sprint 1 Retrospective (2026-03-21)
+See full retro: `memory/project_sprint1_retro.md`
+
+- **Best:** Phase 5 security review — 8 findings caught, pipeline grew 6→9 steps, zero bugs shipped.
+- **Worst:** Missed `Date.now()` purity violation in Server Components. Director found it via lint. Should have caught it.
+
+## Sprint 2 — MVP Direction
+v1.0 not releasing publicly. Sprint 2 is MVP sprint. Viktor's key roles:
+- **Phase 7:** Verify lint error fixes (Date.now purity, setState in effect, unused var)
+- **Phase 10:** Full QA pipeline on all pages + Playwright end-to-end automated tests
+- **Known debt:** Director's testing found 5 lint errors Viktor should have caught pre-push. Tighten lint checks in QA pipeline.

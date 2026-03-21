@@ -1,0 +1,54 @@
+- application [ref=e2]:
+  - generic:
+    - generic [ref=e4]:
+      - heading "Vena v1.0" [level=1] [ref=e5]
+      - paragraph [ref=e6]: Technology Education Presentation
+      - paragraph [ref=e8]:
+        - strong [ref=e9]: "Audience:"
+        - text: The Director and anyone joining the project
+        - strong [ref=e10]: "Goal:"
+        - text: Understand every technology, pattern, and decision in Vena
+        - strong [ref=e11]: "Duration:"
+        - text: ~45 minutes (self-paced or team walkthrough)
+      - generic [ref=e12]:
+        - generic [ref=e13]: Next.js 16
+        - generic [ref=e14]: TypeScript
+        - generic [ref=e15]: Tailwind v4
+        - generic [ref=e16]: xterm.js
+        - generic [ref=e17]: Recharts
+    - generic:
+      - heading [level=2]: What Is Vena?
+      - paragraph: "A local web dashboard that reads .claude/ project directories and displays:"
+      - generic:
+        - generic:
+          - heading [level=3]: 🤖 Agent Monitoring
+          - paragraph: Identities, memory files, and activity status for each team agent
+        - generic:
+          - heading [level=3]: 💰 Budget Tracking
+          - paragraph: API budget via the Vault & Valve system with alert levels
+        - generic:
+          - heading [level=3]: 🗺️ Roadmap Progress
+          - paragraph: Phase completion, task checklists, and plan documents
+        - generic:
+          - heading [level=3]: 💻 CLI Passthrough
+          - paragraph: Embedded terminal for direct CLI interaction via xterm.js
+      - blockquote:
+        - paragraph:
+          - strong: "Key principle:"
+          - text: No database. No cloud. No auth. Reads files directly from disk. Runs entirely on localhost.
+    - generic:
+      - heading [level=2]: The Big Picture Architecture
+      - generic: ┌─────────────────────────────────────────────────────────┐ │ BROWSER │ │ │ │ Next.js App (React) xterm.js Terminal │ │ ├── Dashboard ├── WebSocket client │ │ ├── Agents page └── Sends keystrokes │ │ ├── Budget page ↕ ws://localhost:3001│ │ ├── Roadmap page │ │ │ ├── Sessions page │ │ │ └── Chat page ──────────────────→ │ │ │ ↕ HTTP │ │ └─────────┼───────────────────────────┼───────────────────┘ │ │ ┌─────────┼───────────────────────────┼───────────────────┐ │ ↓ SERVER ↓ │ │ │ │ Next.js Server PTY Server │ │ ├── Server Components ├── WebSocket server │ │ │ └── Read .claude/ files ├── Spawns shell (PTY) │ │ ├── API Routes └── Token auth (S8) │ │ │ └── /api/pty-token │ │ └── Renders HTML │ │ ↕ fs.readFileSync ↕ node-pty │ │ ┌─────┴──────────┐ ┌─────┴──────────┐ │ │ │ .claude/ dir │ │ Shell process │ │ │ │ (files on │ │ (PowerShell/ │ │ │ │ disk) │ │ bash) │ │ │ └────────────────┘ └────────────────┘ │ └─────────────────────────────────────────────────────────┘
+      - paragraph:
+        - text: "Two servers run side by side:"
+        - strong: Next.js
+        - text: (port 3000) serves the web UI & reads files —
+        - strong: PTY Server
+        - text: (port 3001) bridges browser terminal to a real shell.
+    - text: ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸ ▸
+  - link "1 / 24" [ref=e22] [cursor=pointer]:
+    - /url: "#/"
+  - complementary:
+    - button "next slide" [ref=e23] [cursor=pointer]
+  - text: Speaker notes
+  - generic [ref=e26]: "Vena v1.0 Technology Education Presentation Audience: The Director and anyone joining the project Goal: Understand every technology, pattern, and decision in Vena Duration: ~45 minutes (self-paced or team walkthrough) Next.js 16 TypeScript Tailwind v4 xterm.js Recharts"
