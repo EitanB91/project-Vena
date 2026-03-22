@@ -35,6 +35,7 @@ Phase 3 — COMPLETE (2026-03-20). Zero API cost. Pro quota usage: moderate (UI 
 Phase 4 — COMPLETE (2026-03-20). Zero API cost. Pro quota usage: moderate (charts + 4 pages + 2-round QA).
 Phase 5 — COMPLETE (2026-03-20). Zero API cost. Pro quota usage: heavy (xterm.js + PTY server + 8 security fixes + 2-round QA).
 Phase 6 — COMPLETE (2026-03-20). Zero API cost. Pro quota usage: moderate (responsive + polish + 2-round QA). **v1.0 milestone.**
+Phase 7 — COMPLETE (2026-03-22). Zero API cost. Pro quota usage: moderate (research + lint fixes + memory updates).
 
 ## Active Alerts
 None.
@@ -61,10 +62,11 @@ See full retro: `memory/project_sprint1_retro.md`
 
 ## Sprint 2 — MVP Direction
 v1.0 not releasing publicly. Sprint 2 is MVP sprint. Silas's key roles:
-- **Phase 7 (TOP PRIORITY):** Research Claude Code local telemetry — find where usage data lives (~/.claude/ files, logs, SQLite, config). This is the #1 priority per Director, above all else.
-- **Phase 8:** Build telemetry reader — pipe Claude Code usage into V&V budget ledger (assuming telemetry found)
-- **Phase 10:** Budget reconciliation — verify V&V numbers match reality
-- **Critical question:** If no local telemetry exists, fallback to hook-based estimation + manual cadence. Director's vision of live dashboard depends on this research.
+- ~~**Phase 7 (TOP PRIORITY):** Research telemetry~~ — **DONE.** Telemetry EXISTS at `~/.claude/projects/{slug}/{uuid}.jsonl`. Full token usage per message (input, output, cache_creation, cache_read). Real-time writes. Best-case scenario.
+- **Phase 8:** Build telemetry reader — pipe `~/.claude/` session JSONL into V&V data layer. Rework budget page with live token data. Per-message cost breakdown possible.
+- **Phase 10:** Budget reconciliation — verify V&V numbers match reality using telemetry data
+- **Subagent tokens:** Stored separately in `{uuid}/subagents/agent-{id}.jsonl`. NOT double-counted with parent. Telemetry reader must sum both for true totals.
+- **Critical question answered:** YES — local telemetry exists. No fallback needed. Live dashboard is fully viable.
 
 ## Notes
 _Update this file at session compaction and at every phase transition._

@@ -169,8 +169,26 @@ See full retro: `memory/project_sprint1_retro.md`
 - **Best:** Phase 5 security review — 8 findings caught, pipeline grew 6→9 steps, zero bugs shipped.
 - **Worst:** Missed `Date.now()` purity violation in Server Components. Director found it via lint. Should have caught it.
 
+### Phase 7 — COMPLETE (2026-03-22)
+Research & Foundation Fixes. No formal QA round — Orchestrator self-verified.
+
+**Lint fixes verified (all 5 errors from v1.0 testing):**
+1. 3× `Date.now()` purity in Server Components (`page.tsx`, `agents/page.tsx`) — moved status computation to `readAllAgents()` data layer. `AgentProfile` now carries `status` + `lastSeen`.
+2. 1× setState in useEffect (`Sidebar.tsx`) — replaced with `onClick` handler on nav links. No effect, no ref.
+3. 1× unused variable (`Terminal.tsx`) — `const [status, setStatus]` → `const [, setStatus]`.
+
+**Verification:** lint 0 errors, build clean, 54/54 tests pass.
+
+**Security note for Phase 8:** New `~/.claude/` filesystem access introduced (telemetry reader). Viktor's 6-point security checklist applies:
+- S1: Path confinement (no traversal outside `~/.claude/projects/`)
+- S2: Extension whitelist (`.jsonl` only)
+- S3: No credential exposure (skip files with sensitive patterns)
+- S4: API input validation (sanitize project slugs, session IDs)
+- S5: Server-only access (no client-side path exposure)
+- S6: Safe error messages (no path leaks to client)
+
 ## Sprint 2 — MVP Direction
 v1.0 not releasing publicly. Sprint 2 is MVP sprint. Viktor's key roles:
-- **Phase 7:** Verify lint error fixes (Date.now purity, setState in effect, unused var)
 - **Phase 10:** Full QA pipeline on all pages + Playwright end-to-end automated tests
-- **Known debt:** Director's testing found 5 lint errors Viktor should have caught pre-push. Tighten lint checks in QA pipeline.
+- **Known debt (RESOLVED):** Director's 5 lint errors fixed in Phase 7. Lint now runs clean.
+- **New concern:** Phase 8 introduces `~/.claude/` reads — security review will be critical.

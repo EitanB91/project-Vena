@@ -63,12 +63,23 @@ export interface AgentMemory {
   lastModified: Date;
 }
 
-/** Combined agent profile (identity + memory) */
+/** Agent status indicator */
+export interface AgentStatus {
+  label: string;
+  color: string;
+  dotClass: string;
+}
+
+/** Combined agent profile (identity + memory + computed status) */
 export interface AgentProfile {
   identity: AgentIdentity;
   memory: AgentMemory | null;
   /** Agent color token from design system */
   colorToken: string;
+  /** Pre-computed status from memory lastModified */
+  status: AgentStatus;
+  /** Pre-computed relative time string */
+  lastSeen: string;
 }
 
 // -----------------------------------------------------------------------------

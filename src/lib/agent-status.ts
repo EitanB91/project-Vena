@@ -16,13 +16,14 @@ export type AgentStatus = {
 
 /**
  * Determine agent status from their memory file's last-modified timestamp.
+ * Pass `now` to avoid impure Date.now() calls during render.
  */
-export function getAgentStatus(lastModified: Date | undefined): AgentStatus {
+export function getAgentStatus(lastModified: Date | undefined, now?: number): AgentStatus {
   if (!lastModified) {
     return { label: 'No data', color: 'text-vena-text-muted', dotClass: 'bg-vena-text-muted' };
   }
 
-  const diffMinutes = (Date.now() - lastModified.getTime()) / 60_000;
+  const diffMinutes = ((now ?? Date.now()) - lastModified.getTime()) / 60_000;
 
   if (diffMinutes < ACTIVE_THRESHOLD_MINUTES) {
     return { label: 'Active', color: 'text-vena-success', dotClass: 'bg-vena-success' };
@@ -35,11 +36,12 @@ export function getAgentStatus(lastModified: Date | undefined): AgentStatus {
 
 /**
  * Format a last-modified timestamp as a relative time string.
+ * Pass `now` to avoid impure Date.now() calls during render.
  */
-export function formatLastSeen(lastModified: Date | undefined): string {
+export function formatLastSeen(lastModified: Date | undefined, now?: number): string {
   if (!lastModified) return 'Never';
 
-  const diffMs = Date.now() - lastModified.getTime();
+  const diffMs = (now ?? Date.now()) - lastModified.getTime();
   const diffMinutes = Math.floor(diffMs / 60_000);
 
   if (diffMinutes < 1) return 'Just now';

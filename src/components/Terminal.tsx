@@ -34,7 +34,7 @@ export default function Terminal({ onStatusChange, onSessionId }: TerminalProps)
   const termRef = useRef<XTerm | null>(null);
   const wsRef = useRef<WebSocket | null>(null);
   const fitAddonRef = useRef<FitAddon | null>(null);
-  const [status, setStatus] = useState<ConnectionStatus>("disconnected");
+  const [, setStatus] = useState<ConnectionStatus>("disconnected");
 
   const updateStatus = useCallback(
     (s: ConnectionStatus) => {

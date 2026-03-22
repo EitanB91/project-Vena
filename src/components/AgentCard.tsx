@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { AgentProfile } from '@/types';
-import { slugify, getAgentStatus, formatLastSeen } from '@/lib';
+import { slugify } from '@/lib';
 
 // ---------------------------------------------------------------------------
 // AgentCard
@@ -11,9 +11,7 @@ interface AgentCardProps {
 }
 
 export function AgentCard({ profile }: AgentCardProps) {
-  const { identity, memory, colorToken } = profile;
-  const status = getAgentStatus(memory?.lastModified);
-  const lastSeen = formatLastSeen(memory?.lastModified);
+  const { identity, memory, colorToken, status, lastSeen } = profile;
   const slug = slugify(identity.name);
 
   return (

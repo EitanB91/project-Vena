@@ -140,9 +140,21 @@ See full retro: `memory/project_sprint1_retro.md`
 - **Best:** Design token system — defined in Phase 0, carried flawlessly through all 6 phases.
 - **Worst:** Should have designed mobile-first from Phase 1 instead of cramming responsive into Phase 6.
 
+### Phase 7 — COMPLETE (2026-03-22)
+Research & Foundation Fixes. Minimal Nova involvement — mostly Orchestrator + Silas research.
+
+**Relevant for Phase 8–9:**
+- Data refresh research completed (`plans/Research-Data-Refresh.md`). Three patterns identified:
+  1. `router.refresh()` polling (5–10s) for primary pages — zero API routes needed.
+  2. API routes + SWR (3–5s) for telemetry data — fine-grained, isolated refresh.
+  3. SSE + `fs.watch()` for terminal/logs — push-based, no polling.
+- Nova's Phase 8 work: visual heartbeat cues ("updated Xs ago", pulse animations, fade transitions on data refresh).
+- Nova's Phase 9 work: chatbox UI, "VenaOS" branding, version text polish.
+- Agent status moved to data layer — `AgentProfile` now has pre-computed `status` and `lastSeen` fields. Cards/pages consume directly, no client-side Date.now().
+- Sidebar mobile close: changed from useEffect/ref pattern to onClick on nav links — cleaner, lint-safe.
+
 ## Sprint 2 — MVP Direction
 v1.0 not releasing publicly. Sprint 2 is MVP sprint. Nova's key roles:
-- **Phase 7:** Research data refresh patterns (polling, SSE, revalidation) with Orchestrator
 - **Phase 8:** Visual heartbeat cues — "updated Xs ago" timestamps, pulse animations, fade transitions
 - **Phase 9:** Chatbox UI alongside terminal (split view), "VenaOS" branding, version text polish
 - Director UX feedback pending: brighter version text (+2 size), techy logo name

@@ -1,7 +1,7 @@
 import path from 'node:path';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { readAllAgents, slugify, getAgentStatus } from '@/lib';
+import { readAllAgents, slugify } from '@/lib';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,8 +27,7 @@ export default async function AgentDetailPage({ params }: AgentDetailProps) {
     notFound();
   }
 
-  const { identity, memory, colorToken } = profile;
-  const status = getAgentStatus(memory?.lastModified);
+  const { identity, memory, colorToken, status } = profile;
 
   const identitySections = Object.entries(identity.sections);
   const memorySections = memory ? Object.entries(memory.sections) : [];

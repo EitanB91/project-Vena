@@ -10,6 +10,7 @@ import type {
   AgentProfile,
   AgentProject,
 } from '@/types';
+import { getAgentStatus, formatLastSeen } from './agent-status';
 
 /** Known agent color tokens (matches globals.css) */
 const AGENT_COLORS: Record<string, string> = {
@@ -50,6 +51,7 @@ export function readAgentMemory(filePath: string): AgentMemory | null {
  */
 export function readAllAgents(claudeDir: string): AgentProfile[] {
   const profiles: AgentProfile[] = [];
+  const now = Date.now();
 
   try {
     const entries = fs.readdirSync(claudeDir, { withFileTypes: true });
@@ -74,7 +76,13 @@ export function readAllAgents(claudeDir: string): AgentProfile[] {
       const nameLower = identity.name.toLowerCase();
       const colorToken = AGENT_COLORS[nameLower] ?? 'vena-accent';
 
-      profiles.push({ identity, memory, colorToken });
+      profiles.push({
+        identity,
+        memory,
+        colorToken,
+        status: getAgentStatus(memory?.lastModified, now),
+        lastSeen: formatLastSeen(memory?.lastModified, now),
+      });
     }
   } catch {
     // Directory not readable
@@ -89,6 +97,8 @@ export function readAllAgents(claudeDir: string): AgentProfile[] {
         identity,
         memory: null,
         colorToken: AGENT_COLORS['orchestrator'] ?? 'vena-accent',
+        status: getAgentStatus(undefined, now),
+        lastSeen: formatLastSeen(undefined, now),
       });
     }
   }

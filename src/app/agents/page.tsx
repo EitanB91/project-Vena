@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { readAllAgents, ACTIVE_THRESHOLD_MINUTES } from '@/lib';
+import { readAllAgents } from '@/lib';
 import { AgentCard } from '@/components/AgentCard';
 import { EmptyState } from '@/components/EmptyState';
 
@@ -9,10 +9,7 @@ export default function AgentsPage() {
   const claudeDir = path.join(process.cwd(), '.claude');
   const profiles = readAllAgents(claudeDir);
 
-  const activeCount = profiles.filter((p) => {
-    if (!p.memory?.lastModified) return false;
-    return Date.now() - p.memory.lastModified.getTime() < ACTIVE_THRESHOLD_MINUTES * 60_000;
-  }).length;
+  const activeCount = profiles.filter((p) => p.status.label === 'Active').length;
 
   return (
     <div className="flex flex-1 flex-col p-4 md:p-8">

@@ -5,7 +5,6 @@ import {
   computeBudgetSummary,
   readSessionTimeline,
   readProjectRoadmap,
-  ACTIVE_THRESHOLD_MINUTES,
 } from "@/lib";
 import type { AlertLevel } from "@/types";
 
@@ -21,13 +20,7 @@ export default function Home() {
   const timeline = readSessionTimeline(claudeDir);
   const roadmap = readProjectRoadmap(projectPath);
 
-  const activeCount = profiles.filter((p) => {
-    if (!p.memory?.lastModified) return false;
-    return (
-      Date.now() - p.memory.lastModified.getTime() <
-      ACTIVE_THRESHOLD_MINUTES * 60_000
-    );
-  }).length;
+  const activeCount = profiles.filter((p) => p.status.label === "Active").length;
 
   const currentPhase = roadmap?.phases.find(
     (p) => p.status === "next" || p.status === "in_progress",
@@ -159,13 +152,7 @@ export default function Home() {
           </h2>
           {profiles.length > 0 ? (
             <div className="space-y-2">
-              {profiles.map((profile) => {
-                const isActive =
-                  profile.memory?.lastModified &&
-                  Date.now() - profile.memory.lastModified.getTime() <
-                    ACTIVE_THRESHOLD_MINUTES * 60_000;
-
-                return (
+              {profiles.map((profile) => (
                   <div
                     key={profile.identity.name}
                     className="flex items-center gap-3"
@@ -187,11 +174,10 @@ export default function Home() {
                       </p>
                     </div>
                     <span
-                      className={`inline-block h-2 w-2 shrink-0 rounded-full ${isActive ? "bg-vena-success animate-pulse" : "bg-vena-text-muted"}`}
+                      className={`inline-block h-2 w-2 shrink-0 rounded-full ${profile.status.label === "Active" ? "bg-vena-success animate-pulse" : "bg-vena-text-muted"}`}
                     />
                   </div>
-                );
-              })}
+              ))}
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center gap-2 py-4">
