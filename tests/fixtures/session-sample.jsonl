@@ -1,0 +1,14 @@
+{"type":"queue-operation","timestamp":"2026-03-20T10:00:00.000Z","sessionId":"aaa11111-1111-1111-1111-111111111111"}
+{"type":"queue-operation","timestamp":"2026-03-20T10:00:00.002Z","sessionId":"aaa11111-1111-1111-1111-111111111111"}
+{"type":"user","timestamp":"2026-03-20T10:00:01.000Z","sessionId":"aaa11111-1111-1111-1111-111111111111","entrypoint":"claude-vscode","version":"2.1.78","cwd":"c:\\Users\\user\\Desktop\\project","gitBranch":"master"}
+{"type":"file-history-snapshot"}
+{"type":"assistant","timestamp":"2026-03-20T10:00:05.000Z","sessionId":"aaa11111-1111-1111-1111-111111111111","entrypoint":"claude-vscode","version":"2.1.78","cwd":"c:\\Users\\user\\Desktop\\project","gitBranch":"master","message":{"model":"claude-opus-4-6","usage":{"input_tokens":100,"output_tokens":200,"cache_creation_input_tokens":5000,"cache_read_input_tokens":3000,"service_tier":"standard"}}}
+{"type":"progress","timestamp":"2026-03-20T10:00:10.000Z","sessionId":"aaa11111-1111-1111-1111-111111111111"}
+{"type":"user","timestamp":"2026-03-20T10:01:00.000Z","sessionId":"aaa11111-1111-1111-1111-111111111111","entrypoint":"claude-vscode","version":"2.1.78"}
+{"type":"assistant","timestamp":"2026-03-20T10:01:05.000Z","sessionId":"aaa11111-1111-1111-1111-111111111111","entrypoint":"claude-vscode","version":"2.1.78","cwd":"c:\\Users\\user\\Desktop\\project","gitBranch":"master","message":{"model":"claude-opus-4-6","usage":{"input_tokens":150,"output_tokens":300,"cache_creation_input_tokens":0,"cache_read_input_tokens":8000,"service_tier":"standard"}}}
+{"type":"progress","timestamp":"2026-03-20T10:01:10.000Z","sessionId":"aaa11111-1111-1111-1111-111111111111"}
+{"type":"progress","timestamp":"2026-03-20T10:01:15.000Z","sessionId":"aaa11111-1111-1111-1111-111111111111"}
+{"type":"custom-title","sessionId":"aaa11111-1111-1111-1111-111111111111","customTitle":"test session alpha"}
+{"type":"user","timestamp":"2026-03-20T10:02:00.000Z","sessionId":"aaa11111-1111-1111-1111-111111111111","entrypoint":"claude-vscode","version":"2.1.78"}
+{"type":"assistant","timestamp":"2026-03-20T10:02:05.000Z","sessionId":"aaa11111-1111-1111-1111-111111111111","entrypoint":"claude-vscode","version":"2.1.78","cwd":"c:\\Users\\user\\Desktop\\project","gitBranch":"master","message":{"model":"claude-opus-4-6","usage":{"input_tokens":200,"output_tokens":500,"cache_creation_input_tokens":1000,"cache_read_input_tokens":12000,"service_tier":"standard"}}}
+{"type":"last-prompt","sessionId":"aaa11111-1111-1111-1111-111111111111"}
