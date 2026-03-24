@@ -1,14 +1,32 @@
-import { readProjectRoadmap, readPlanFiles } from "@/lib";
+import {
+  readProjectRoadmap,
+  readPlanFiles,
+  getProjectSlug,
+  getProjectTelemetry,
+  buildPhaseTokenReport,
+  formatTokens,
+  formatDuration,
+  formatDate,
+} from "@/lib";
 import type { PlanFile } from "@/lib";
 import { EmptyState } from "@/components/EmptyState";
 import type { FeatureEntry, PhaseStatus, RoadmapPhase } from "@/types";
+import type { PhaseTokenReport } from "@/lib";
 
 export const dynamic = "force-dynamic";
 
-export default function RoadmapPage() {
+export default async function RoadmapPage() {
   const projectPath = process.cwd();
   const roadmap = readProjectRoadmap(projectPath);
   const planFiles = readPlanFiles(projectPath);
+
+  // Build phase token report from telemetry
+  let tokenReports: PhaseTokenReport[] = [];
+  if (roadmap) {
+    const slug = getProjectSlug(projectPath);
+    const telemetry = await getProjectTelemetry(slug);
+    tokenReports = buildPhaseTokenReport(roadmap.phases, telemetry.sessions);
+  }
 
   if (!roadmap) {
     return (
@@ -73,6 +91,75 @@ export default function RoadmapPage() {
         </div>
       </div>
 
+      {/* F6 — Phase Token Report */}
+      {tokenReports.some((r) => r.sessionCount > 0) && (
+        <div className="mb-8 rounded-lg border border-vena-border bg-vena-surface p-6">
+          <h2 className="mb-4 text-xs font-medium uppercase tracking-wider text-vena-text-muted">
+            Phase Token Report
+          </h2>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-vena-border text-left">
+                  <th className="pb-2 pr-4 font-medium text-vena-text-secondary">Phase</th>
+                  <th className="pb-2 pr-4 text-right font-medium text-vena-text-secondary">Sessions</th>
+                  <th className="pb-2 pr-4 text-right font-medium text-vena-text-secondary">Duration</th>
+                  <th className="pb-2 pr-4 text-right font-medium text-vena-text-secondary">Output</th>
+                  <th className="pb-2 pr-4 text-right font-medium text-vena-text-secondary">Cache</th>
+                  <th className="pb-2 text-right font-medium text-vena-text-secondary">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tokenReports.map((report, i) => {
+                  const prev = i > 0 ? tokenReports[i - 1] : null;
+                  const delta =
+                    prev && prev.outputTokens > 0
+                      ? ((report.outputTokens - prev.outputTokens) / prev.outputTokens) * 100
+                      : null;
+
+                  return (
+                    <tr
+                      key={report.phaseId}
+                      className="border-b border-vena-border/50"
+                    >
+                      <td className="py-2 pr-4">
+                        <span className="text-vena-text">P{report.phaseId}</span>
+                        <span className="ml-2 text-xs text-vena-text-muted">
+                          {report.phaseTitle.replace(/^Phase \d+\s*[—–-]\s*/, "")}
+                        </span>
+                      </td>
+                      <td className="py-2 pr-4 text-right font-mono text-vena-text-secondary">
+                        {report.sessionCount}
+                      </td>
+                      <td className="py-2 pr-4 text-right font-mono text-vena-text-secondary">
+                        {formatDuration(report.totalDurationMinutes)}
+                      </td>
+                      <td className="py-2 pr-4 text-right font-mono text-vena-text-secondary">
+                        {formatTokens(report.outputTokens)}
+                        {delta !== null && (
+                          <span
+                            className={`ml-1 text-micro ${delta > 0 ? "text-vena-warning" : "text-vena-success"}`}
+                          >
+                            {delta > 0 ? "+" : ""}
+                            {delta.toFixed(0)}%
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-2 pr-4 text-right font-mono text-vena-text-muted">
+                        {formatTokens(report.cacheTokens)}
+                      </td>
+                      <td className="py-2 text-right font-mono text-vena-text">
+                        {formatTokens(report.totalTokens)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
       {/* Feature Registry */}
       {roadmap.featureRegistry.length > 0 && (
         <div className="mb-8 rounded-lg border border-vena-border bg-vena-surface p-6">
@@ -83,18 +170,10 @@ export default function RoadmapPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-vena-border text-left">
-                  <th className="pb-2 pr-4 font-medium text-vena-text-secondary">
-                    Feature
-                  </th>
-                  <th className="pb-2 pr-4 font-medium text-vena-text-secondary">
-                    Phase
-                  </th>
-                  <th className="pb-2 pr-4 font-medium text-vena-text-secondary">
-                    Priority
-                  </th>
-                  <th className="pb-2 font-medium text-vena-text-secondary">
-                    Status
-                  </th>
+                  <th className="pb-2 pr-4 font-medium text-vena-text-secondary">Feature</th>
+                  <th className="pb-2 pr-4 font-medium text-vena-text-secondary">Phase</th>
+                  <th className="pb-2 pr-4 font-medium text-vena-text-secondary">Priority</th>
+                  <th className="pb-2 font-medium text-vena-text-secondary">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -194,7 +273,7 @@ function PhaseCard({ phase }: { phase: RoadmapPhase }) {
           </span>
           {phase.completedDate && (
             <span className="text-micro text-vena-text-muted">
-              {phase.completedDate}
+              {formatDate(phase.completedDate)}
             </span>
           )}
         </div>
@@ -294,8 +373,6 @@ function FeatureRow({ entry }: { entry: FeatureEntry }) {
     </tr>
   );
 }
-
-/* ─── Plan Documents ─────────────────────────────────────────────────── */
 
 function PlanCard({ file }: { file: PlanFile }) {
   const isRoadmap = file.name.startsWith("Roadmap");

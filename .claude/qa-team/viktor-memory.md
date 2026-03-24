@@ -38,7 +38,11 @@ Phase 0 — COMPLETE (2026-03-19). Commit `371bc76`. Viktor verdict: PASS.
 Phase 1 — COMPLETE (2026-03-19). Viktor verdict: PASS. Director approved push.
 Phase 2 — COMPLETE (2026-03-19). Viktor verdict: PASS (two rounds). Director approved push.
 Phase 3 — COMPLETE (2026-03-20). Viktor verdict: PASS (two rounds). Director approved push.
-Phase 4 — COMPLETE (2026-03-20). Viktor verdict: PASS (two rounds). Awaiting Director push approval.
+Phase 4 — COMPLETE (2026-03-20). Viktor verdict: PASS (two rounds). Director approved push.
+Phase 5 — COMPLETE (2026-03-20). Viktor verdict: PASS (two rounds). Director approved push.
+Phase 6 — COMPLETE (2026-03-21). Viktor verdict: PASS (two rounds). Director approved push.
+Phase 7 — COMPLETE (2026-03-22). No formal QA — Orchestrator self-verified. Pushed with Phase 8A.
+Phase 8A — COMPLETE (2026-03-23). Viktor verdict: PASS (two rounds). Director approved push.
 
 ### Phase 1 QA Notes (carry-forward)
 - SVG icons duplicated between Sidebar and placeholder pages — will resolve when placeholders are replaced
@@ -187,8 +191,41 @@ Research & Foundation Fixes. No formal QA round — Orchestrator self-verified.
 - S5: Server-only access (no client-side path exposure)
 - S6: Safe error messages (no path leaks to client)
 
+### Phase 8A QA Notes (2026-03-23)
+**Round 1 — PASS WITH NOTES (2 notes, 1 environmental blocker):**
+- N1 (non-blocking): Import style — `import * as fs from 'fs'` should be `import fs from 'node:fs'`. Fixed.
+- N2 (non-blocking): `as RawSessionEvent` on `JSON.parse()` output (3 occurrences). Phase 2 lesson says use runtime checks. Fixed with `isSessionEvent()` type guard.
+- B1 (environmental): Uncommitted Phase 8B test files (`tests/api/`) crashed entire `npm test` run — `NextRequest` needs Next.js runtime. Resolved by removing 8B code per Director's order.
+
+**Round 2 — PASS:**
+- All notes resolved. Import style modernized. Runtime type guard added.
+- 8B code removed. Working tree clean.
+- Security S1-S6: ALL 6 CHECKS PASSED.
+  - S1: `confineToBase()` with `+ path.sep` prevents prefix attacks
+  - S2: `.jsonl` extension whitelist + UUID regex
+  - S3: No credential access
+  - S4: `isValidSlug()` — alphanumeric + hyphens + underscores, length bounded
+  - S5: All `fs` in `src/lib/` only, zero in client components
+  - S6: All catch → null/empty, no paths leaked
+- Build clean, lint clean, 8 files / 97 tests all pass.
+- Commits: `8fa2511` (Phase 7) + `bb3cead` (Phase 8A). Pushed to master.
+
+### Phase 8A Lessons
+- **Runtime type guards on JSON.parse** — the `isSessionEvent()` pattern is the correct way to validate parsed JSONL. `as` casts are never acceptable on external data. This is now the third time Viktor flagged this (Phase 2 B1, Phase 5 N1, Phase 8A N2). The Orchestrator now uses the pattern consistently.
+- **Import style matters for consistency** — `node:` protocol imports are the project standard. Viktor will flag deviations.
+- **Uncommitted code from other phases is dangerous** — 8B test files broke `npm test` globally even though they were unrelated to 8A. Lesson: don't leave uncommitted code from future phases in the working directory.
+- **Security checklist for filesystem access (S1-S6)** — first full application of the 6-point telemetry security checklist. All passed. This checklist is reusable for Phase 8B API routes.
+
+### Cumulative QA Stats (Phases 0–8A)
+- Total QA rounds: 14 (7 phases × ~2 rounds average)
+- Total findings: ~28 findings caught (including 8 security, 5 required fixes, ~15 notes)
+- Zero bugs shipped to git.
+
+---
+
 ## Sprint 2 — MVP Direction
 v1.0 not releasing publicly. Sprint 2 is MVP sprint. Viktor's key roles:
+- **Phase 8B (next):** Security-critical QA on API routes. Full S1-S6 sweep + client bundle audit for `homedir` leaks.
 - **Phase 10:** Full QA pipeline on all pages + Playwright end-to-end automated tests
 - **Known debt (RESOLVED):** Director's 5 lint errors fixed in Phase 7. Lint now runs clean.
-- **New concern:** Phase 8 introduces `~/.claude/` reads — security review will be critical.
+- **Resolved concern:** Phase 8A `~/.claude/` reads passed full security review. S1-S6 all clean.

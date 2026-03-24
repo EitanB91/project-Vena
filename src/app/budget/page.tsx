@@ -1,24 +1,77 @@
 import path from "node:path";
-import { readBudgetLedger, computeBudgetSummary } from "@/lib";
+import {
+  readBudgetLedger,
+  computeBudgetSummary,
+  getProjectSlug,
+  getProjectTelemetry,
+  formatTokens,
+  formatDuration,
+  formatRelativeTime,
+  formatDateShort,
+} from "@/lib";
 import { BudgetChart } from "@/components/BudgetChart";
 import { EmptyState } from "@/components/EmptyState";
+import { BudgetClient } from "./BudgetClient";
 import type { AlertLevel } from "@/types";
 
 export const dynamic = "force-dynamic";
 
-export default function BudgetPage() {
-  const claudeDir = path.join(process.cwd(), ".claude");
+export default async function BudgetPage() {
+  const projectPath = process.cwd();
+  const claudeDir = path.join(projectPath, ".claude");
   const ledger = readBudgetLedger(claudeDir);
+
+  const slug = getProjectSlug(projectPath);
+  const telemetry = await getProjectTelemetry(slug);
+
+  // Telemetry panel data
+  const totalDurationMinutes = telemetry.sessions.reduce(
+    (sum, s) => sum + s.durationMinutes,
+    0,
+  );
+  const todaySessions = telemetry.sessions.filter((s) => {
+    const today = new Date().toISOString().slice(0, 10);
+    return s.startTime.toISOString().slice(0, 10) === today;
+  });
+  const todayDurationMinutes = todaySessions.reduce(
+    (sum, s) => sum + s.durationMinutes,
+    0,
+  );
+  const lastSession = telemetry.sessions[0]; // Already sorted newest first
+
+  // Burn rate data (last 7 days)
+  const burnRateData = telemetry.dailyUsage.slice(-7).map((d) => ({
+    label: formatDateShort(d.date),
+    output: d.tokens.output,
+  }));
+
+  const telemetryData = {
+    totalSessions: telemetry.sessions.length,
+    totalTokens: telemetry.totals.total,
+    totalOutputTokens: telemetry.totals.output,
+    totalDurationMinutes,
+    todayDurationMinutes,
+    todayDurationHours: todayDurationMinutes / 60,
+    lastSessionAgo: lastSession
+      ? formatRelativeTime(lastSession.endTime)
+      : null,
+    burnRateData,
+    activeSessionCount: telemetry.activeSessionCount,
+  };
 
   if (!ledger) {
     return (
       <div className="flex flex-1 flex-col p-4 md:p-8">
         <PageHeader />
-        <EmptyState
-          icon={<WalletEmptyIcon />}
-          message="No budget ledger found."
-          hint="Place budget-ledger.json in .claude/vault-and-valve/."
-        />
+        {/* Show telemetry panel even without budget ledger */}
+        <TelemetryPanel data={telemetryData} />
+        <div className="mt-4">
+          <EmptyState
+            icon={<WalletEmptyIcon />}
+            message="No API budget ledger found."
+            hint="Place budget-ledger.json in .claude/vault-and-valve/."
+          />
+        </div>
       </div>
     );
   }
@@ -32,32 +85,34 @@ export default function BudgetPage() {
     <div className="flex flex-1 flex-col p-4 md:p-8">
       <PageHeader />
 
-      {/* Status Cards */}
-      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <MetricCard
-          label="Remaining Balance"
-          value={`$${summary.remainingBalance.toFixed(2)}`}
-        />
-        <MetricCard
-          label="Usable Budget"
-          value={`$${summary.usableBudget.toFixed(2)}`}
-          sub={`${summary.usablePercent.toFixed(0)}% of monthly cap`}
-        />
-        <MetricCard
-          label="Floor (Reserved)"
-          value={`$${summary.floor.toFixed(2)}`}
-          sub="Untouchable"
-        />
-        <AlertCard level={summary.alertLevel} />
-      </div>
+      {/* Dual Panels */}
+      <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {/* Panel 1 — Pro Plan Usage (Telemetry) */}
+        <TelemetryPanel data={telemetryData} />
 
-      {/* Charts Row */}
-      <div className="mb-8 grid grid-cols-1 gap-4 lg:grid-cols-2">
-        {/* Budget Breakdown */}
+        {/* Panel 2 — API Budget (V&V Ledger) */}
         <div className="rounded-lg border border-vena-border bg-vena-surface p-6">
           <h2 className="mb-4 text-xs font-medium uppercase tracking-wider text-vena-text-muted">
-            Budget Breakdown
+            API Budget (V&V Ledger)
           </h2>
+
+          <div className="mb-4 grid grid-cols-2 gap-3">
+            <MetricCard
+              label="Remaining"
+              value={`$${summary.remainingBalance.toFixed(2)}`}
+            />
+            <MetricCard
+              label="Usable"
+              value={`$${summary.usableBudget.toFixed(2)}`}
+              sub={`${summary.usablePercent.toFixed(0)}%`}
+            />
+            <MetricCard
+              label="Floor"
+              value={`$${summary.floor.toFixed(2)}`}
+            />
+            <AlertCard level={summary.alertLevel} />
+          </div>
+
           <BudgetChart
             usable={summary.usableBudget}
             floor={summary.floor}
@@ -69,47 +124,41 @@ export default function BudgetPage() {
             <Legend color="bg-vena-warning" label="Floor" />
             {spent > 0 && <Legend color="bg-vena-error" label="Spent" />}
           </div>
-        </div>
-
-        {/* Claude Code Usage */}
-        <div className="rounded-lg border border-vena-border bg-vena-surface p-6">
-          <h2 className="mb-4 text-xs font-medium uppercase tracking-wider text-vena-text-muted">
-            Claude Code Usage
-          </h2>
-          <div className="space-y-5">
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-vena-text-secondary">Plan</span>
-              <span className="rounded-full bg-vena-accent/10 px-3 py-0.5 text-sm font-medium capitalize text-vena-accent">
-                {summary.claudeCode.plan}
-              </span>
-            </div>
-
-            <UsageBar
-              label="Session Usage"
-              percent={summary.claudeCode.sessionUsagePercent}
-            />
-            <UsageBar
-              label="Weekly Usage"
-              percent={summary.claudeCode.weeklyUsagePercent}
-            />
-
-            <div className="space-y-1 border-t border-vena-border pt-4 text-xs text-vena-text-muted">
-              <p>
-                Session resets:{" "}
-                {formatDate(summary.claudeCode.sessionResetsAt)}
-              </p>
-              <p>
-                Weekly resets: {formatDate(summary.claudeCode.weeklyResetsAt)}
-              </p>
-              {summary.claudeCode.notes && (
-                <p className="mt-2 italic">{summary.claudeCode.notes}</p>
-              )}
-            </div>
-          </div>
+          {primaryApi?.lastUpdated && (
+            <p className="mt-3 text-center text-micro text-vena-text-muted">
+              Last updated: {primaryApi.lastUpdated}
+            </p>
+          )}
         </div>
       </div>
 
-      {/* Alert Thresholds & Authority */}
+      {/* Telemetry Charts (Client) */}
+      <BudgetClient telemetryData={telemetryData} />
+
+      {/* Claude Code Usage */}
+      <div className="mb-8 rounded-lg border border-vena-border bg-vena-surface p-6">
+        <h2 className="mb-4 text-xs font-medium uppercase tracking-wider text-vena-text-muted">
+          Claude Code Plan
+        </h2>
+        <div className="space-y-5">
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-vena-text-secondary">Plan</span>
+            <span className="rounded-full bg-vena-accent/10 px-3 py-0.5 text-sm font-medium capitalize text-vena-accent">
+              {summary.claudeCode.plan}
+            </span>
+          </div>
+          <UsageBar
+            label="Session Usage"
+            percent={summary.claudeCode.sessionUsagePercent}
+          />
+          <UsageBar
+            label="Weekly Usage"
+            percent={summary.claudeCode.weeklyUsagePercent}
+          />
+        </div>
+      </div>
+
+      {/* Alert Thresholds */}
       <div className="rounded-lg border border-vena-border bg-vena-surface p-6">
         <h2 className="mb-4 text-xs font-medium uppercase tracking-wider text-vena-text-muted">
           Alert Thresholds &amp; Authority
@@ -142,6 +191,80 @@ export default function BudgetPage() {
   );
 }
 
+/* ─── Telemetry Panel ─────────────────────────────────────────────── */
+
+interface TelemetryData {
+  totalSessions: number;
+  totalTokens: number;
+  totalOutputTokens: number;
+  totalDurationMinutes: number;
+  todayDurationMinutes: number;
+  todayDurationHours: number;
+  lastSessionAgo: string | null;
+  burnRateData: { label: string; output: number }[];
+  activeSessionCount: number;
+}
+
+function TelemetryPanel({ data }: { data: TelemetryData }) {
+  const quotaHours = 5; // Soft reference for Pro plan
+  const gaugePercent = Math.min(100, (data.todayDurationHours / quotaHours) * 100);
+
+  return (
+    <div className="rounded-lg border border-vena-border bg-vena-surface p-6">
+      <h2 className="mb-4 text-xs font-medium uppercase tracking-wider text-vena-text-muted">
+        Pro Plan Usage (Telemetry)
+      </h2>
+
+      <div className="mb-4 grid grid-cols-2 gap-3">
+        <MetricCard
+          label="Sessions"
+          value={String(data.totalSessions)}
+        />
+        <MetricCard
+          label="Output Tokens"
+          value={formatTokens(data.totalOutputTokens)}
+        />
+        <MetricCard
+          label="Total Time"
+          value={formatDuration(data.totalDurationMinutes)}
+        />
+        <MetricCard
+          label="Active Now"
+          value={String(data.activeSessionCount)}
+        />
+      </div>
+
+      {/* F8 — Duration Quota Gauge */}
+      <div className="mb-3">
+        <div className="mb-1.5 flex justify-between text-xs">
+          <span className="text-vena-text-secondary">Today</span>
+          <span className="font-mono text-vena-text">
+            {data.todayDurationHours.toFixed(1)}h / ~{quotaHours}h
+          </span>
+        </div>
+        <div className="h-2.5 overflow-hidden rounded-full bg-vena-surface-raised">
+          <div
+            className={`h-full rounded-full transition-all ${
+              gaugePercent >= 80
+                ? "bg-vena-error"
+                : gaugePercent >= 50
+                  ? "bg-vena-warning"
+                  : "bg-vena-accent"
+            }`}
+            style={{ width: `${gaugePercent}%` }}
+          />
+        </div>
+      </div>
+
+      {data.lastSessionAgo && (
+        <p className="text-micro text-vena-text-muted">
+          Last session: {data.lastSessionAgo}
+        </p>
+      )}
+    </div>
+  );
+}
+
 /* ─── Local Components ───────────────────────────────────────────────── */
 
 function PageHeader() {
@@ -151,7 +274,7 @@ function PageHeader() {
         Budget
       </h1>
       <p className="mt-1 text-sm text-vena-text-secondary">
-        Vault &amp; Valve &mdash; balance, usage, and alert status.
+        Vault &amp; Valve &mdash; Pro plan telemetry and API budget status.
       </p>
     </div>
   );
@@ -167,13 +290,11 @@ function MetricCard({
   sub?: string;
 }) {
   return (
-    <div className="rounded-lg border border-vena-border bg-vena-surface p-4">
-      <p className="text-xs font-medium uppercase tracking-wider text-vena-text-muted">
-        {label}
-      </p>
-      <p className="mt-1 text-2xl font-semibold text-vena-text">{value}</p>
+    <div className="rounded-md bg-vena-surface-raised p-3">
+      <p className="text-micro text-vena-text-muted">{label}</p>
+      <p className="mt-0.5 text-lg font-semibold text-vena-text">{value}</p>
       {sub && (
-        <p className="mt-0.5 text-xs text-vena-text-secondary">{sub}</p>
+        <p className="text-micro text-vena-text-secondary">{sub}</p>
       )}
     </div>
   );
@@ -181,40 +302,19 @@ function MetricCard({
 
 function AlertCard({ level }: { level: AlertLevel }) {
   const config: Record<AlertLevel, { text: string; textColor: string; dotColor: string }> = {
-    normal: {
-      text: "Normal",
-      textColor: "text-vena-success",
-      dotColor: "bg-vena-success",
-    },
-    warn: {
-      text: "Warning",
-      textColor: "text-vena-warning",
-      dotColor: "bg-vena-warning",
-    },
-    critical: {
-      text: "Critical",
-      textColor: "text-vena-error",
-      dotColor: "bg-vena-error",
-    },
-    locked: {
-      text: "LOCKED",
-      textColor: "text-vena-error",
-      dotColor: "bg-vena-error",
-    },
+    normal: { text: "Normal", textColor: "text-vena-success", dotColor: "bg-vena-success" },
+    warn: { text: "Warning", textColor: "text-vena-warning", dotColor: "bg-vena-warning" },
+    critical: { text: "Critical", textColor: "text-vena-error", dotColor: "bg-vena-error" },
+    locked: { text: "LOCKED", textColor: "text-vena-error", dotColor: "bg-vena-error" },
   };
-
   const c = config[level];
 
   return (
-    <div className="rounded-lg border border-vena-border bg-vena-surface p-4">
-      <p className="text-xs font-medium uppercase tracking-wider text-vena-text-muted">
-        Alert Level
-      </p>
-      <div className="mt-1 flex items-center gap-2">
-        <span
-          className={`inline-block h-2.5 w-2.5 rounded-full ${c.dotColor} ${level === "normal" ? "animate-pulse" : ""}`}
-        />
-        <span className={`text-2xl font-semibold ${c.textColor}`}>{c.text}</span>
+    <div className="rounded-md bg-vena-surface-raised p-3">
+      <p className="text-micro text-vena-text-muted">Alert Level</p>
+      <div className="mt-0.5 flex items-center gap-2">
+        <span className={`inline-block h-2 w-2 rounded-full ${c.dotColor}`} />
+        <span className={`text-lg font-semibold ${c.textColor}`}>{c.text}</span>
       </div>
     </div>
   );
@@ -252,19 +352,6 @@ function Legend({ color, label }: { color: string; label: string }) {
       <span className="text-xs text-vena-text-secondary">{label}</span>
     </div>
   );
-}
-
-function formatDate(iso: string): string {
-  try {
-    return new Date(iso).toLocaleString("en-US", {
-      month: "short",
-      day: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-    });
-  } catch {
-    return iso;
-  }
 }
 
 function WalletEmptyIcon() {

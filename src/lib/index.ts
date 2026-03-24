@@ -35,3 +35,5 @@ export {
   isSessionActive,
   getProjectTelemetry,
 } from './telemetry';
+export { buildPhaseTokenReport } from './phase-tokens';
+export type { PhaseTokenReport } from './phase-tokens';

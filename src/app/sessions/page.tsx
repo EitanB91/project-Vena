@@ -1,28 +1,44 @@
-import path from "node:path";
-import { readSessionTimeline } from "@/lib";
-import { SessionChart, type SessionChartData } from "@/components/SessionChart";
+import {
+  getProjectSlug,
+  getProjectTelemetry,
+  formatTokens,
+  formatDuration,
+} from "@/lib";
 import { EmptyState } from "@/components/EmptyState";
-import type { Session } from "@/types";
+import { SessionsClient } from "./SessionsClient";
+import type { SessionTelemetry } from "@/types/telemetry";
 
 export const dynamic = "force-dynamic";
 
-export default function SessionsPage() {
-  const claudeDir = path.join(process.cwd(), ".claude");
-  const timeline = readSessionTimeline(claudeDir);
+export default async function SessionsPage() {
+  const slug = getProjectSlug(process.cwd());
+  const telemetry = await getProjectTelemetry(slug);
 
-  // Build chart data from byDate grouping
-  const chartData: SessionChartData[] = Object.entries(timeline.byDate)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([date, sessions]) => ({
-      date,
-      label: date.slice(5), // MM-DD
-      sessions: sessions.length,
-      minutes: Math.round(
-        sessions.reduce((sum, s) => sum + (s.durationMinutes ?? 0), 0) * 10,
-      ) / 10,
-    }));
+  // Group sessions by date
+  const byDate = new Map<string, SessionTelemetry[]>();
+  for (const session of telemetry.sessions) {
+    const dateKey = session.startTime.toISOString().slice(0, 10);
+    const group = byDate.get(dateKey) ?? [];
+    group.push(session);
+    byDate.set(dateKey, group);
+  }
 
-  const dates = Object.keys(timeline.byDate).sort().reverse();
+  const dates = Array.from(byDate.keys()).sort().reverse();
+
+  // Serialize for client
+  const serializedSessions = telemetry.sessions.map((s) => ({
+    sessionId: s.sessionId,
+    title: s.title,
+    startTime: s.startTime.toISOString(),
+    endTime: s.endTime.toISOString(),
+    durationMinutes: s.durationMinutes,
+    model: s.model,
+    isActive: s.isActive,
+    tokens: s.tokens,
+    messageCount: s.messageCount,
+    toolCallCount: s.toolCallCount,
+    subagentCount: s.subagentCount,
+  }));
 
   return (
     <div className="flex flex-1 flex-col p-4 md:p-8">
@@ -32,7 +48,7 @@ export default function SessionsPage() {
           Sessions
         </h1>
         <p className="mt-1 text-sm text-vena-text-secondary">
-          Session history, timeline, and usage categories.
+          Telemetry-powered session history with token usage and model data.
         </p>
       </div>
 
@@ -40,17 +56,23 @@ export default function SessionsPage() {
       <div className="mb-6 flex flex-wrap gap-4 md:gap-6">
         <div className="flex items-center gap-2">
           <span className="text-2xl font-bold text-vena-text">
-            {timeline.totalSessions}
+            {telemetry.sessions.length}
           </span>
           <span className="text-sm text-vena-text-secondary">Sessions</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-2xl font-bold text-vena-text">
-            {timeline.totalMinutes.toFixed(1)}
+            {formatTokens(telemetry.totals.output)}
           </span>
-          <span className="text-sm text-vena-text-secondary">
-            Total Minutes
+          <span className="text-sm text-vena-text-secondary">Output Tokens</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-2xl font-bold text-vena-text">
+            {formatDuration(
+              telemetry.sessions.reduce((sum, s) => sum + s.durationMinutes, 0),
+            )}
           </span>
+          <span className="text-sm text-vena-text-secondary">Total Time</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-2xl font-bold text-vena-text">
@@ -60,175 +82,20 @@ export default function SessionsPage() {
         </div>
       </div>
 
-      {/* Activity Chart */}
-      {chartData.length > 0 && (
-        <div className="mb-8 rounded-lg border border-vena-border bg-vena-surface p-6">
-          <h2 className="mb-4 text-xs font-medium uppercase tracking-wider text-vena-text-muted">
-            Daily Activity
-          </h2>
-          <SessionChart data={chartData} />
-          <div className="mt-3 flex justify-center gap-6">
-            <div className="flex items-center gap-1.5">
-              <span className="inline-block h-2.5 w-2.5 rounded-sm bg-vena-accent" />
-              <span className="text-xs text-vena-text-secondary">Sessions</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="inline-block h-2.5 w-2.5 rounded-sm bg-vena-accent-hover" />
-              <span className="text-xs text-vena-text-secondary">Minutes</span>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Session List by Date */}
-      {timeline.totalSessions === 0 ? (
+      {/* Client Component for polling + session list */}
+      {telemetry.sessions.length === 0 ? (
         <EmptyState
           icon={<ClockEmptyIcon />}
           message="No sessions found."
-          hint="Sessions are logged in .claude/vault-and-valve/usage-log.jsonl."
+          hint="Sessions are read from ~/.claude/projects/ telemetry data."
         />
       ) : (
-        <div className="space-y-6">
-          {dates.map((date) => (
-            <DateGroup
-              key={date}
-              date={date}
-              sessions={timeline.byDate[date]}
-            />
-          ))}
-        </div>
+        <SessionsClient
+          initialSessions={serializedSessions}
+        />
       )}
     </div>
   );
-}
-
-/* ─── Local Components ───────────────────────────────────────────────── */
-
-function DateGroup({
-  date,
-  sessions,
-}: {
-  date: string;
-  sessions: Session[];
-}) {
-  const totalMins = sessions.reduce(
-    (sum, s) => sum + (s.durationMinutes ?? 0),
-    0,
-  );
-
-  return (
-    <div>
-      <div className="mb-3 flex items-center gap-3">
-        <h3 className="text-sm font-medium text-vena-text">{formatDate(date)}</h3>
-        <span className="text-xs text-vena-text-muted">
-          {sessions.length} session{sessions.length !== 1 ? "s" : ""} &middot;{" "}
-          {totalMins.toFixed(1)} min
-        </span>
-        <div className="h-px flex-1 bg-vena-border" />
-      </div>
-
-      <div className="space-y-2">
-        {sessions.map((session) => (
-          <SessionRow key={session.id} session={session} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function SessionRow({ session }: { session: Session }) {
-  const startTime = formatTime(session.startedAt);
-  const endTime = session.endedAt ? formatTime(session.endedAt) : "running";
-  const duration =
-    session.durationMinutes !== null
-      ? `${session.durationMinutes.toFixed(1)}m`
-      : "active";
-  const isActive = session.endedAt === null;
-  const summary = session.summary;
-
-  return (
-    <div className="rounded-lg border border-vena-border bg-vena-surface p-4">
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            {isActive && (
-              <span className="inline-block h-2 w-2 rounded-full bg-vena-success animate-pulse" />
-            )}
-            <span className="font-mono text-xs text-vena-text-muted">
-              {session.id.slice(0, 8)}
-            </span>
-            <span className="text-xs text-vena-text-secondary">
-              {startTime} &rarr; {endTime}
-            </span>
-          </div>
-
-          {summary && (
-            <div className="mt-2">
-              {summary.phase && (
-                <span className="mr-2 inline-block rounded-full bg-vena-accent/10 px-2 py-0.5 text-micro font-medium text-vena-accent">
-                  {summary.phase}
-                </span>
-              )}
-              {summary.categories?.map((cat) => (
-                <span
-                  key={cat}
-                  className="mr-1.5 inline-block rounded-full bg-vena-surface-raised px-2 py-0.5 text-micro text-vena-text-muted"
-                >
-                  {cat}
-                </span>
-              ))}
-              {summary.summary && (
-                <p className="mt-1.5 text-xs leading-relaxed text-vena-text-secondary">
-                  {summary.summary}
-                </p>
-              )}
-            </div>
-          )}
-        </div>
-
-        <div className="flex flex-col items-end gap-1 shrink-0">
-          <span
-            className={`text-sm font-mono font-medium ${isActive ? "text-vena-success" : "text-vena-text"}`}
-          >
-            {duration}
-          </span>
-          <span className="text-micro text-vena-text-muted">
-            {session.source}
-          </span>
-          {summary?.apiCostUsd !== undefined && summary.apiCostUsd > 0 && (
-            <span className="text-micro text-vena-warning">
-              ${summary.apiCostUsd.toFixed(2)}
-            </span>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function formatDate(dateStr: string): string {
-  try {
-    const d = new Date(dateStr + "T00:00:00");
-    return d.toLocaleDateString("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-    });
-  } catch {
-    return dateStr;
-  }
-}
-
-function formatTime(iso: string): string {
-  try {
-    return new Date(iso).toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-  } catch {
-    return iso;
-  }
 }
 
 function ClockEmptyIcon() {

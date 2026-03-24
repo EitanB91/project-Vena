@@ -3,22 +3,28 @@ import {
   readAllAgents,
   readBudgetLedger,
   computeBudgetSummary,
-  readSessionTimeline,
   readProjectRoadmap,
+  getProjectSlug,
+  getProjectTelemetry,
+  formatTokens,
+  formatDateShort,
 } from "@/lib";
 import type { AlertLevel } from "@/types";
+import { DashboardClient } from "./DashboardClient";
 
 export const dynamic = "force-dynamic";
 
-export default function Home() {
+export default async function Home() {
   const projectPath = process.cwd();
   const claudeDir = path.join(projectPath, ".claude");
 
   const profiles = readAllAgents(claudeDir);
   const ledger = readBudgetLedger(claudeDir);
   const summary = ledger ? computeBudgetSummary(ledger) : null;
-  const timeline = readSessionTimeline(claudeDir);
   const roadmap = readProjectRoadmap(projectPath);
+
+  const slug = getProjectSlug(projectPath);
+  const telemetry = await getProjectTelemetry(slug);
 
   const activeCount = profiles.filter((p) => p.status.label === "Active").length;
 
@@ -38,6 +44,50 @@ export default function Home() {
     warn: "text-vena-warning",
     critical: "text-vena-error",
     locked: "text-vena-error",
+  };
+
+  // Compute active session metrics
+  const activeSessions = telemetry.sessions.filter((s) => s.isActive);
+  const activeDurationMinutes = activeSessions.reduce(
+    (sum, s) => sum + s.durationMinutes,
+    0,
+  );
+  const activeOutputTokens = activeSessions.reduce(
+    (sum, s) => sum + s.tokens.output,
+    0,
+  );
+
+  // Build model usage map from all sessions
+  const modelTokens: Record<string, number> = {};
+  for (const session of telemetry.sessions) {
+    if (session.model) {
+      modelTokens[session.model] =
+        (modelTokens[session.model] ?? 0) + session.tokens.output;
+    }
+  }
+
+  // Build token chart data from daily usage
+  const tokenChartData = telemetry.dailyUsage.map((d) => ({
+    label: formatDateShort(d.date),
+    input: d.tokens.input,
+    output: d.tokens.output,
+    cache: d.tokens.cacheCreation + d.tokens.cacheRead,
+  }));
+
+  // Initial client data for polling
+  const initialClientData = {
+    activeSessionCount: telemetry.activeSessionCount,
+    activeDurationMinutes,
+    activeOutputTokens,
+    modelTokens,
+    tokenChartData,
+    totalSessions: telemetry.sessions.length,
+    totalTokens: telemetry.totals.total,
+    totalOutputTokens: telemetry.totals.output,
+    totalDurationMinutes: telemetry.sessions.reduce(
+      (sum, s) => sum + s.durationMinutes,
+      0,
+    ),
   };
 
   return (
@@ -75,10 +125,13 @@ export default function Home() {
         />
         <StatusCard
           label="Sessions"
-          value={String(timeline.totalSessions)}
-          sub={`${timeline.totalMinutes.toFixed(0)} min total`}
+          value={String(telemetry.sessions.length)}
+          sub={`${formatTokens(telemetry.totals.output)} output tokens`}
         />
       </div>
+
+      {/* Live Telemetry (Client-side polling) */}
+      <DashboardClient initialData={initialClientData} />
 
       {/* Quick Glance Panels */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
