@@ -411,6 +411,7 @@ function buildDailyUsage(sessions: SessionTelemetry[]): DailyUsage[] {
         durationMinutes: 0,
         tokens: emptyTokenBreakdown(),
         messages: 0,
+        toolCalls: 0,
       };
       byDate.set(dateKey, daily);
     }
@@ -418,6 +419,7 @@ function buildDailyUsage(sessions: SessionTelemetry[]): DailyUsage[] {
     daily.sessions++;
     daily.durationMinutes += session.durationMinutes;
     daily.messages += session.messageCount;
+    daily.toolCalls += session.toolCallCount;
 
     // Include subagent tokens in daily totals
     daily.tokens.input += session.tokens.input + session.subagentTokens.input;

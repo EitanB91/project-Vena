@@ -12,6 +12,7 @@ import {
 import { BudgetChart } from "@/components/BudgetChart";
 import { EmptyState } from "@/components/EmptyState";
 import { BudgetClient } from "./BudgetClient";
+import type { TelemetryData } from "./BudgetClient";
 import type { AlertLevel } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -29,18 +30,18 @@ export default async function BudgetPage() {
     (sum, s) => sum + s.durationMinutes,
     0,
   );
-  const todaySessions = telemetry.sessions.filter((s) => {
-    const today = new Date().toISOString().slice(0, 10);
-    return s.startTime.toISOString().slice(0, 10) === today;
-  });
+  const today = new Date().toISOString().slice(0, 10);
+  const todaySessions = telemetry.sessions.filter(
+    (s) => s.startTime.toISOString().slice(0, 10) === today,
+  );
   const todayDurationMinutes = todaySessions.reduce(
     (sum, s) => sum + s.durationMinutes,
     0,
   );
   const lastSession = telemetry.sessions[0]; // Already sorted newest first
 
-  // Burn rate data (last 7 days)
-  const burnRateData = telemetry.dailyUsage.slice(-7).map((d) => ({
+  // Burn rate data (last 30 days — client toggles between 7d/30d view)
+  const burnRateData = telemetry.dailyUsage.slice(-30).map((d) => ({
     label: formatDateShort(d.date),
     output: d.tokens.output,
   }));
@@ -192,18 +193,6 @@ export default async function BudgetPage() {
 }
 
 /* ─── Telemetry Panel ─────────────────────────────────────────────── */
-
-interface TelemetryData {
-  totalSessions: number;
-  totalTokens: number;
-  totalOutputTokens: number;
-  totalDurationMinutes: number;
-  todayDurationMinutes: number;
-  todayDurationHours: number;
-  lastSessionAgo: string | null;
-  burnRateData: { label: string; output: number }[];
-  activeSessionCount: number;
-}
 
 function TelemetryPanel({ data }: { data: TelemetryData }) {
   const quotaHours = 5; // Soft reference for Pro plan

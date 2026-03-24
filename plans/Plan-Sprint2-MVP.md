@@ -238,255 +238,89 @@ Investigate live data patterns for Next.js App Router:
 > *"Make Vena breathe."*
 
 **Goal:** Real-time telemetry data, interactive charts, live session monitoring, budget rework.
-**Duration:** 3–4 sessions
+**Duration:** 8 sessions (4 sub-phases)
+**Status:** IN PROGRESS — **8A SHIPPED, 8B SHIPPED, 8C SHIPPED, 8D next**
 **Primary Owner:** Orchestrator
 **Supporting:** Nova (charts, visual design), Silas (budget panel, burn rate), Viktor (security + QA)
+**Detailed execution plan:** [`plans/Plan-Phase8-Execution.md`](Plan-Phase8-Execution.md)
 
 **Features delivered:** F1, F2, F3, F4, F6, F7, F8, F9, F13, F14, F17, F19, F20
 
-### Task Breakdown
+---
 
-#### 8.1 — Build: Telemetry Reader Core
+### Sub-Phase 8A — Foundation (SHIPPED)
 
-| Field | Detail |
-|-------|--------|
-| **Owner** | Orchestrator |
-| **Dependencies** | 7.1 research, 7.6 double-count verification |
-| **Files (create)** | `src/lib/telemetry.ts`, `src/types/telemetry.ts` |
-| **Resolves** | C1 (architecture), C3 (race conditions), C4 (performance), C5 (categorization note) |
+**Sessions:** 1–2 | **Commit:** `bb3cead` | **Viktor QA:** PASS | **Director:** APPROVED
 
-The foundation. Every telemetry feature depends on this.
+| Task | Name | Status | Features |
+|------|------|--------|----------|
+| 8.1 | Telemetry Reader Core | DONE | — |
+| 8.3 | Smart Token Formatting | DONE | F19 |
 
-- [x] `getProjectSlug(cwd: string): string` — convert path to Claude Code slug format
-- [x] `getSessionFiles(projectSlug: string): string[]` — list session JSONLs
-- [x] `parseSessionTelemetry(filePath: string): SessionTelemetry` — extract all data from one session
-- [x] `getProjectTelemetry(projectSlug?: string): ProjectTelemetry` — aggregate across all sessions
-- [x] `isSessionActive(filePath: string, thresholdMs?: number): boolean` — mtime check
-- [x] Path confinement: all reads validated to stay under `~/.claude/projects/` (C7/S1)
-- [x] File extension whitelist: only `.jsonl` files (C7/S2)
-- [x] Race condition handling: try/catch per JSON.parse, skip malformed lines (C3)
-- [x] Streaming readline for files > 500 lines (C4)
-- [x] Handle subagent files (based on C1 findings — sum parent + subagent tokens)
-- [x] Vitest tests with fixture JSONL data (N2)
-
-**Types:**
-```typescript
-interface TokenBreakdown {
-  input: number;
-  output: number;
-  cacheCreation: number;
-  cacheRead: number;
-  total: number;
-}
-
-interface SessionTelemetry {
-  sessionId: string;
-  title: string | null;
-  startTime: Date;
-  endTime: Date;
-  durationMinutes: number;
-  model: string;
-  entrypoint: string;
-  version: string;
-  gitBranch: string;
-  isActive: boolean;
-  tokens: TokenBreakdown;
-  messageCount: number;
-  subagentCount: number;
-  subagentTokens: TokenBreakdown;
-}
-
-interface ProjectTelemetry {
-  projectSlug: string;
-  sessions: SessionTelemetry[];
-  totals: TokenBreakdown;
-  activeSessionCount: number;
-  dailyUsage: DailyUsage[];
-}
-```
-
-**Smoke check:** `node -e "require('./src/lib/telemetry.ts')"` returns valid data. Vitest passes.
+**Delivered:** `src/lib/telemetry.ts`, `src/lib/format.ts`, `src/types/telemetry.ts`, 43 new tests (97 total). Security S1–S6 pass. Runtime type guards (no `as` casts). Real data flowing (14 sessions, 285.7M tokens).
 
 ---
 
-#### 8.2 — Build: API Route Endpoints (Security Hardened)
+### Sub-Phase 8B — API & Polling (SHIPPED)
 
-| Field | Detail |
-|-------|--------|
-| **Owner** | Orchestrator |
-| **Dependencies** | 8.1 (telemetry reader), 7.5 (agent status in data layer) |
-| **Files (create)** | `src/app/api/telemetry/route.ts`, `src/app/api/agents/route.ts`, `src/app/api/budget/route.ts`, `src/app/api/sessions/route.ts`, `src/app/api/dashboard/route.ts` |
-| **Resolves** | C7 (security — Viktor's 6-point checklist applied here) |
+**Sessions:** 3–4 | **Commit:** `02c3ad8` | **Viktor QA:** PASS | **Director:** APPROVED
 
-- [x] Each route reads from data layer / telemetry reader
-- [x] Return JSON with `Cache-Control: no-store`
-- [x] **S1 — Path confinement:** telemetry route validates project slug
-- [x] **S4 — Input validation:** `if (!/^[a-zA-Z0-9-]+$/.test(slug)) return 400`
-- [x] **S5 — Server-only:** no fs in client, API returns sanitized JSON only
-- [x] **S6 — Safe errors:** no file paths in error responses
-- [x] Vitest tests for each endpoint (5 test files, 20 tests)
+| Task | Name | Status | Features |
+|------|------|--------|----------|
+| 8.2 | API Route Endpoints | DONE | — |
+| 8.4 | Client-Side Polling | DONE | — |
+| 8.5 | Budget Page Rework | DONE | F20 |
+| 8.6 | Dashboard Overhaul | DONE | F1, F2, F4 |
+| 8.7 | Sessions Page Overhaul | DONE | F3, F13, F14 |
+| 8.9 | Phase Token Report | DONE | F6 |
+| 8.11 | Date Format Updates | DONE | — |
 
-**Smoke check:** `curl http://localhost:3000/api/telemetry` returns valid JSON with session data.
+**Delivered:** 5 API routes, `usePolling` hook, dashboard/sessions/budget page overhauls, telemetry charts, phase token report. 111 total tests.
 
 ---
 
-#### 8.3 — Build: Smart Token Formatting (F19)
+### Sub-Phase 8C — Chart Enhancements (SHIPPED)
 
-| Field | Detail |
-|-------|--------|
-| **Owner** | Orchestrator |
-| **Dependencies** | None |
-| **Files (create)** | `src/lib/format.ts` |
-| **Resolves** | C2 (cache misleading — formatting separates concerns) |
+**Session:** 5 | **Shipped:** 2026-03-24
 
-- [x] `formatTokens(n: number): string` — "238M", "48.7K", "1,234"
-- [x] `formatDuration(minutes: number): string` — "4h 31m", "23m"
-- [x] `formatRelativeTime(date: Date): string` — "Updated 30s ago", "2 hours ago"
-- [x] `formatDate` and `formatDateShort` for DD-MM-YYYY and DD-MM formats
-- [x] Vitest tests for edge cases (0, negative, very large numbers)
+| Task | Name | Status | Features |
+|------|------|--------|----------|
+| 8.8 | Telemetry Charts | DONE | F7, F8, F17 |
 
----
+**Delivered:**
+- [x] **F7 — Burn Rate Chart:** 7-day and 30-day toggle views (was 7-day only from 8B)
+- [x] **F8 — Duration Quota Gauge:** Horizontal bar with soft 5h reference (shipped in 8B, verified)
+- [x] **F17 — Usage Over Time:** Switchable by tokens, messages, sessions, and tool calls per day
+- [x] Average per-day baselines as reference lines (C6)
+- [x] `toolCalls` added to `DailyUsage` type and aggregation
+- [x] 112 tests passing, lint clean, build clean
 
-#### 8.4 — Build: Client-Side Polling
-
-| Field | Detail |
-|-------|--------|
-| **Owner** | Orchestrator + Nova |
-| **Dependencies** | 8.2 (API routes) |
-| **Files (create)** | `src/hooks/usePolling.ts` |
-| **Files (modify)** | All page components |
-
-- [x] `usePolling(url, interval)` hook — fetches at configurable interval
-- [ ] Dashboard: 30s interval. Detail pages: 60s (wired in Phase 8B with page overhauls)
-- [x] Handle loading, error, stale states
-- [x] Page Visibility API — pause polling when tab hidden
-- [ ] Convert pages to hybrid: Server Component SSR initial data, Client Component child polls (Phase 8B)
-
-**Smoke check:** Open dashboard, wait 30s, data updates without page refresh.
+**Smoke check:** PASS — Charts render with real data. 7d/30d toggle works. All 4 metric views work.
 
 ---
 
-#### 8.5 — Build: Budget Page Rework (F20)
+### Sub-Phase 8D — V&V Sync & Exit (CODE COMPLETE)
 
-| Field | Detail |
-|-------|--------|
-| **Owner** | Orchestrator + Silas |
-| **Dependencies** | 8.1 (telemetry reader), 8.2 (API routes) |
-| **Files (modify)** | `src/app/budget/page.tsx`, `src/lib/budget.ts` |
+**Sessions:** 6–7
 
-Two distinct panels:
+| Task | Name | Status | Features |
+|------|------|--------|----------|
+| 8.10 | Automated V&V Log Entries | DONE | F9 |
 
-**Panel 1 — Pro Plan Usage (from telemetry):**
-- Total sessions, total tokens (formatted with F19)
-- Session duration quota proxy gauge (F8): "Today: 2.3h / ~5h"
-- Daily/weekly burn rate mini chart (F7)
-- "Last session: 47 min ago"
+**Scope:**
+- [x] Detect ended sessions: JSONL file mtime > 10 minutes stale + no active writes
+- [x] Generate V&V-compatible `usage-log.jsonl` entries from telemetry data
+- [x] Categories inferred from git commit messages or left as "uncategorized"
+- [x] Run as part of API route call (lazy generation, not background job)
 
-**Panel 2 — API Budget (from V&V ledger):**
-- Existing budget cards (remaining, usable, floor, alert level)
-- Keep existing donut chart
-- "Last updated: [timestamp]"
+**Delivered:**
+- [x] New module `src/lib/vv-sync.ts` — sync engine with idempotent deduplication
+- [x] Integrated into `/api/telemetry` route (lazy, best-effort on each poll)
+- [x] Git commit prefix → category mapping (feat→code_build, test→tests, docs→admin, etc.)
+- [x] 17 new tests, 129 total passing, lint clean, build clean
+- [x] Smoke tested: 18 sessions synced, idempotency verified
 
-**Smoke check:** Budget page shows two clear panels. Telemetry panel has real data.
-
----
-
-#### 8.6 — Build: Dashboard Overhaul (F1, F2, F4)
-
-| Field | Detail |
-|-------|--------|
-| **Owner** | Orchestrator + Nova |
-| **Dependencies** | 8.1 (telemetry), 8.3 (formatting), 8.4 (polling) |
-| **Files (modify)** | `src/app/page.tsx` |
-| **Files (create)** | `src/components/SessionPulse.tsx`, `src/components/TokenChart.tsx`, `src/components/ModelDonut.tsx` |
-
-- [ ] **F1 — Live Session Pulse:** Card with breathing animation, active session count, duration counter, current token output. Indigo pulse when active, gray when idle
-- [ ] **F2 — Token Breakdown Chart:** Stacked bar showing input vs output vs cache. Clear visual separation — output tokens prominent, cache tokens muted/secondary (C2)
-- [ ] **F4 — Model Usage Donut:** Small donut — opus %, sonnet %, other %
-- [ ] Existing status cards updated with live data from polling
-- [ ] All token numbers use smart formatting (F19)
-
-**Smoke check:** Playwright screenshot — pulse card breathing, charts rendering with real data.
-
----
-
-#### 8.7 — Build: Sessions Page Overhaul (F3, F13, F14)
-
-| Field | Detail |
-|-------|--------|
-| **Owner** | Orchestrator + Nova |
-| **Dependencies** | 8.1 (telemetry), 8.4 (polling) |
-| **Files (modify)** | `src/app/sessions/page.tsx` |
-
-- [ ] **F3 — Timeline Bars:** Horizontal duration bars per session, color-coded by model (opus=indigo, sonnet=lighter)
-- [ ] **F13 — Token Display:** Each session row shows input/output token counts (formatted)
-- [ ] **F14 — Model Tag:** Badge showing model name per session
-- [ ] Session title from `custom-title` event or first user message preview
-- [ ] Active sessions highlighted with pulse indicator
-- [ ] Date grouping preserved, date format DD-MM-YYYY
-
-**Smoke check:** Playwright screenshot — timeline bars, token counts, model badges visible.
-
----
-
-#### 8.8 — Build: Telemetry Charts (F7, F8, F17)
-
-| Field | Detail |
-|-------|--------|
-| **Owner** | Orchestrator + Silas + Nova |
-| **Dependencies** | 8.1 (telemetry), 8.3 (formatting) |
-| **Files (modify)** | `src/app/budget/page.tsx` or new `src/app/telemetry/page.tsx` |
-| **Resolves** | C6 (context for numbers — charts provide baselines) |
-
-- [ ] **F7 — Burn Rate Chart:** Recharts bar chart — output tokens per day, 7-day and 30-day views. Shows trend
-- [ ] **F8 — Duration Quota Gauge:** Horizontal bar or radial gauge — "Today: 2.3h" with soft 5h reference line
-- [ ] **F17 — Usage Over Time:** Line chart switchable by: messages count, session count, or tool calls per day
-- [ ] Average per-session and per-day baselines shown as reference lines (C6)
-
-**Smoke check:** Charts render with real data. Switching views works.
-
----
-
-#### 8.9 — Build: Phase Token Report (F6)
-
-| Field | Detail |
-|-------|--------|
-| **Owner** | Orchestrator + Silas |
-| **Dependencies** | 8.1 (telemetry reader), roadmap parser (existing) |
-
-- [ ] Cross-reference session timestamps with phase date ranges from roadmap
-- [ ] Compute per-phase: session count, total duration, output tokens, cache tokens
-- [ ] Display on roadmap page or budget page as a breakdown table
-- [ ] Show deltas: "Phase 5 used 2x more than Phase 4"
-
-**Smoke check:** Phase token report shows non-zero data for completed phases.
-
----
-
-#### 8.10 — Build: Automated V&V Log Entries (F9)
-
-| Field | Detail |
-|-------|--------|
-| **Owner** | Orchestrator + Silas |
-| **Dependencies** | 8.1 (telemetry reader) |
-
-- [ ] Detect ended sessions: JSONL file mtime > 10 minutes stale + no active writes
-- [ ] Generate V&V-compatible `usage-log.jsonl` entries from telemetry data
-- [ ] Categories inferred from git commit messages or left as "uncategorized"
-- [ ] Run as part of API route call (lazy generation, not background job)
-
----
-
-#### 8.11 — Date Format Updates
-
-| Field | Detail |
-|-------|--------|
-| **Owner** | Orchestrator |
-| **Dependencies** | None |
-
-- [ ] Roadmap completed dates → DD-MM-YYYY
-- [ ] Session chart axis labels → DD-MM
-- [ ] Consistent relative timestamps everywhere (using F19 formatRelativeTime)
+**Ends with:** Viktor full Phase 8 sweep + Director full live test → **PHASE 8 EXIT APPROVAL**
 
 ---
 
@@ -494,71 +328,40 @@ Two distinct panels:
 
 Viktor's 6-point checklist applied to all Phase 8 code:
 
-| # | Check | Applied To | Blocking? |
-|---|-------|------------|-----------|
-| S1 | Path confinement — all reads under `~/.claude/projects/` | `telemetry.ts`, API routes | **Yes** |
-| S2 | File extension whitelist — `.jsonl` only | `telemetry.ts` | **Yes** |
-| S3 | No credential exposure — cannot reach `.credentials.json` | Full grep of build output | **Yes** |
-| S4 | API input validation — slug alphanumeric + hyphens only | API routes | **Yes** |
-| S5 | No data in client bundle — fs server-side only | Build output audit | **Yes** |
-| S6 | Safe error messages — no paths leaked | API routes, error handlers | **Yes** |
+| # | Check | Applied To | Blocking? | Status |
+|---|-------|------------|-----------|--------|
+| S1 | Path confinement — all reads under `~/.claude/projects/` | `telemetry.ts`, API routes | **Yes** | PASS (8A+8B) |
+| S2 | File extension whitelist — `.jsonl` only | `telemetry.ts` | **Yes** | PASS (8A) |
+| S3 | No credential exposure — cannot reach `.credentials.json` | Full grep of build output | **Yes** | PASS (8B) |
+| S4 | API input validation — slug alphanumeric + hyphens only | API routes | **Yes** | PASS (8B) |
+| S5 | No data in client bundle — fs server-side only | Build output audit | **Yes** | PASS (8B) |
+| S6 | Safe error messages — no paths leaked | API routes, error handlers | **Yes** | PASS (8B) |
 
-**Security tests Viktor will run:**
-1. Path traversal: `project=../../` → must return 400
-2. Credential access: no code path reaches `.credentials.json`
-3. Slug injection: `project=foo;ls` → must reject
-4. Client bundle audit: search build output for `homedir` → must not appear
-5. Error message audit: trigger errors → no paths in response
-6. JSONL-only: rename file to `.json` → reader skips it
+### Phase 8 — Git Commits (Actual)
 
-### Phase 8 — QA Checkpoint
-
-**Round 1:**
-- Viktor security review (6-point checklist above)
-- Viktor reviews telemetry reader (C3, C4 handling)
-- Viktor reviews polling implementation (no memory leaks, cleanup in useEffect)
-- Viktor tests data freshness end-to-end
-
-**Round 2:**
-- Viktor verifies all Round 1 fixes
-- Full build + lint + test pass
-- Expected: PASS in 2 rounds
-
-### Phase 8 — Budget Checkpoint
-
-- Silas logs Pro quota usage
-- Silas verifies telemetry data accuracy (cross-check telemetry reader output vs manual JSONL inspection)
-- Silas confirms burn rate chart data matches expectations
+| # | Commit | Sub-Phase | Message |
+|---|--------|-----------|---------|
+| 1 | `bb3cead` | 8A | feat: Phase 8A — telemetry reader core and smart formatting utilities |
+| 2 | `02c3ad8` | 8B | feat: Phase 8B — API routes, live polling, dashboard/sessions/budget overhauls, telemetry charts |
+| 3 | *pending* | 8C | — |
+| 4 | *pending* | 8D | — |
 
 ### Phase 8 — Director Live Testing
 
-| # | Test | Expected |
-|---|------|----------|
-| D8.1 | Leave dashboard open 60s | Status cards update without manual refresh |
-| D8.2 | Live Session Pulse card | Shows active session with duration counter, breathing animation |
-| D8.3 | Token Breakdown chart | Stacked bar renders — output tokens visually distinct from cache |
-| D8.4 | Model Usage donut | Shows opus/sonnet split |
-| D8.5 | Sessions page | Timeline bars, token counts, model badges visible |
-| D8.6 | Budget page — Pro panel | Shows real telemetry data, session count, duration gauge |
-| D8.7 | Budget page — API panel | Shows V&V ledger data (existing) |
-| D8.8 | Burn rate chart | Shows daily token output trend |
-| D8.9 | Usage over time graph | Switchable by messages/sessions/tool calls |
-| D8.10 | Phase token report | Shows token usage per completed phase |
-| D8.11 | Roadmap dates | DD-MM-YYYY format |
-| D8.12 | Session chart dates | DD-MM format |
-
-### Phase 8 — Git Commits
-
-1. `feat: add telemetry reader core with security-hardened path validation`
-2. `feat: add API route endpoints for telemetry, agents, budget, sessions, dashboard`
-3. `feat: add smart token formatting utilities`
-4. `feat: add client-side polling with usePolling hook`
-5. `feat: rework budget page with dual panel (Pro telemetry + API ledger)`
-6. `feat: add live session pulse, token breakdown chart, and model donut to dashboard`
-7. `feat: overhaul sessions page with timeline bars, token display, and model tags`
-8. `feat: add burn rate chart, duration gauge, and usage-over-time graph`
-9. `feat: add phase-by-phase token report`
-10. `fix: update date formats to DD-MM-YYYY per Director request`
+| # | Test | Expected | Sub-Phase | Tested? |
+|---|------|----------|-----------|---------|
+| D8.1 | Leave dashboard open 60s | Status cards update without manual refresh | 8B | — |
+| D8.2 | Live Session Pulse card | Shows active session with duration counter, breathing animation | 8C | — |
+| D8.3 | Token Breakdown chart | Stacked bar renders — output tokens visually distinct from cache | 8C | — |
+| D8.4 | Model Usage donut | Shows opus/sonnet split | 8C | — |
+| D8.5 | Sessions page | Timeline bars, token counts, model badges visible | 8B | — |
+| D8.6 | Budget page — Pro panel | Shows real telemetry data, session count, duration gauge | 8C | — |
+| D8.7 | Budget page — API panel | Shows V&V ledger data (existing) | 8B | — |
+| D8.8 | Burn rate chart | Shows daily token output trend | 8C | — |
+| D8.9 | Usage over time graph | Switchable by messages/sessions/tool calls | 8C | — |
+| D8.10 | Phase token report | Shows token usage per completed phase | 8D | — |
+| D8.11 | Roadmap dates | DD-MM-YYYY format | 8C | — |
+| D8.12 | Session chart dates | DD-MM format | 8C | — |
 
 **Gate to Phase 9:** Director confirms data freshness is resolved. Charts render real data. Viktor QA: PASS.
 

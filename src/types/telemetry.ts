@@ -74,6 +74,7 @@ export interface DailyUsage {
   durationMinutes: number;
   tokens: TokenBreakdown;
   messages: number;
+  toolCalls: number;
 }
 
 /** Aggregated telemetry for an entire project */

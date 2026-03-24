@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import path from "node:path";
 import { getProjectSlug, getProjectTelemetry } from "@/lib/telemetry";
+import { syncTelemetryToVV } from "@/lib/vv-sync";
 
 const HEADERS = { "Cache-Control": "no-store" } as const;
 
@@ -24,6 +26,14 @@ export async function GET(request: NextRequest) {
 
     const slug = slugParam ?? getProjectSlug(process.cwd());
     const telemetry = await getProjectTelemetry(slug);
+
+    // F9: Lazily sync ended sessions to V&V usage log
+    try {
+      const claudeDir = path.join(process.cwd(), '.claude');
+      syncTelemetryToVV(claudeDir, telemetry.sessions);
+    } catch {
+      // Sync is best-effort — don't block telemetry response
+    }
 
     // Serialize dates for JSON transport
     const serialized = {

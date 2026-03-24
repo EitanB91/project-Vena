@@ -121,18 +121,23 @@ Vena is a local web dashboard for monitoring Claude Code projects. It reads `.cl
 - [ ] GATE: Phase 7 team meeting — finalize Sprint 2 roadmap based on findings
 <!-- /vena:phase -->
 
-<!-- vena:phase id="8" status="planned" -->
-### Phase 8 — Live Data Pipeline
-**Status:** Planned
-**Goal:** Real-time data updates — API routes, client polling, telemetry reader, session logger fix.
+<!-- vena:phase id="8" status="in_progress" -->
+### Phase 8 — Live Telemetry Pipeline
+**Status:** In Progress (8A–8D code complete, final QA pending)
+**Goal:** Real-time telemetry data, interactive charts, live session monitoring, budget rework.
 
-- [ ] API Route endpoints for client polling
-- [ ] Telemetry reader for V&V budget ledger
-- [ ] Fix session logger hook
-- [ ] Client-side polling components (usePolling hook)
-- [ ] Visual heartbeat indicators ("Updated Xs ago")
-- [ ] Session titles and summaries
-- [ ] Date format updates (DD-MM-YYYY)
+- [x] Telemetry reader core (8A) — JSONL parser, streaming, security S1-S6
+- [x] Smart token formatting (8A) — human-readable large numbers
+- [x] API Route endpoints (8B) — /telemetry, /agents, /budget, /sessions, /dashboard
+- [x] Client-side polling (8B) — usePolling hook with Page Visibility API
+- [x] Dashboard overhaul (8B) — SessionPulse, TokenChart, ModelDonut, live 30s polling
+- [x] Sessions page overhaul (8B) — timeline bars, model tags, per-session tokens
+- [x] Budget page rework (8B) — dual panel (Pro telemetry + API ledger), duration gauge
+- [x] Phase token report (8B) — cross-references sessions with phase dates
+- [x] Date format updates (8B) — DD-MM-YYYY and DD-MM
+- [x] Telemetry charts enhanced (8C) — burn rate 7d/30d toggle, tool calls metric, avg baselines
+- [x] Automated V&V log entries (8D) — telemetry-to-V&V sync, category inference, idempotent
+- [ ] Final QA gate + Director full live test (8D)
 <!-- /vena:phase -->
 
 <!-- vena:phase id="9" status="planned" -->

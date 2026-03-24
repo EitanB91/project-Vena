@@ -214,4 +214,19 @@ describe('getProjectTelemetry', () => {
         .toBeLessThanOrEqual(0);
     }
   });
+
+  it('daily usage includes toolCalls aggregation', async () => {
+    const slug = 'c--Users-user-Desktop-Ai-Claude-project-Vena';
+    const result = await getProjectTelemetry(slug);
+
+    for (const day of result.dailyUsage) {
+      expect(day).toHaveProperty('toolCalls');
+      expect(typeof day.toolCalls).toBe('number');
+      expect(day.toolCalls).toBeGreaterThanOrEqual(0);
+    }
+
+    // At least some days should have tool calls
+    const totalToolCalls = result.dailyUsage.reduce((sum, d) => sum + d.toolCalls, 0);
+    expect(totalToolCalls).toBeGreaterThan(0);
+  });
 });

@@ -37,3 +37,5 @@ export {
 } from './telemetry';
 export { buildPhaseTokenReport } from './phase-tokens';
 export type { PhaseTokenReport } from './phase-tokens';
+export { syncTelemetryToVV } from './vv-sync';
+export type { VVSyncResult } from './vv-sync';

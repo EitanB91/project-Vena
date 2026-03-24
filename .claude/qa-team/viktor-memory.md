@@ -216,9 +216,36 @@ Research & Foundation Fixes. No formal QA round — Orchestrator self-verified.
 - **Uncommitted code from other phases is dangerous** — 8B test files broke `npm test` globally even though they were unrelated to 8A. Lesson: don't leave uncommitted code from future phases in the working directory.
 - **Security checklist for filesystem access (S1-S6)** — first full application of the 6-point telemetry security checklist. All passed. This checklist is reusable for Phase 8B API routes.
 
-### Cumulative QA Stats (Phases 0–8A)
-- Total QA rounds: 14 (7 phases × ~2 rounds average)
-- Total findings: ~28 findings caught (including 8 security, 5 required fixes, ~15 notes)
+### Phase 8B QA Notes (2026-03-24)
+**Round 1 — 1 required fix, 2 notes:**
+- F1 (REQUIRED): `SessionsClientProps` interface had dead props `dates: string[]` and `maxDuration: number` — defined but never used after refactor. Parent `sessions/page.tsx` still passed them. Fix: removed from interface and parent call.
+- N1 (non-blocking): `usePolling.ts` error handler used `(body as { error?: string }).error` — `as` cast on external data. Phase 2 lesson. Fix: replaced with proper `typeof` runtime check chain.
+- N2 (non-blocking): `BudgetClient.tsx` LineChart tickFormatter used `(v: number)` while BarChart used `(v)`. Inconsistent type annotation. Fix: standardized to `(v)` + `Number(v)` pattern across all Recharts formatters.
+
+**Round 2 — PASS:**
+- All 3 findings fixed and independently verified
+- F1: `SessionsClientProps` now only has `initialSessions`, parent passes exactly that
+- N1: Error handling in `usePolling.ts` uses full `typeof` guard chain — no `as` casts on external data
+- N2: All 4 Recharts `tickFormatter` instances use `(v)` + `Number(v)` pattern consistently
+- Security S1-S6: ALL 6 CHECKS PASSED on API routes
+  - S1: Path confinement via `confineToBase()` in all file reads
+  - S2: Extension whitelist (`.jsonl`) enforced
+  - S3: No credential exposure — API responses strip file paths
+  - S4: Input validation — `/^[a-zA-Z0-9_-]+$/` slug regex on all endpoints
+  - S5: All `fs` in `src/lib/` only, zero in client components or API routes
+  - S6: Safe error messages — generic errors, no paths leaked to client
+- Build clean, lint clean, 111 tests (14 new), all passing
+- Commit `02c3ad8`. Pushed to master.
+
+### Phase 8B Lessons
+- **Dead props are bugs** — unused interface fields + passed-but-ignored props are a maintenance trap. When refactoring a component's data flow, always check both the interface and all call sites.
+- **Recharts type consistency** — Recharts' `ValueType | undefined` in Tooltip/Axis formatters means you can't type the parameter as `number`. Use `(v)` + `Number(v)` everywhere. This is now the project-wide pattern.
+- **Security S1-S6 reuse confirmed** — same checklist from Phase 8A applied cleanly to Phase 8B API routes. The checklist is stable and comprehensive for `~/.claude/` filesystem access patterns.
+- **`as` casts on external data: third correction** — Phase 2 B1, Phase 5 N1, Phase 8A N2, now Phase 8B N1. The Orchestrator has internalized the pattern but slips occasionally. Viktor will continue flagging.
+
+### Cumulative QA Stats (Phases 0–8B)
+- Total QA rounds: 16 (8 phases × ~2 rounds average)
+- Total findings: ~31 findings caught (including 8 security, 6 required fixes, ~17 notes)
 - Zero bugs shipped to git.
 
 ---

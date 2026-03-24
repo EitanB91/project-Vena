@@ -16,7 +16,7 @@ import {
 import { usePolling } from "@/hooks/usePolling";
 import { formatDateShort } from "@/lib/format";
 
-interface TelemetryData {
+export interface TelemetryData {
   totalSessions: number;
   totalTokens: number;
   totalOutputTokens: number;
@@ -35,47 +35,66 @@ interface TelemetryApiResponse {
     durationMinutes: number;
     tokens: { output: number };
     messages: number;
+    toolCalls: number;
   }[];
 }
 
-type UsageMetric = "messages" | "sessions" | "tokens";
+type UsageMetric = "tokens" | "messages" | "sessions" | "toolCalls";
+type BurnWindow = 7 | 30;
 
 interface BudgetClientProps {
   telemetryData: TelemetryData;
 }
 
+function formatAvg(value: number, isTokens: boolean): string {
+  if (!isTokens) return Math.round(value).toString();
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
+  if (value >= 1_000) return `${(value / 1_000).toFixed(0)}K`;
+  return Math.round(value).toString();
+}
+
+const METRIC_LABELS: Record<UsageMetric, string> = {
+  tokens: "Tokens",
+  messages: "Messages",
+  sessions: "Sessions",
+  toolCalls: "Tool Calls",
+};
+
 export function BudgetClient({ telemetryData }: BudgetClientProps) {
   const [metric, setMetric] = useState<UsageMetric>("tokens");
+  const [burnWindow, setBurnWindow] = useState<BurnWindow>(7);
 
   const { data: apiData } = usePolling<TelemetryApiResponse>({
     url: "/api/telemetry",
     intervalMs: 60_000,
   });
 
-  // Use API data if available, otherwise fall back to initial
+  // F7 — Burn rate with 7d/30d window
   const burnRate = apiData
-    ? apiData.dailyUsage.slice(-7).map((d) => ({
+    ? apiData.dailyUsage.slice(-burnWindow).map((d) => ({
         label: formatDateShort(d.date),
         output: d.tokens.output,
       }))
-    : telemetryData.burnRateData;
+    : telemetryData.burnRateData.slice(-burnWindow);
 
-  // F17 — Usage Over Time (switchable)
+  // F17 — Usage Over Time (switchable including tool calls)
   const usageData = apiData
     ? apiData.dailyUsage.map((d) => ({
         label: formatDateShort(d.date),
         messages: d.messages,
         sessions: d.sessions,
         tokens: d.tokens.output,
+        toolCalls: d.toolCalls,
       }))
     : telemetryData.burnRateData.map((d) => ({
         label: d.label,
         messages: 0,
         sessions: 0,
         tokens: d.output,
+        toolCalls: 0,
       }));
 
-  // Compute average for reference line
+  // C6 — Average reference line for context
   const avg =
     usageData.length > 0
       ? usageData.reduce((sum, d) => sum + d[metric], 0) / usageData.length
@@ -85,9 +104,26 @@ export function BudgetClient({ telemetryData }: BudgetClientProps) {
     <div className="mb-8 grid grid-cols-1 gap-4 lg:grid-cols-2">
       {/* F7 — Burn Rate Chart */}
       <div className="rounded-lg border border-vena-border bg-vena-surface p-6">
-        <h2 className="mb-4 text-xs font-medium uppercase tracking-wider text-vena-text-muted">
-          Output Token Burn Rate (7-day)
-        </h2>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-xs font-medium uppercase tracking-wider text-vena-text-muted">
+            Output Token Burn Rate
+          </h2>
+          <div className="flex gap-1">
+            {([7, 30] as const).map((w) => (
+              <button
+                key={w}
+                onClick={() => setBurnWindow(w)}
+                className={`rounded-md px-2 py-0.5 text-micro font-medium transition-colors ${
+                  burnWindow === w
+                    ? "bg-vena-accent text-white"
+                    : "text-vena-text-muted hover:text-vena-text-secondary"
+                }`}
+              >
+                {w}d
+              </button>
+            ))}
+          </div>
+        </div>
         {burnRate.length > 0 ? (
           <div className="h-[200px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -151,7 +187,7 @@ export function BudgetClient({ telemetryData }: BudgetClientProps) {
             Usage Over Time
           </h2>
           <div className="flex gap-1">
-            {(["tokens", "messages", "sessions"] as const).map((m) => (
+            {(["tokens", "messages", "sessions", "toolCalls"] as const).map((m) => (
               <button
                 key={m}
                 onClick={() => setMetric(m)}
@@ -161,7 +197,7 @@ export function BudgetClient({ telemetryData }: BudgetClientProps) {
                     : "text-vena-text-muted hover:text-vena-text-secondary"
                 }`}
               >
-                {m.charAt(0).toUpperCase() + m.slice(1)}
+                {METRIC_LABELS[m]}
               </button>
             ))}
           </div>
@@ -210,7 +246,7 @@ export function BudgetClient({ telemetryData }: BudgetClientProps) {
                     metric === "tokens"
                       ? Number(value).toLocaleString()
                       : String(value),
-                    metric.charAt(0).toUpperCase() + metric.slice(1),
+                    METRIC_LABELS[metric],
                   ]}
                 />
                 {avg > 0 && (
@@ -219,7 +255,7 @@ export function BudgetClient({ telemetryData }: BudgetClientProps) {
                     stroke="#55556e"
                     strokeDasharray="4 4"
                     label={{
-                      value: `avg: ${metric === "tokens" ? (avg >= 1000 ? `${(avg / 1000).toFixed(0)}K` : Math.round(avg).toString()) : Math.round(avg).toString()}`,
+                      value: `avg: ${formatAvg(avg, metric === "tokens")}`,
                       position: "right",
                       fill: "#55556e",
                       fontSize: 10,
