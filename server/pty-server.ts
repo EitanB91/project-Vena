@@ -168,6 +168,17 @@ const wss = new WebSocketServer({
   },
 });
 
+// Handle server errors (e.g., port already in use)
+wss.on("error", (err: NodeJS.ErrnoException) => {
+  if (err.code === "EADDRINUSE") {
+    console.error(`[pty-server] ERROR: Port ${PORT} is already in use.`);
+    console.error(`[pty-server] Kill the stale process or set PTY_PORT=<other port>`);
+    process.exit(1);
+  }
+  console.error(`[pty-server] ERROR:`, err.message);
+  process.exit(1);
+});
+
 console.log(`[pty-server] listening on ws://${HOST}:${PORT}`);
 console.log(`[pty-server] auth token: ${AUTH_TOKEN}`);
 console.log(`[pty-server] allowed origins: ${ALLOWED_ORIGINS.join(", ")}`);

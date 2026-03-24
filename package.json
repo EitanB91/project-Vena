@@ -1,16 +1,16 @@
 {
   "name": "project-vena",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently --names next,pty --prefix-colors blue,green \"next dev\" \"tsx server/pty-server.ts\"",
+    "dev:next": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "pty-server": "tsx server/pty-server.ts",
-    "dev:full": "concurrently --names next,pty --prefix-colors blue,green \"npm run dev\" \"npm run pty-server\""
+    "pty-server": "tsx server/pty-server.ts"
   },
   "dependencies": {
     "@xterm/addon-fit": "^0.11.0",

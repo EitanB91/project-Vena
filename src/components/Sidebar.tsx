@@ -42,10 +42,10 @@ export default function Sidebar() {
         </button>
         <span className="inline-block h-2 w-2 rounded-full bg-vena-accent animate-pulse" />
         <span className="text-base font-semibold tracking-tight text-vena-text">
-          Vena
+          Vena<span className="text-vena-accent">OS</span>
         </span>
-        <span className="ml-auto text-[10px] font-mono text-vena-text-muted">
-          v0.1
+        <span className="ml-auto text-xs font-mono text-vena-text-secondary">
+          v0.2
         </span>
       </div>
 
@@ -68,10 +68,10 @@ export default function Sidebar() {
         <div className="flex h-14 items-center gap-2.5 px-5 border-b border-vena-border">
           <span className="inline-block h-2 w-2 rounded-full bg-vena-accent animate-pulse" />
           <span className="text-base font-semibold tracking-tight text-vena-text">
-            Vena
+            Vena<span className="text-vena-accent">OS</span>
           </span>
-          <span className="ml-auto text-[10px] font-mono text-vena-text-muted">
-            v0.1
+          <span className="ml-auto text-xs font-mono text-vena-text-secondary">
+            v0.2
           </span>
           {/* Close button — mobile only */}
           <button
@@ -109,8 +109,8 @@ export default function Sidebar() {
 
         {/* Footer */}
         <div className="border-t border-vena-border px-5 py-3">
-          <p className="text-micro font-mono text-vena-text-muted">
-            Project Vena
+          <p className="text-micro font-mono text-vena-text-secondary">
+            VenaOS &middot; Local Monitor
           </p>
         </div>
       </aside>

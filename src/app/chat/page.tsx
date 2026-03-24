@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import dynamic from "next/dynamic";
-import type { ConnectionStatus } from "@/components/Terminal";
+import type { ConnectionStatus, TerminalHandle } from "@/components/Terminal";
+import ChatInput from "@/components/ChatInput";
 
 // Dynamic import — xterm.js requires browser APIs (no SSR)
 const Terminal = dynamic(() => import("@/components/Terminal"), { ssr: false });
@@ -16,7 +17,7 @@ const statusConfig: Record<
     dotClass: "bg-vena-error",
   },
   connecting: {
-    label: "Connecting…",
+    label: "Connecting\u2026",
     dotClass: "bg-vena-warning animate-pulse",
   },
   connected: {
@@ -29,6 +30,7 @@ export default function ChatPage() {
   const [status, setStatus] = useState<ConnectionStatus>("disconnected");
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [terminalKey, setTerminalKey] = useState(0);
+  const terminalRef = useRef<TerminalHandle>(null);
 
   const handleNewSession = useCallback(() => {
     // Remounting Terminal triggers a new WebSocket + PTY session
@@ -36,18 +38,23 @@ export default function ChatPage() {
     setSessionId(null);
   }, []);
 
+  const handleSend = useCallback((text: string) => {
+    terminalRef.current?.send(text);
+  }, []);
+
   const { label, dotClass } = statusConfig[status];
+  const isConnected = status === "connected";
 
   return (
-    <div className="flex flex-1 flex-col p-4 md:p-8 gap-4 h-screen">
+    <div className="flex flex-1 flex-col p-4 md:p-8 gap-3 h-screen">
       {/* Header */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between shrink-0">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-vena-text">
             Chat
           </h1>
           <p className="mt-1 text-sm text-vena-text-secondary">
-            CLI passthrough — embedded terminal for Claude interaction.
+            Send commands to Claude CLI — output appears in the terminal below.
           </p>
         </div>
 
@@ -75,25 +82,41 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* Terminal container */}
+      {/* Terminal output — fills available space */}
       <div className="relative flex-1 min-h-0 rounded-lg border border-vena-border overflow-hidden">
         <Terminal
+          ref={terminalRef}
           key={terminalKey}
           onStatusChange={setStatus}
           onSessionId={setSessionId}
         />
       </div>
 
-      {/* Footer hint */}
-      <div className="flex items-center gap-4 text-micro text-vena-text-muted">
-        <span>
-          <kbd className="rounded border border-vena-border bg-vena-surface-raised px-1.5 py-0.5 font-mono text-micro">
-            claude
-          </kbd>{" "}
-          to start a Claude CLI session
-        </span>
-        <span className="text-vena-border">|</span>
-        <span>PTY server must be running on port 3001</span>
+      {/* Chat input bar */}
+      <div className="shrink-0">
+        <ChatInput onSend={handleSend} disabled={!isConnected} />
+        <div className="mt-1.5 flex items-center gap-3 text-micro text-vena-text-muted">
+          <span>
+            <kbd className="rounded border border-vena-border bg-vena-surface-raised px-1 py-0.5 font-mono text-micro">
+              Enter
+            </kbd>{" "}
+            send
+          </span>
+          <span className="text-vena-border">|</span>
+          <span>
+            <kbd className="rounded border border-vena-border bg-vena-surface-raised px-1 py-0.5 font-mono text-micro">
+              Shift+Enter
+            </kbd>{" "}
+            newline
+          </span>
+          <span className="text-vena-border">|</span>
+          <span>
+            <kbd className="rounded border border-vena-border bg-vena-surface-raised px-1 py-0.5 font-mono text-micro">
+              &uarr;&darr;
+            </kbd>{" "}
+            history
+          </span>
+        </div>
       </div>
     </div>
   );

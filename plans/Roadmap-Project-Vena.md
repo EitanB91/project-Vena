@@ -107,23 +107,23 @@ Vena is a local web dashboard for monitoring Claude Code projects. It reads `.cl
 - [x] Director testing — verdict: FAIL (data freshness issues → Sprint 2)
 <!-- /vena:phase -->
 
-<!-- vena:phase id="7" status="next" -->
+<!-- vena:phase id="7" status="complete" -->
 ### Phase 7 — Research & Foundation Fixes
-**Status:** In Progress
+**Status:** Complete (2026-03-22)
 **Goal:** Research Claude Code telemetry, fix lint errors, refactor agent status to data layer.
 
-- [ ] Research: Claude Code local telemetry (P0 — Director mandate)
-- [ ] Research: Data refresh patterns for Next.js App Router
-- [ ] Research: Session logger hook diagnosis
-- [ ] Fix: All 5 lint errors (Date.now purity, setState in effect, unused var)
-- [ ] Fix: Move agent status computation to data layer
-- [ ] QA checkpoint
-- [ ] GATE: Phase 7 team meeting — finalize Sprint 2 roadmap based on findings
+- [x] Research: Claude Code local telemetry (P0 — Director mandate)
+- [x] Research: Data refresh patterns for Next.js App Router
+- [x] Research: Session logger hook diagnosis
+- [x] Fix: All 5 lint errors (Date.now purity, setState in effect, unused var)
+- [x] Fix: Move agent status computation to data layer
+- [x] QA checkpoint
+- [x] GATE: Phase 7 team meeting — finalize Sprint 2 roadmap based on findings
 <!-- /vena:phase -->
 
-<!-- vena:phase id="8" status="in_progress" -->
+<!-- vena:phase id="8" status="complete" -->
 ### Phase 8 — Live Telemetry Pipeline
-**Status:** In Progress (8A–8D code complete, final QA pending)
+**Status:** Complete (2026-03-24)
 **Goal:** Real-time telemetry data, interactive charts, live session monitoring, budget rework.
 
 - [x] Telemetry reader core (8A) — JSONL parser, streaming, security S1-S6
@@ -137,19 +137,20 @@ Vena is a local web dashboard for monitoring Claude Code projects. It reads `.cl
 - [x] Date format updates (8B) — DD-MM-YYYY and DD-MM
 - [x] Telemetry charts enhanced (8C) — burn rate 7d/30d toggle, tool calls metric, avg baselines
 - [x] Automated V&V log entries (8D) — telemetry-to-V&V sync, category inference, idempotent
-- [ ] Final QA gate + Director full live test (8D)
+- [x] Final QA gate + Director full live test (8D)
 <!-- /vena:phase -->
 
-<!-- vena:phase id="9" status="planned" -->
+<!-- vena:phase id="9" status="in_progress" -->
 ### Phase 9 — Chat & UX Polish
-**Status:** Planned
+**Status:** In Progress
 **Goal:** Chatbox UI, PTY auto-start, VenaOS branding, interactive roadmap.
 
-- [ ] Chatbox UI component (split view with terminal)
-- [ ] PTY server auto-start with npm run dev
-- [ ] VenaOS branding & version text polish
-- [ ] Roadmap phase expand/collapse
-- [ ] Phase detail metadata panels
+- [x] Chatbox UI component (split view with terminal)
+- [x] PTY server auto-start with npm run dev
+- [x] VenaOS branding & version text polish
+- [x] Roadmap phase expand/collapse
+- [x] Phase detail metadata panels
+- [ ] Viktor QA + Director live test
 <!-- /vena:phase -->
 
 <!-- vena:phase id="10" status="planned" -->

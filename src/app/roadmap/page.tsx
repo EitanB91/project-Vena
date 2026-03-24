@@ -6,11 +6,11 @@ import {
   buildPhaseTokenReport,
   formatTokens,
   formatDuration,
-  formatDate,
 } from "@/lib";
 import type { PlanFile } from "@/lib";
 import { EmptyState } from "@/components/EmptyState";
-import type { FeatureEntry, PhaseStatus, RoadmapPhase } from "@/types";
+import PhaseTimeline from "@/components/PhaseTimeline";
+import type { FeatureEntry } from "@/types";
 import type { PhaseTokenReport } from "@/lib";
 
 export const dynamic = "force-dynamic";
@@ -79,16 +79,25 @@ export default async function RoadmapPage() {
         </div>
       )}
 
-      {/* Phase Timeline */}
+      {/* Phase Timeline — interactive expand/collapse */}
       <div className="mb-8">
         <h2 className="mb-4 text-xs font-medium uppercase tracking-wider text-vena-text-muted">
           Phases
         </h2>
-        <div className="space-y-3">
-          {roadmap.phases.map((phase) => (
-            <PhaseCard key={phase.id} phase={phase} />
-          ))}
-        </div>
+        <PhaseTimeline
+          phases={roadmap.phases}
+          tokenData={Object.fromEntries(
+            tokenReports.map((r) => [
+              r.phaseId,
+              {
+                sessionCount: r.sessionCount,
+                totalDurationMinutes: r.totalDurationMinutes,
+                outputTokens: r.outputTokens,
+                totalTokens: r.totalTokens,
+              },
+            ]),
+          )}
+        />
       </div>
 
       {/* F6 — Phase Token Report */}
@@ -215,131 +224,6 @@ function PageHeader() {
         Phase tracker, plans, and milestone progress.
       </p>
     </div>
-  );
-}
-
-function PhaseCard({ phase }: { phase: RoadmapPhase }) {
-  const totalTasks = phase.tasks.length;
-  const completedTasks = phase.tasks.filter((t) => t.completed).length;
-  const percent = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
-
-  const statusConfig: Record<PhaseStatus, { label: string; color: string; barColor: string }> = {
-    complete: {
-      label: "Complete",
-      color: "text-vena-success",
-      barColor: "bg-vena-success",
-    },
-    next: {
-      label: "In Progress",
-      color: "text-vena-accent",
-      barColor: "bg-vena-accent",
-    },
-    in_progress: {
-      label: "In Progress",
-      color: "text-vena-accent",
-      barColor: "bg-vena-accent",
-    },
-    planned: {
-      label: "Planned",
-      color: "text-vena-text-muted",
-      barColor: "bg-vena-text-muted",
-    },
-  };
-
-  const config = statusConfig[phase.status];
-  const isCurrent = phase.status === "next" || phase.status === "in_progress";
-
-  return (
-    <div
-      className={`rounded-lg border bg-vena-surface p-4 ${isCurrent ? "border-vena-accent/40" : "border-vena-border"}`}
-    >
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <StatusDot status={phase.status} />
-            <h3 className="text-sm font-medium text-vena-text">
-              {phase.title}
-            </h3>
-          </div>
-          {phase.goal && (
-            <p className="mt-1 text-xs text-vena-text-secondary">
-              {phase.goal}
-            </p>
-          )}
-        </div>
-        <div className="flex flex-col items-end gap-1 shrink-0">
-          <span className={`text-xs font-medium ${config.color}`}>
-            {config.label}
-          </span>
-          {phase.completedDate && (
-            <span className="text-micro text-vena-text-muted">
-              {formatDate(phase.completedDate)}
-            </span>
-          )}
-        </div>
-      </div>
-
-      {/* Progress bar */}
-      {totalTasks > 0 && (
-        <div className="mt-3">
-          <div className="mb-1 flex justify-between text-micro">
-            <span className="text-vena-text-muted">
-              {completedTasks}/{totalTasks} tasks
-            </span>
-            <span className="text-vena-text-muted">{Math.round(percent)}%</span>
-          </div>
-          <div className="h-1.5 overflow-hidden rounded-full bg-vena-surface-raised">
-            <div
-              className={`h-full rounded-full transition-all ${config.barColor}`}
-              style={{ width: `${percent}%` }}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Task checklist (only for current/next phase) */}
-      {isCurrent && totalTasks > 0 && (
-        <div className="mt-3 space-y-1 border-t border-vena-border pt-3">
-          {phase.tasks.map((task, i) => (
-            <div key={i} className="flex items-start gap-2 text-xs">
-              <span
-                className={
-                  task.completed ? "text-vena-success" : "text-vena-text-muted"
-                }
-              >
-                {task.completed ? "\u2713" : "\u25CB"}
-              </span>
-              <span
-                className={
-                  task.completed
-                    ? "text-vena-text-muted line-through"
-                    : "text-vena-text-secondary"
-                }
-              >
-                {task.text}
-              </span>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function StatusDot({ status }: { status: PhaseStatus }) {
-  const colors: Record<PhaseStatus, string> = {
-    complete: "bg-vena-success",
-    next: "bg-vena-accent",
-    in_progress: "bg-vena-accent",
-    planned: "bg-vena-text-muted",
-  };
-  const animate =
-    status === "next" || status === "in_progress" ? "animate-pulse" : "";
-
-  return (
-    <span
-      className={`inline-block h-2 w-2 shrink-0 rounded-full ${colors[status]} ${animate}`}
-    />
   );
 }
 

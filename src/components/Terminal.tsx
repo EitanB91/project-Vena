@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useRef, useCallback, useState, forwardRef, useImperativeHandle } from "react";
 import { Terminal as XTerm } from "@xterm/xterm";
 import { FitAddon } from "@xterm/addon-fit";
 import { WebLinksAddon } from "@xterm/addon-web-links";
@@ -8,6 +8,10 @@ import { venaTerminalTheme, PTY_WS_URL } from "@/lib/terminal-theme";
 import "@xterm/xterm/css/xterm.css";
 
 export type ConnectionStatus = "disconnected" | "connecting" | "connected";
+
+export interface TerminalHandle {
+  send: (data: string) => void;
+}
 
 interface TerminalProps {
   onStatusChange?: (status: ConnectionStatus) => void;
@@ -29,7 +33,7 @@ async function fetchAuthToken(): Promise<string | null> {
   }
 }
 
-export default function Terminal({ onStatusChange, onSessionId }: TerminalProps) {
+const Terminal = forwardRef<TerminalHandle, TerminalProps>(function Terminal({ onStatusChange, onSessionId }, ref) {
   const containerRef = useRef<HTMLDivElement>(null);
   const termRef = useRef<XTerm | null>(null);
   const wsRef = useRef<WebSocket | null>(null);
@@ -43,6 +47,16 @@ export default function Terminal({ onStatusChange, onSessionId }: TerminalProps)
     },
     [onStatusChange]
   );
+
+  // Expose send method for ChatInput
+  useImperativeHandle(ref, () => ({
+    send(data: string) {
+      const ws = wsRef.current;
+      if (ws?.readyState === WebSocket.OPEN) {
+        ws.send(data);
+      }
+    },
+  }), []);
 
   const connect = useCallback(async () => {
     if (wsRef.current?.readyState === WebSocket.OPEN) return;
@@ -196,4 +210,6 @@ export default function Terminal({ onStatusChange, onSessionId }: TerminalProps)
       style={{ backgroundColor: venaTerminalTheme.background }}
     />
   );
-}
+});
+
+export default Terminal;

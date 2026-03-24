@@ -243,16 +243,56 @@ Research & Foundation Fixes. No formal QA round — Orchestrator self-verified.
 - **Security S1-S6 reuse confirmed** — same checklist from Phase 8A applied cleanly to Phase 8B API routes. The checklist is stable and comprehensive for `~/.claude/` filesystem access patterns.
 - **`as` casts on external data: third correction** — Phase 2 B1, Phase 5 N1, Phase 8A N2, now Phase 8B N1. The Orchestrator has internalized the pattern but slips occasionally. Viktor will continue flagging.
 
-### Cumulative QA Stats (Phases 0–8B)
-- Total QA rounds: 16 (8 phases × ~2 rounds average)
-- Total findings: ~31 findings caught (including 8 security, 6 required fixes, ~17 notes)
+### Phase 8 Final QA — Session 7 (2026-03-24)
+**Full Phase 8 sweep — sub-phases 8A, 8B, 8C, 8D. Verdict: PASS.**
+
+**Findings:**
+- F1 (REQUIRED): `vv-sync` module not exported from `src/lib/index.ts` barrel. Fixed by Orchestrator.
+- N1 (non-blocking): Duplicated `TelemetryData` interface in `BudgetClient.tsx` and `page.tsx`. Fixed — single export from `BudgetClient.tsx`.
+- N2 (non-blocking): `new Date()` inside `.filter()` callback in `budget/page.tsx`. Fixed — hoisted outside loop.
+- N3 (non-blocking): Turbopack NFT tracing warning. Inherent to filesystem-heavy app. Acknowledged.
+- N4 (non-blocking): 4-level nested ternary in `BudgetClient.tsx` ReferenceLine label. Fixed — extracted `formatAvg()` helper.
+
+**Security S1-S6:** ALL PASSED. Including `execSync` command injection check in `vv-sync.ts` — `Date.toISOString()` cannot produce shell metacharacters.
+
+**Tests:** 11 suites, 129 tests, all passing. Build clean. Lint clean.
+
+**Commits:** `bb3cead` (8A) + `02c3ad8` (8B) + `a672f0c` (8C+8D). All pushed to master.
+
+### Phase 8 Lessons
+- **Barrel export convention is internalized** — F1 was a one-time miss on a brand new module (`vv-sync`), not a pattern regression. Orchestrator fixed immediately when flagged.
+- **`execSync` needs security review** — even with safe inputs (`Date.toISOString()`), any `execSync` call must be audited for command injection. This is now part of the S4 checklist.
+- **Phase 8 was the largest phase yet** — 4 sub-phases, 3 QA gates, 15 features. The structured gate approach (8A→QA→8B→QA→8C→8D→QA) kept quality high across a big scope.
+
+### Phase 9 QA Notes (2026-03-25)
+**Round 1 — PASS WITH NOTES (1 note):**
+- N1 (non-blocking): `formatTokens` and `formatDuration` duplicated in `PhaseTimeline.tsx` from `src/lib/format.ts`. Fix: import directly from `@/lib/format` (client-safe, no `fs` contamination).
+
+**Round 2 — PASS (post-Director live test fixes):**
+Director live test found 6 issues:
+- Chat disconnected: stale process on port 3000 caused Next.js → port 3001 collision with PTY. Fix: killed stale process. Added EADDRINUSE error handler to PTY server.
+- Roadmap Phases 7 & 8 never marked complete in markdown. Fix: updated statuses, dates, tasks.
+- Planned phases (9, 10) showing session data. Fix: `buildPhaseTokenReport` now skips planned phases, walks backwards for nearest completedDate.
+- Missing metadata showing nothing. Fix: always render all 5 fields with "N/A" fallback.
+- N1 from Round 1 resolved (format duplication removed).
+- All 6 issues verified fixed. Build clean, lint clean, 129 tests pass.
+
+### Phase 9 Lessons
+- **Roadmap markdown must be updated when phases complete** — stale phase statuses caused cascading data bugs. The `buildPhaseTokenReport` date ranges depend on `completedDate`. Viktor should verify roadmap status markers match reality.
+- **Port collision is a real UX problem** — Next.js silently shifts ports, PTY server crashes. EADDRINUSE handler now gives clear guidance. Users must Ctrl+C, not close terminal window.
+- **Phase 1 carry-forward FULLY CLOSED** — `text-[10px]` in Sidebar version badge replaced with `text-xs`. Zero arbitrary values remaining.
+
+### Cumulative QA Stats (Phases 0–9)
+- Total QA rounds: 20 (10 phases, 2 rounds average)
+- Total findings: ~38 findings caught (including 8 security, 7 required fixes, ~23 notes)
 - Zero bugs shipped to git.
 
 ---
 
 ## Sprint 2 — MVP Direction
 v1.0 not releasing publicly. Sprint 2 is MVP sprint. Viktor's key roles:
-- **Phase 8B (next):** Security-critical QA on API routes. Full S1-S6 sweep + client bundle audit for `homedir` leaks.
+- **Phase 8 (COMPLETE):** 3 QA gates passed. Full S1-S6 sweep on all telemetry code + API routes + V&V sync.
+- **Phase 9 (COMPLETE):** 2 QA rounds. Chat + UX + interactive roadmap. Director live-tested.
 - **Phase 10:** Full QA pipeline on all pages + Playwright end-to-end automated tests
 - **Known debt (RESOLVED):** Director's 5 lint errors fixed in Phase 7. Lint now runs clean.
 - **Resolved concern:** Phase 8A `~/.claude/` reads passed full security review. S1-S6 all clean.

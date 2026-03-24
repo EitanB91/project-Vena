@@ -42,9 +42,31 @@ export function buildPhaseTokenReport(
   for (let i = 0; i < sortedPhases.length; i++) {
     const phase = sortedPhases[i];
 
-    // Start = previous phase's completed date, or epoch for first phase
-    const prevDate = i > 0 ? sortedPhases[i - 1].completedDate : null;
-    const rangeStart = prevDate ? new Date(prevDate) : new Date(0);
+    // Planned phases have no sessions — skip date range calculation
+    if (phase.status === 'planned') {
+      reports.push({
+        phaseId: phase.id,
+        phaseTitle: phase.title,
+        status: phase.status,
+        sessionCount: 0,
+        totalDurationMinutes: 0,
+        outputTokens: 0,
+        cacheTokens: 0,
+        totalTokens: 0,
+      });
+      continue;
+    }
+
+    // Start = previous completed phase's date, or epoch for first phase
+    // Walk backwards to find the nearest phase with a completedDate
+    let rangeStart = new Date(0);
+    for (let j = i - 1; j >= 0; j--) {
+      const prevCompleted = sortedPhases[j].completedDate;
+      if (prevCompleted) {
+        rangeStart = new Date(prevCompleted);
+        break;
+      }
+    }
 
     // End = this phase's completed date, or now if in progress
     const rangeEnd = phase.completedDate
