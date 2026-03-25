@@ -189,22 +189,30 @@ function transformUsageEvent(raw: Record<string, unknown>): UsageEvent {
     source: typeof raw.source === 'string' ? raw.source : 'unknown',
   };
 
-  const event = raw.event as string;
+  const event = typeof raw.event === 'string' ? raw.event : '';
 
   if (event === 'SessionSummary') {
     return {
       ...base,
       event: 'SessionSummary',
-      phase: raw.phase as string | undefined,
-      actors: raw.actors as string[] | undefined,
-      categories: raw.categories as string[] | undefined,
-      apiCostUsd: raw.api_cost_usd as number | undefined,
-      summary: raw.summary as string | undefined,
+      phase: typeof raw.phase === 'string' ? raw.phase : undefined,
+      actors: Array.isArray(raw.actors) ? raw.actors.filter((a): a is string => typeof a === 'string') : undefined,
+      categories: Array.isArray(raw.categories) ? raw.categories.filter((c): c is string => typeof c === 'string') : undefined,
+      apiCostUsd: typeof raw.api_cost_usd === 'number' ? raw.api_cost_usd : undefined,
+      summary: typeof raw.summary === 'string' ? raw.summary : undefined,
     };
   }
 
+  if (event === 'SessionStart' || event === 'SessionEnd') {
+    return {
+      ...base,
+      event,
+    };
+  }
+
+  // Unknown event type — default to SessionStart to maintain array typing
   return {
     ...base,
-    event: event as 'SessionStart' | 'SessionEnd',
+    event: 'SessionStart',
   };
 }

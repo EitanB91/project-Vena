@@ -140,9 +140,9 @@ Vena is a local web dashboard for monitoring Claude Code projects. It reads `.cl
 - [x] Final QA gate + Director full live test (8D)
 <!-- /vena:phase -->
 
-<!-- vena:phase id="9" status="in_progress" -->
+<!-- vena:phase id="9" status="complete" -->
 ### Phase 9 — Chat & UX Polish
-**Status:** In Progress
+**Status:** Complete (2026-03-25)
 **Goal:** Chatbox UI, PTY auto-start, VenaOS branding, interactive roadmap.
 
 - [x] Chatbox UI component (split view with terminal)
@@ -150,12 +150,12 @@ Vena is a local web dashboard for monitoring Claude Code projects. It reads `.cl
 - [x] VenaOS branding & version text polish
 - [x] Roadmap phase expand/collapse
 - [x] Phase detail metadata panels
-- [ ] Viktor QA + Director live test
+- [x] Viktor QA + Director live test
 <!-- /vena:phase -->
 
-<!-- vena:phase id="10" status="planned" -->
+<!-- vena:phase id="10" status="in_progress" -->
 ### Phase 10 — QA, Stabilization & MVP Release
-**Status:** Planned
+**Status:** In Progress
 **Goal:** Comprehensive QA, Playwright e2e tests, Director testing, v0.2.0-mvp release.
 
 - [ ] Full Viktor QA pipeline (all pages + new features)
