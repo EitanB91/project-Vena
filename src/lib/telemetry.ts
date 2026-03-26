@@ -22,7 +22,7 @@ import type {
 // -----------------------------------------------------------------------------
 
 /** Base directory for Claude Code project telemetry */
-const CLAUDE_PROJECTS_DIR = path.join(os.homedir(), '.claude', 'projects');
+const CLAUDE_PROJECTS_DIR = path.join(/* turbopackIgnore: true */ os.homedir(), '.claude', 'projects');
 
 /** Session is considered active if modified within this window */
 const ACTIVE_THRESHOLD_MS = 5 * 60 * 1000; // 5 minutes
@@ -32,6 +32,9 @@ const UUID_JSONL_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-
 
 /** Line count threshold for streaming reads */
 const STREAMING_THRESHOLD = 500;
+
+/** TTL for in-memory telemetry cache (ms) — avoids re-parsing JSONL on every poll */
+const CACHE_TTL_MS = 10_000; // 10 seconds
 
 // -----------------------------------------------------------------------------
 // Security Helpers
@@ -238,13 +241,26 @@ export function isSessionActive(filePath: string, now?: number, thresholdMs?: nu
   }
 }
 
+// In-memory cache to avoid re-parsing JSONL files on every poll cycle.
+// Multiple API routes (/dashboard, /telemetry, /sessions) call getProjectTelemetry()
+// every 30-60 seconds — without caching, each call re-reads and parses all session files.
+const telemetryCache = new Map<string, { data: ProjectTelemetry; timestamp: number }>();
+
 /**
  * Aggregate telemetry across all sessions for a project.
+ * Results are cached for CACHE_TTL_MS to avoid redundant file parsing.
  */
 export async function getProjectTelemetry(projectSlug?: string): Promise<ProjectTelemetry> {
   const slug = projectSlug ?? getProjectSlug(process.cwd());
-  const files = getSessionFiles(slug);
   const now = Date.now();
+
+  // Check cache
+  const cached = telemetryCache.get(slug);
+  if (cached && (now - cached.timestamp) < CACHE_TTL_MS) {
+    return cached.data;
+  }
+
+  const files = getSessionFiles(slug);
 
   const sessions: SessionTelemetry[] = [];
   for (const file of files) {
@@ -271,13 +287,18 @@ export async function getProjectTelemetry(projectSlug?: string): Promise<Project
   // Build daily usage
   const dailyUsage = buildDailyUsage(sessions);
 
-  return {
+  const result: ProjectTelemetry = {
     projectSlug: slug,
     sessions,
     totals,
     activeSessionCount,
     dailyUsage,
   };
+
+  // Update cache
+  telemetryCache.set(slug, { data: result, timestamp: now });
+
+  return result;
 }
 
 // -----------------------------------------------------------------------------

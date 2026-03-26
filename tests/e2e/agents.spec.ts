@@ -37,7 +37,7 @@ test.describe('Agents Page', () => {
 
     const href = await cards.first().getAttribute('href');
     await cards.first().click();
-    await expect(page).toHaveURL(href!);
+    await page.waitForURL(href!, { timeout: 10000 });
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   });
 });

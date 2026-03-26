@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import {
   BarChart,
   Bar,
@@ -23,7 +24,7 @@ interface SessionChartProps {
 
 // Recharts requires raw hex for SVG — CSS variables don't work in SVG.
 // Colors below mirror design tokens in globals.css. Keep in sync if they change.
-export function SessionChart({ data }: SessionChartProps) {
+export const SessionChart = memo(function SessionChart({ data }: SessionChartProps) {
   if (data.length === 0) return null;
 
   return (
@@ -78,4 +79,4 @@ export function SessionChart({ data }: SessionChartProps) {
       </ResponsiveContainer>
     </div>
   );
-}
+});

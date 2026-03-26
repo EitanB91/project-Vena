@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import {
   PieChart,
   Pie,
@@ -40,7 +41,7 @@ function getModelLabel(model: string): string {
  * F4 — Model Usage Donut.
  * Shows distribution of output tokens by model family.
  */
-export function ModelDonut({ modelTokens }: ModelDonutProps) {
+export const ModelDonut = memo(function ModelDonut({ modelTokens }: ModelDonutProps) {
   const entries = Object.entries(modelTokens).filter(([, v]) => v > 0);
   if (entries.length === 0) return null;
 
@@ -105,4 +106,4 @@ export function ModelDonut({ modelTokens }: ModelDonutProps) {
       </div>
     </div>
   );
-}
+});

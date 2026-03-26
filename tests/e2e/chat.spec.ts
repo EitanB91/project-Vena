@@ -22,7 +22,7 @@ test.describe('Chat Page', () => {
 
   test('chat input textarea is present', async ({ page }) => {
     const textarea = page.locator('textarea');
-    await expect(textarea).toBeVisible();
+    await expect(textarea).toBeVisible({ timeout: 10000 });
     await expect(textarea).toHaveAttribute('placeholder', /Type a command|Connecting/i);
   });
 

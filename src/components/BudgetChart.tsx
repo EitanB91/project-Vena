@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import {
   PieChart,
   Pie,
@@ -23,7 +24,7 @@ const COLORS = {
   spent: "#ef4444", // --vena-error
 };
 
-export function BudgetChart({
+export const BudgetChart = memo(function BudgetChart({
   usable,
   floor,
   spent,
@@ -81,4 +82,4 @@ export function BudgetChart({
       </div>
     </div>
   );
-}
+});

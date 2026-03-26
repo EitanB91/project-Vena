@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import {
   BarChart,
   Bar,
@@ -34,7 +35,7 @@ const COLORS = {
  * Shows input vs output vs cache tokens per day.
  * Output tokens are prominent, cache tokens muted.
  */
-export function TokenChart({ data }: TokenChartProps) {
+export const TokenChart = memo(function TokenChart({ data }: TokenChartProps) {
   if (data.length === 0) return null;
 
   return (
@@ -117,4 +118,4 @@ export function TokenChart({ data }: TokenChartProps) {
       </ResponsiveContainer>
     </div>
   );
-}
+});
