@@ -12,13 +12,15 @@ export {
 } from './budget';
 export { readRoadmap, parseRoadmap, readProjectRoadmap, readPlanFiles } from './roadmap';
 export type { PlanFile } from './roadmap';
-export { buildSessionTimeline, readSessionTimeline } from './sessions';
+export { buildSessionTimeline, readSessionTimeline, getSessionEnrichment } from './sessions';
+export type { SessionEnrichment } from './sessions';
 export { slugify } from './slugify';
 export {
   ACTIVE_THRESHOLD_MINUTES,
   RECENT_THRESHOLD_MINUTES,
   getAgentStatus,
   formatLastSeen,
+  enhanceAgentProfiles,
 } from './agent-status';
 export type { AgentStatus } from './agent-status';
 export {

@@ -158,3 +158,33 @@ v1.0 not releasing publicly. Sprint 2 is MVP sprint. Nova's key roles:
 - **Phase 8:** Visual heartbeat cues — "updated Xs ago" timestamps, pulse animations, fade transitions
 - **Phase 9:** Chatbox UI alongside terminal (split view), "VenaOS" branding, version text polish
 - Director UX feedback pending: brighter version text (+2 size), techy logo name
+
+## Vena — Character & Brand Identity (approved 2026-03-28)
+
+Vena is the human personification of the dashboard. Every color maps to the design token system.
+
+### Art Style: Digital Noir Minimalism
+Semi-stylized digital painting. Single cool light source, near-monochrome palette, one indigo accent (#6366f1) in the eyes. She emerges from `#08080d` void. Painterly but controlled.
+
+### Visual Summary
+- Late 20s, 5'9", lean angular frame, high cheekbones, defined jaw
+- Cool moonlight pale skin (#c4bcc9), silver-lavender undertone
+- Dark charcoal eyes with indigo-violet outer ring — THE signature detail
+- Jet black hair, straight, collarbone, indigo sheen when light hits
+- Matte black turtleneck, one thin silver chain necklace
+- Expression: "observant calm" — recording, processing, three steps ahead
+
+### Canonical Portrait
+Generated 2026-03-28 from Nova's visual profile. Director verdict: approved instantly, zero notes. *"God... This is VENA!"*
+
+### Assets
+- `public/brand/VENA-VISUAL-PROFILE.md` — full visual profile document
+- `public/brand/vena-eyes-study.svg` — SVG eye sketch with token annotations
+- `public/brand/vena-portrait-sketch.svg` — full SVG portrait with token annotations
+- Canonical portrait PNG — to be added by Director
+
+### Planned Usage (post-sprint)
+- Chat UI: portrait as greeting/idle state, indigo eye pulse when processing
+- Sidebar or About page: small avatar variant
+- Favicon: cropped eyes only (32x32)
+- 404 page: full eye contact, *"There's nothing here. I already checked."*

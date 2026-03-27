@@ -1,6 +1,8 @@
+import path from "node:path";
 import {
   getProjectSlug,
   getProjectTelemetry,
+  getSessionEnrichment,
   formatTokens,
   formatDuration,
 } from "@/lib";
@@ -13,6 +15,8 @@ export const dynamic = "force-dynamic";
 export default async function SessionsPage() {
   const slug = getProjectSlug(process.cwd());
   const telemetry = await getProjectTelemetry(slug);
+  const claudeDir = path.join(process.cwd(), ".claude");
+  const enrichment = getSessionEnrichment(claudeDir);
 
   // Group sessions by date
   const byDate = new Map<string, SessionTelemetry[]>();
@@ -26,18 +30,31 @@ export default async function SessionsPage() {
   const dates = Array.from(byDate.keys()).sort().reverse();
 
   // Serialize for client
-  const serializedSessions = telemetry.sessions.map((s) => ({
-    sessionId: s.sessionId,
-    title: s.title,
-    startTime: s.startTime.toISOString(),
-    endTime: s.endTime.toISOString(),
-    durationMinutes: s.durationMinutes,
-    model: s.model,
-    isActive: s.isActive,
-    tokens: s.tokens,
-    messageCount: s.messageCount,
-    toolCallCount: s.toolCallCount,
-    subagentCount: s.subagentCount,
+  const serializedSessions = telemetry.sessions.map((s) => {
+    const vv = enrichment.get(s.sessionId);
+    return {
+      sessionId: s.sessionId,
+      title: s.title,
+      startTime: s.startTime.toISOString(),
+      endTime: s.endTime.toISOString(),
+      durationMinutes: s.durationMinutes,
+      model: s.model,
+      gitBranch: s.gitBranch,
+      isActive: s.isActive,
+      tokens: s.tokens,
+      messageCount: s.messageCount,
+      toolCallCount: s.toolCallCount,
+      subagentCount: s.subagentCount,
+      categories: vv?.categories ?? [],
+      phase: vv?.phase ?? null,
+    };
+  });
+
+  // Daily usage for chart
+  const dailyUsage = telemetry.dailyUsage.map((d) => ({
+    date: d.date,
+    sessions: d.sessions,
+    minutes: Math.round(d.durationMinutes * 10) / 10,
   }));
 
   return (
@@ -92,6 +109,7 @@ export default async function SessionsPage() {
       ) : (
         <SessionsClient
           initialSessions={serializedSessions}
+          initialDailyUsage={dailyUsage}
         />
       )}
     </div>

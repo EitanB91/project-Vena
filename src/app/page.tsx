@@ -6,6 +6,7 @@ import {
   readProjectRoadmap,
   getProjectSlug,
   getProjectTelemetry,
+  enhanceAgentProfiles,
   formatTokens,
   formatDateShort,
 } from "@/lib";
@@ -18,7 +19,7 @@ export default async function Home() {
   const projectPath = process.cwd();
   const claudeDir = path.join(projectPath, ".claude");
 
-  const profiles = readAllAgents(claudeDir);
+  const rawProfiles = readAllAgents(claudeDir);
   const ledger = readBudgetLedger(claudeDir);
   const summary = ledger ? computeBudgetSummary(ledger) : null;
   const roadmap = readProjectRoadmap(projectPath);
@@ -26,7 +27,12 @@ export default async function Home() {
   const slug = getProjectSlug(projectPath);
   const telemetry = await getProjectTelemetry(slug);
 
-  const activeCount = profiles.filter((p) => p.status.label === "Active").length;
+  // Enhance agent status with telemetry session activity
+  const mostRecentSession = telemetry.sessions[0] ?? null;
+  const profiles = enhanceAgentProfiles(rawProfiles, {
+    activeSessionCount: telemetry.activeSessionCount,
+    mostRecentSessionEnd: mostRecentSession?.endTime ?? null,
+  });
 
   const currentPhase = roadmap?.phases.find(
     (p) => p.status === "next" || p.status === "in_progress",
@@ -90,6 +96,15 @@ export default async function Home() {
     ),
   };
 
+  // Serialize agents for client component
+  const serializedAgents = profiles.map((p) => ({
+    name: p.identity.name,
+    role: p.identity.role,
+    colorToken: p.colorToken,
+    status: p.status,
+    lastSeen: p.lastSeen,
+  }));
+
   return (
     <div className="flex flex-1 flex-col p-4 md:p-8">
       <div className="mb-6 md:mb-8">
@@ -101,41 +116,31 @@ export default async function Home() {
         </p>
       </div>
 
-      {/* Status Cards */}
-      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatusCard
-          label="Phase"
-          value={currentPhase ? currentPhase.id : String(completedPhases)}
-          sub={
-            currentPhase
+      {/* Client Component: status cards + telemetry + team panel (all poll-refreshed) */}
+      <DashboardClient
+        initialData={initialClientData}
+        initialAgents={serializedAgents}
+        cards={{
+          phase: {
+            value: currentPhase ? currentPhase.id : String(completedPhases),
+            sub: currentPhase
               ? currentPhase.title.replace(/^Phase \d+\s*[—–-]\s*/, "")
-              : "All phases complete"
-          }
-        />
-        <StatusCard
-          label="Agents"
-          value={String(profiles.length)}
-          sub={`${activeCount} active`}
-        />
-        <StatusCard
-          label="API Budget"
-          value={budgetDisplay}
-          sub={alertLevel.charAt(0).toUpperCase() + alertLevel.slice(1)}
-          color={alertColor[alertLevel]}
-        />
-        <StatusCard
-          label="Sessions"
-          value={String(telemetry.sessions.length)}
-          sub={`${formatTokens(telemetry.totals.output)} output tokens`}
-        />
-      </div>
+              : "All phases complete",
+          },
+          budget: {
+            value: budgetDisplay,
+            sub: alertLevel.charAt(0).toUpperCase() + alertLevel.slice(1),
+            color: alertColor[alertLevel],
+          },
+          sessions: {
+            value: String(telemetry.sessions.length),
+            sub: `${formatTokens(telemetry.totals.output)} output tokens`,
+          },
+        }}
+      />
 
-      {/* Live Telemetry (Client-side polling) */}
-      <DashboardClient initialData={initialClientData} />
-
-      {/* Quick Glance Panels */}
+      {/* Roadmap Progress (static — no live data needed) */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        {/* Roadmap Progress */}
         <div className="rounded-lg border border-vena-border bg-vena-surface p-5">
           <h2 className="mb-3 text-xs font-medium uppercase tracking-wider text-vena-text-muted">
             Roadmap Progress
@@ -197,84 +202,7 @@ export default async function Home() {
             </div>
           )}
         </div>
-
-        {/* Team Status */}
-        <div className="rounded-lg border border-vena-border bg-vena-surface p-5">
-          <h2 className="mb-3 text-xs font-medium uppercase tracking-wider text-vena-text-muted">
-            Team
-          </h2>
-          {profiles.length > 0 ? (
-            <div className="space-y-2">
-              {profiles.map((profile) => (
-                  <div
-                    key={profile.identity.name}
-                    className="flex items-center gap-3"
-                  >
-                    <div
-                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
-                      style={{
-                        backgroundColor: `var(--vena-agent-${profile.colorToken})`,
-                      }}
-                    >
-                      {profile.identity.name.charAt(0)}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm text-vena-text">
-                        {profile.identity.name}
-                      </p>
-                      <p className="truncate text-micro text-vena-text-muted">
-                        {profile.identity.role}
-                      </p>
-                    </div>
-                    <span
-                      className={`inline-block h-2 w-2 shrink-0 rounded-full ${profile.status.label === "Active" ? "bg-vena-success animate-pulse" : "bg-vena-text-muted"}`}
-                    />
-                  </div>
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center gap-2 py-4">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-vena-surface-raised">
-                <svg className="h-4 w-4 text-vena-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                  <circle cx="9" cy="7" r="4" />
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                </svg>
-              </div>
-              <p className="text-xs text-vena-text-muted">No agents found.</p>
-            </div>
-          )}
-        </div>
       </div>
-    </div>
-  );
-}
-
-/* ─── Local Components ───────────────────────────────────────────────── */
-
-function StatusCard({
-  label,
-  value,
-  sub,
-  color,
-}: {
-  label: string;
-  value: string;
-  sub: string;
-  color?: string;
-}) {
-  return (
-    <div className="rounded-lg border border-vena-border bg-vena-surface p-4">
-      <p className="text-xs font-medium uppercase tracking-wider text-vena-text-muted">
-        {label}
-      </p>
-      <p
-        className={`mt-1 text-2xl font-semibold ${color ?? "text-vena-text"}`}
-      >
-        {value}
-      </p>
-      <p className="mt-0.5 text-xs text-vena-text-secondary">{sub}</p>
     </div>
   );
 }

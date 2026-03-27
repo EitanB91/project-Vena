@@ -1,13 +1,23 @@
 import path from 'node:path';
-import { readAllAgents } from '@/lib';
+import { readAllAgents, getProjectSlug, getProjectTelemetry, enhanceAgentProfiles } from '@/lib';
 import { AgentCard } from '@/components/AgentCard';
 import { EmptyState } from '@/components/EmptyState';
 
 export const dynamic = 'force-dynamic';
 
-export default function AgentsPage() {
-  const claudeDir = path.join(process.cwd(), '.claude');
-  const profiles = readAllAgents(claudeDir);
+export default async function AgentsPage() {
+  const projectPath = process.cwd();
+  const claudeDir = path.join(projectPath, '.claude');
+  const rawProfiles = readAllAgents(claudeDir);
+
+  const slug = getProjectSlug(projectPath);
+  const telemetry = await getProjectTelemetry(slug);
+  const mostRecentSession = telemetry.sessions[0] ?? null;
+
+  const profiles = enhanceAgentProfiles(rawProfiles, {
+    activeSessionCount: telemetry.activeSessionCount,
+    mostRecentSessionEnd: mostRecentSession?.endTime ?? null,
+  });
 
   const activeCount = profiles.filter((p) => p.status.label === 'Active').length;
 

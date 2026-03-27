@@ -93,6 +93,9 @@ export function readAllAgents(claudeDir: string): AgentProfile[] {
   if (fs.existsSync(rootIdentity)) {
     const identity = readAgentIdentity(rootIdentity);
     if (identity) {
+      // Override parsed name — root identity.md is always the Orchestrator
+      identity.name = 'Orchestrator';
+      if (!identity.role) identity.role = 'Main Agent';
       profiles.unshift({
         identity,
         memory: null,

@@ -1,41 +1,51 @@
 # Silas — Working Memory
 
 ## Current Project
-**Project Vena** — Claude Code Project Dashboard. Sprint 1 (Phases 0–6) complete. Sprint 2 starting Phase 7.
+**Project Vena** — Claude Code Project Dashboard. Phases 0–10 complete. MVP release pending (v0.2.0).
 Previous project context: Pixel Art Tool v0.2.0 shipped, O6 Animation sprint was active.
 
 ## Budget Status — Claude API
 | Field | Value | Updated |
 |-------|-------|---------|
-| Remaining Balance | $4.87 | 2026-03-17 |
-| Usable Budget (monthly) | $4.00 | 2026-03-17 |
-| Floor (untouchable) | $0.87 | 2026-03-17 |
-| Alert Level | Normal | 2026-03-17 |
+| Remaining Balance | $4.87 | 2026-03-26 |
+| Usable Budget (monthly) | $4.00 | 2026-03-26 |
+| Floor (untouchable) | $0.87 | 2026-03-26 |
+| Alert Level | Normal | 2026-03-26 |
+
+**Reconciled 2026-03-26:** $0.00 API spend confirmed for entire Project Vena lifecycle.
 
 ## Budget Status — Claude Code (Pro Plan)
 | Field | Value | Updated |
 |-------|-------|---------|
-| Session (5hr) usage | TBD | 2026-03-19 |
-| Weekly (7d) usage | TBD | 2026-03-19 |
-| Daily/weekly soft limits | TBD — next sprint planning | — |
+| Sessions (Project Vena total) | 22 | 2026-03-26 |
+| Total tokens (all) | ~254M | 2026-03-26 |
+| Output tokens | ~773K | 2026-03-26 |
+| Rate limits hit | 0 | 2026-03-26 |
+| Daily/weekly soft limits | TBD — not configured | — |
 
 ## Project Vena Budget Impact
-- **API cost:** $0.00 — entire project uses CLI passthrough (Pro quota only)
+- **API cost:** $0.00 — CONFIRMED at reconciliation. Entire project uses CLI passthrough (Pro quota only)
 - **Chat strategy:** xterm.js embedded terminal running `claude` CLI
-- **Estimated Pro quota:** ~60% total spread across 3 weeks (~20%/week)
+- **Actual Pro quota usage:** 22 sessions over 8 days (2026-03-18 to 2026-03-26), ~254M total tokens
+- **Reconciliation report:** `.claude/vault-and-valve/reports/reconciliation-phase10-mvp.md`
 
 ## Conventions
 - **Plan/Roadmap files:** All saved in `plans/` directory with meaningful names (e.g., `Plan-MVP.md`, `Roadmap-Project-Vena.md`). Never random names.
 
 ## Phase Status
 Phase 0 — COMPLETE (2026-03-19). Commit `371bc76`. Zero API cost.
-Phase 1 — COMPLETE (2026-03-19). Zero API cost. Pro quota usage: light (single session, build + QA).
-Phase 2 — COMPLETE (2026-03-19). Zero API cost. Pro quota usage: moderate (data layer build + 2-round QA + test setup).
-Phase 3 — COMPLETE (2026-03-20). Zero API cost. Pro quota usage: moderate (UI build + 2-round QA + memory updates).
-Phase 4 — COMPLETE (2026-03-20). Zero API cost. Pro quota usage: moderate (charts + 4 pages + 2-round QA).
-Phase 5 — COMPLETE (2026-03-20). Zero API cost. Pro quota usage: heavy (xterm.js + PTY server + 8 security fixes + 2-round QA).
-Phase 6 — COMPLETE (2026-03-20). Zero API cost. Pro quota usage: moderate (responsive + polish + 2-round QA). **v1.0 milestone.**
-Phase 7 — COMPLETE (2026-03-22). Zero API cost. Pro quota usage: moderate (research + lint fixes + memory updates).
+Phase 1 — COMPLETE (2026-03-19). Zero API cost. Pro quota: light.
+Phase 2 — COMPLETE (2026-03-19). Zero API cost. Pro quota: moderate.
+Phase 3 — COMPLETE (2026-03-20). Zero API cost. Pro quota: moderate.
+Phase 4 — COMPLETE (2026-03-20). Zero API cost. Pro quota: moderate.
+Phase 5 — COMPLETE (2026-03-20). Zero API cost. Pro quota: heavy.
+Phase 6 — COMPLETE (2026-03-20). Zero API cost. Pro quota: moderate. **v1.0 milestone.**
+Phase 7 — COMPLETE (2026-03-22). Zero API cost. Pro quota: moderate.
+Phase 8A — COMPLETE (2026-03-22). Zero API cost. Pro quota: moderate.
+Phase 8B — COMPLETE (2026-03-24). Zero API cost. Pro quota: heavy.
+Phase 8C+8D — COMPLETE (2026-03-24). Zero API cost. Pro quota: moderate.
+Phase 9 — COMPLETE (2026-03-24). Zero API cost. Pro quota: heavy.
+Phase 10 — IN PROGRESS (2026-03-26). Steps 1-6 done. Budget reconciliation CLEAR.
 
 ## Active Alerts
 None.
@@ -46,11 +56,11 @@ None.
 - At floor: only the Director can authorize API usage
 - Silas Scale for spoken reports; budget-ledger.json always has real numbers
 - Project Vena approved with $0 API cost (2026-03-19)
+- **Phase 10 reconciliation: BUDGET GATE CLEAR (2026-03-26)**
 
 ## Open Items
 - Daily/weekly soft limits to be defined at next sprint planning meeting
 - Cron schedules for daily/weekly reports to be configured
-- Monitor Pro plan quota during Vena development
 
 ---
 
@@ -58,15 +68,13 @@ None.
 See full retro: `memory/project_sprint1_retro.md`
 
 - **Best:** Entire project cost $0 API spend — runs on Pro plan quota only. V&V infrastructure ready for future use.
-- **Worst:** Budget data is stale — no automated way to get Claude Code usage into ledger. Monitoring stack without monitoring is just a filing cabinet.
+- **Worst:** Budget data was stale — resolved in Phase 8 with telemetry-sync.
 
-## Sprint 2 — MVP Direction
-v1.0 not releasing publicly. Sprint 2 is MVP sprint. Silas's key roles:
-- ~~**Phase 7 (TOP PRIORITY):** Research telemetry~~ — **DONE.** Telemetry EXISTS at `~/.claude/projects/{slug}/{uuid}.jsonl`. Full token usage per message (input, output, cache_creation, cache_read). Real-time writes. Best-case scenario.
-- **Phase 8:** Build telemetry reader — pipe `~/.claude/` session JSONL into V&V data layer. Rework budget page with live token data. Per-message cost breakdown possible.
-- **Phase 10:** Budget reconciliation — verify V&V numbers match reality using telemetry data
-- **Subagent tokens:** Stored separately in `{uuid}/subagents/agent-{id}.jsonl`. NOT double-counted with parent. Telemetry reader must sum both for true totals.
-- **Critical question answered:** YES — local telemetry exists. No fallback needed. Live dashboard is fully viable.
+## Sprint 2 Summary
+- **Phase 7:** Telemetry research — DONE. `~/.claude/projects/{slug}/{uuid}.jsonl` confirmed.
+- **Phase 8:** Telemetry reader built. Live token data in dashboard. V&V sync operational.
+- **Phase 9:** Chatbox UI, VenaOS branding, interactive roadmap.
+- **Phase 10:** QA, e2e tests, performance pass, budget reconciliation — all CLEAR.
 
 ## Notes
 _Update this file at session compaction and at every phase transition._

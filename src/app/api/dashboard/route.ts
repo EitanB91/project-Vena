@@ -4,6 +4,7 @@ import { readAllAgents } from "@/lib/agents";
 import { readBudgetLedger, computeBudgetSummary } from "@/lib/budget";
 import { readProjectRoadmap } from "@/lib/roadmap";
 import { getProjectSlug, getProjectTelemetry } from "@/lib/telemetry";
+import { enhanceAgentProfiles } from "@/lib/agent-status";
 
 const HEADERS = { "Cache-Control": "no-store" } as const;
 
@@ -21,12 +22,19 @@ export async function GET() {
 
     // Fetch all data sources in parallel
     const slug = getProjectSlug(projectPath);
-    const [profiles, ledger, roadmap, telemetry] = await Promise.all([
+    const [rawProfiles, ledger, roadmap, telemetry] = await Promise.all([
       Promise.resolve(readAllAgents(claudeDir)),
       Promise.resolve(readBudgetLedger(claudeDir)),
       Promise.resolve(readProjectRoadmap(projectPath)),
       getProjectTelemetry(slug),
     ]);
+
+    // Enhance agent status with telemetry
+    const mostRecentSession = telemetry.sessions[0] ?? null;
+    const profiles = enhanceAgentProfiles(rawProfiles, {
+      activeSessionCount: telemetry.activeSessionCount,
+      mostRecentSessionEnd: mostRecentSession?.endTime ?? null,
+    });
 
     const summary = ledger ? computeBudgetSummary(ledger) : null;
 

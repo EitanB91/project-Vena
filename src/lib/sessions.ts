@@ -119,6 +119,36 @@ function computeDuration(
   return Math.max(0, (end - start) / 60000); // minutes
 }
 
+// ---------------------------------------------------------------------------
+// Session Enrichment — merge V&V usage-log data into telemetry sessions
+// ---------------------------------------------------------------------------
+
+export interface SessionEnrichment {
+  categories: string[];
+  phase: string | null;
+}
+
+/**
+ * Read V&V usage-log summaries and return enrichment data keyed by session ID.
+ * Used to add categories + phase tags to telemetry-based session views.
+ */
+export function getSessionEnrichment(claudeDir: string): Map<string, SessionEnrichment> {
+  const events = readUsageLog(claudeDir);
+  const map = new Map<string, SessionEnrichment>();
+
+  for (const event of events) {
+    if (event.event === 'SessionSummary') {
+      const summary = event as SessionSummaryEvent;
+      map.set(summary.session, {
+        categories: summary.categories ?? [],
+        phase: summary.phase ?? null,
+      });
+    }
+  }
+
+  return map;
+}
+
 function groupByDate(sessions: Session[]): Record<string, Session[]> {
   const groups: Record<string, Session[]> = {};
 

@@ -25,7 +25,7 @@ import type {
 const CLAUDE_PROJECTS_DIR = path.join(/* turbopackIgnore: true */ os.homedir(), '.claude', 'projects');
 
 /** Session is considered active if modified within this window */
-const ACTIVE_THRESHOLD_MS = 5 * 60 * 1000; // 5 minutes
+const ACTIVE_THRESHOLD_MS = 15 * 60 * 1000; // 15 minutes
 
 /** UUID pattern for session JSONL files */
 const UUID_JSONL_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.jsonl$/;

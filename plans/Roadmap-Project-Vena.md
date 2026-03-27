@@ -158,12 +158,12 @@ Vena is a local web dashboard for monitoring Claude Code projects. It reads `.cl
 **Status:** In Progress
 **Goal:** Comprehensive QA, Playwright e2e tests, Director testing, v0.2.0-mvp release.
 
-- [ ] Full Viktor QA pipeline (all pages + new features)
-- [ ] Playwright end-to-end test suite
-- [ ] Fix all QA findings
-- [ ] Budget reconciliation
-- [ ] Performance pass
-- [ ] Director testing round 2
+- [x] Full Viktor QA pipeline (all pages + new features)
+- [x] Playwright end-to-end test suite
+- [x] Fix all QA findings
+- [x] Budget reconciliation
+- [x] Performance pass
+- [x] Director testing round 2
 - [ ] MVP release preparation (v0.2.0)
 <!-- /vena:phase -->
 
@@ -182,16 +182,16 @@ Vena is a local web dashboard for monitoring Claude Code projects. It reads `.cl
 | Charts (Recharts) | 4 | Medium | Complete |
 | CLI chat (xterm.js) | 5 | Medium | Complete |
 | Responsive design | 6 | Medium | Complete |
-| Telemetry research | 7 | Critical | In Progress |
-| Lint fixes & agent status refactor | 7 | Critical | Planned |
-| API route endpoints | 8 | Critical | Planned |
-| Client-side polling | 8 | Critical | Planned |
-| Telemetry reader | 8 | High | Planned |
-| Session logger fix | 8 | High | Planned |
-| Visual heartbeat indicators | 8 | Medium | Planned |
-| Chatbox UI | 9 | High | Planned |
-| PTY auto-start | 9 | Medium | Planned |
-| VenaOS branding | 9 | Low | Planned |
-| Roadmap expand/collapse | 9 | Medium | Planned |
-| Playwright e2e tests | 10 | Critical | Planned |
-| MVP release (v0.2.0) | 10 | Critical | Planned |
+| Telemetry research | 7 | Critical | Complete |
+| Lint fixes & agent status refactor | 7 | Critical | Complete |
+| API route endpoints | 8 | Critical | Complete |
+| Client-side polling | 8 | Critical | Complete |
+| Telemetry reader | 8 | High | Complete |
+| Session logger fix | 8 | High | Complete |
+| Visual heartbeat indicators | 8 | Medium | Complete |
+| Chatbox UI | 9 | High | Complete |
+| PTY auto-start | 9 | Medium | Complete |
+| VenaOS branding | 9 | Low | Complete |
+| Roadmap expand/collapse | 9 | Medium | Complete |
+| Playwright e2e tests | 10 | Critical | Complete |
+| MVP release (v0.2.0) | 10 | Critical | In Progress |

@@ -7,20 +7,21 @@
       "floor": 0.87,
       "currency": "USD",
       "alert_level": "normal",
-      "last_updated": "2026-03-17T00:00:00Z",
-      "notes": "Floor is untouchable. Only Director can authorize usage at floor."
+      "last_updated": "2026-03-26T00:00:00Z",
+      "last_reconciled": "2026-03-26T00:00:00Z",
+      "notes": "Floor is untouchable. Only Director can authorize usage at floor. Reconciled Phase 10: $0.00 API spend confirmed for Project Vena."
     }
   },
   "claude_code": {
     "plan": "pro",
-    "session_usage_percent": 10,
-    "session_resets_at": "2026-03-17T03:00:00Z",
-    "weekly_usage_percent": 55,
-    "weekly_resets_at": "2026-03-17T20:00:00Z",
+    "session_usage_percent": null,
+    "session_resets_at": null,
+    "weekly_usage_percent": null,
+    "weekly_resets_at": null,
     "daily_soft_limit": null,
     "weekly_soft_limit": null,
-    "last_updated": "2026-03-17T00:00:00Z",
-    "notes": "Soft limits TBD at next sprint planning."
+    "last_updated": "2026-03-26T00:00:00Z",
+    "notes": "Project Vena MVP complete. 22 sessions, ~254M tokens, 8 days of development. Zero rate limits hit. Soft limits TBD."
   },
   "alert_thresholds": {
     "warn_at_percent": 30,
@@ -30,5 +31,14 @@
   "authority": {
     "at_floor": "director_only",
     "note": "When any API balance reaches its floor, ALL API calls for that service are locked. Only the Director can authorize further usage."
+  },
+  "project_vena": {
+    "total_api_cost_usd": 0.00,
+    "total_sessions": 22,
+    "total_tokens_approx": "254M",
+    "total_output_tokens_approx": "773K",
+    "development_period": "2026-03-18 to 2026-03-26",
+    "reconciliation_report": ".claude/vault-and-valve/reports/reconciliation-phase10-mvp.md",
+    "budget_gate": "CLEAR"
   }
 }
